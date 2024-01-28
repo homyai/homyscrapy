@@ -1,18 +1,22 @@
-# data tools
+#
 
-import pandas as pd
+import os
 import json
-
-# time tools
+import sys
 import time
 from datetime import datetime
 import random
+
+import pandas as pd
 
 # crawl tools
 import scrapy
 from scrapy.crawler import CrawlerProcess
 
 # Homy Libraries
+FILE_PATH = os.path.dirname(os.path.realpath(__file__))
+PACKAGE_PATH = os.path.normpath(f"{FILE_PATH}/../")
+sys.path.append(PACKAGE_PATH)
 from common.soup_functions import ScrapTool
 from common.google_cloud_tools import CloudTools
 
