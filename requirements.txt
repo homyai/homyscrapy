@@ -1,0 +1,11 @@
+pandas==1.3.4
+beautifulsoup4
+gcloud==0.18.3
+scrapy==2.10.1
+scrapy_user_agents
+scrapy-rotating-proxies
+fsspec==2022.8.2
+gcsfs==2022.8.2
+pyopenssl==22.0.0
+pytz
+cryptography==38.0.4

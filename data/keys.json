@@ -1,0 +1,37 @@
+{
+    "MLS":{
+        "name":"MLSBot",
+        "url":["https://mls.re.cr/search/rs?form.widgets.object_type%3Alist=house&batch-limit=25&offset=25"],
+        "key":"mls"
+    },
+    "C24":{
+        "name":"C24Bot",
+        "url":["https://www.casas24.com/costa-rica-es/propiedades-residenciales?q=withcat.propiedades-residenciales-venta-casas"],
+        "key":"c24"
+    },
+    "RES":{
+        "name":"RESBot",
+        "url":["https://www.re.cr/en/costa-rica-real-estate-for-sale/search-properties?form.search-properties.buttons.search=&form.search-properties.widgets.object_type%3Alist=house&form.search-properties.widgets.object_type%3Alist=mobile&form.search-properties.widgets.object_type%3Alist=multiplex&form.search-properties.widgets.object_type%3Alist=townhouse&form.search-properties.widgets.object_type%3Alist=freestanding_villa&form.search-properties.widgets.listing_type=rs"],
+        "key":"res"
+    },
+    "P2H":{
+        "name":"P2HBot",
+        "url":["https://www.point2homes.com/CR/Real-Estate-Listings.html?location=Costa+Rica&PropertyType=House&search_mode=location&page=1&SelectedView=listings&LocationGeoAreaId=12&location_changed=&ajax=1"],
+        "key":"p2h"
+    },
+    "INH":{
+        "name":"INHBot",
+        "url":["https://inhauscr.com/propiedad/?tipo_de_propiedad=Venta%20Residencial&provincia&canton_san_jose&canton_alajuela&canton_cartago&canton_heredia&canton_guanacaste&canton_puntarenas&canton_limon&busqueda_texto&dormitorios&parqueos&precio_desde&precio_hasta&distrito"],
+        "key":"inh"
+    },
+    "C21":{
+        "name":"C21Bot",
+        "url":["https://www.century21global.com/for-sale-residential/Costa-Rica?subtype=1&sort=dateDesc"],
+        "key":"c21"
+    },
+    "INT":{
+        "name":"INTBot",
+        "url":["https://www.inmotico.com/venta-de-casas-en-costa-rica-l0-3-0.html"],
+        "key":"int"
+    }
+}
