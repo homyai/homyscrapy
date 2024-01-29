@@ -1,4 +1,7 @@
 import os
+import json
+import base64
+from dotenv import load_dotenv
 from gcloud import storage
 from datetime import datetime
 import pandas as pd
@@ -12,9 +15,11 @@ import json
 
 class CloudTools:
     def __init__(self):
-        os.environ[
-            "GOOGLE_APPLICATION_CREDENTIALS"
-        ] = "data/datalake-homyai-990ddbaa84ae.json"
+        load_dotenv()
+        encoded_key = os.getenv("GOOGLE_SERVICE_ACCOUNT_KEY")
+        decoded_key = base64.b64decode(encoded_key)
+        decoded_key = decoded_key.decode("utf-8")
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = decoded_key
         self.project_id = "datalake-homyai"
         self.bucket_name = "web-scraper-data"
 
@@ -94,7 +99,7 @@ class CloudTools:
         Get all files in the seame bucket
         """
         self.client = storage.Client(self.project_id)
-        print(self.bucket_name + '/' + str(bucket_path))
+        print(self.bucket_name + "/" + str(bucket_path))
         self.bucket = self.client.get_bucket(self.bucket_name)
         self.archivos = self.bucket.list_blobs(prefix=bucket_path)
         self.files_list = []
