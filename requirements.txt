@@ -9,3 +9,4 @@ gcsfs==2022.8.2
 pyopenssl==22.0.0
 pytz
 cryptography==38.0.4
+python-dotenv
