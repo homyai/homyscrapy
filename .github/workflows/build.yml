@@ -15,10 +15,6 @@ on:
         description: Select environment
         required: true
         default: prod
-        options:
-        - prod
-        - qa
-
 jobs:
   build_prod:
     runs-on: python:3.10
