@@ -24,28 +24,15 @@ jobs:
     runs-on: python:3.10
     if: ${{ github.event_name != 'schedule' && github.event_name != 'pull_request'}}
     env:
-      DBT_PROFILES_DIR: ./
-      SNOW_ACCT: ${{ secrets.SNOW_ACCT }}
-      DBT_WAREHOUSE: ${{ secrets.DBT_WAREHOUSE }}
-      PROD_DBT_USER: ${{ secrets.PROD_DBT_USER }}
-      PROD_DBT_PASSWORD: ${{ secrets.PROD_DBT_PASSWORD }}
+      GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
     steps:
-      - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: "3.8.x"
-      - name: Install dependencies
+          python-version: "3.10"
+      - name: Install requirements
         run: |
-          pip install 'dbt-snowflake==1.5.0'
-          dbt deps
-      - name: Install Datafold SDK
-        run: pip install -q datafold-sdk
-      - name: Run dbt seeds targeting prod
-        run: dbt seed -t prod --full-refresh
-      - name: Run dbt run full refresh targeting prod
-        run: dbt run -t prod --full-refresh
-      - name: Upload dbt artifacts to Datafold
-        run: datafold dbt upload --ci-config-id 266 --run-type production --commit-sha ${GIT_SHA}
-        env:
-          DATAFOLD_API_KEY: ${{ secrets.DATAFOLD_API_KEY }}
-          GIT_SHA: "${{ github.sha }}"
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Build
+        run: |
+          python homyscrapy/inmotico-scrapy.py
