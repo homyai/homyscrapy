@@ -17,18 +17,11 @@ on:
         default: prod
 jobs:
   build_prod:
-    runs-on: python:3.10
+    runs-on: nicomedrano/homyscrapy:latest
     if: ${{ github.event_name != 'schedule' && github.event_name != 'pull_request'}}
     env:
       GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
     steps:
-      - uses: actions/setup-python@v2
-        with:
-          python-version: "3.10"
-      - name: Install requirements
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
       - name: Build
         run: |
           python homyscrapy/inmotico-scrapy.py
