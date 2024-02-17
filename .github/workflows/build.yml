@@ -11,6 +11,7 @@ jobs:
     env:
       GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
     steps:
+      - uses: actions/checkout@v2
       - name: Build
         run: |
           python homyscrapy/inmotico-scrapy.py
