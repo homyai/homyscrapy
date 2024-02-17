@@ -1,7 +1,5 @@
 import os
 import json
-import base64
-from dotenv import load_dotenv
 from gcloud import storage
 from datetime import datetime
 import pandas as pd
@@ -15,11 +13,6 @@ import json
 
 class CloudTools:
     def __init__(self):
-        load_dotenv()
-        encoded_key = os.getenv("GOOGLE_SERVICE_ACCOUNT_KEY")
-        decoded_key = base64.b64decode(encoded_key)
-        decoded_key = decoded_key.decode("utf-8")
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = decoded_key
         self.project_id = "datalake-homyai"
         self.bucket_name = "web-scraper-data"
 
