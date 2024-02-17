@@ -12,6 +12,9 @@
 		"--env-file",
 		".devcontainer/.env",
 	],
+	"mounts": [
+		"source=${localWorkspaceFolder}/data/datalake-homyai-990ddbaa84ae.json,target=/workspaces/homyscrapy/data/datalake-homyai-990ddbaa84ae.json,type=bind,consistency=cached"
+	],
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
