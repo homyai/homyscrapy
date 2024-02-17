@@ -1,27 +1,17 @@
 name: Build
+
 on:
   push:
     branches: [main]
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
-  workflow_dispatch:
-    inputs:
-      environment:
-        type: choice
-        description: Select environment
-        required: true
-        default: prod
+
 jobs:
-  build_prod:
-    runs-on: nicomedrano/homyscrapy:latest
-    if: ${{ github.event_name != 'schedule' && github.event_name != 'pull_request'}}
+  build:
+    runs-on: ubuntu-latest
+    container: nicomedrano/homyscrapy:latest
     env:
       GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
     steps:
+      - uses: actions/checkout@v2
       - name: Build
         run: |
           python homyscrapy/inmotico-scrapy.py
