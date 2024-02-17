@@ -1,0 +1,13 @@
+{
+    "python.args": [
+        "--max-line-length=160"
+    ],
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "black-formatter": {
+        "interpreter": ["python3"],
+        "args": ["--line-length=160"],
+    },
+    "python.defaultInterpreterPath": "/usr/local/bin/python"
+}
