@@ -1,7 +1,7 @@
 # Building the local image. From the root directory of the repo, run:
 # For Intel architecture:
 
-docker build --no-cache --platform linux/amd64 -t nicomedrano/homyscrapy:v0.1 -f ./Dockerfile .
+docker build --no-cache --platform linux/amd64 -t nicomedrano/homyscrapy:v0.2 -f ./Dockerfile .
 
 # or for Mac Silicon architecture:
 
