@@ -187,7 +187,7 @@ class CloudTools:
         :returns: Two dataframes with validated cols and new cols
         :rtype: dataframe
         """
-        file_name = "data/procesos.json"
+        file_name = "data/columns.json"
         with open(file_name) as json_file:
             json_data = json.load(json_file)
         cols = json_data["columnas"]
