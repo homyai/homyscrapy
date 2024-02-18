@@ -68,7 +68,6 @@ class SpiderRES(scrapy.Spider):
         try:
             if cr_flag:
                 logging.warning("reading last url list file ....")
-                logging.warning ("How to scrapy log messages")
                 time.sleep(2)
                 self.last_file_scrap_links = gcs_tool.gcs_get_last_file(
                     ".json", key_bot + "/sales/houses/url-list"

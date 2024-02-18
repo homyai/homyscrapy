@@ -1,0 +1,14 @@
+{
+    "columnas":
+    [
+        "url", "extraction_date", "property_category", "location_breadcrumbs", "price", "codigo",
+        "ultima_actualizacion", "area_del_terreno", "area_de_construccion", "habitaciones", "banos",
+        "latitud", "longitud", "tipo_de_piso", "no_pisos", "sala_y_comedor", "cocina",
+        "area_para_desayunador", "patio", "deposito", "area_de_barbacoa", "jardin_o_parque", "garaje_de_techado",
+        "estacionamiento_techado", "lavanderia_interna", "parque_infantil", "seguridad_24_horas", "calle_sin_salida",
+        "location_pcd", "remarks", "cerca_de_escuela", "frente_al_rio", "aire_acondicionado", "piscina",
+        "walk_in_closet", "balcon_o_terraza", "studio", "area_social", "vista_a_la_montana", "salon_de_fiesta",
+        "cuarto_y_bano_de_empleada", "gimnasio", "terreno_en_esquina", "aire_acondicionado_central", "vista_al_mar",
+        "frente_al_mar", "vista_al_lago", "frente_al_lago"
+    ]
+}
