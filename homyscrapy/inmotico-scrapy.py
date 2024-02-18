@@ -6,18 +6,17 @@ from datetime import datetime
 import random
 import logging
 
-import pandas as pd
-
-# crawl tools
-import scrapy
-from scrapy.crawler import CrawlerProcess
-
-# Homy Libraries
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
 PACKAGE_PATH = os.path.normpath(f"{FILE_PATH}/../")
 sys.path.append(PACKAGE_PATH)
+
 from common.soup_functions import ScrapTool
 from common.google_cloud_tools import CloudTools
+
+import pandas as pd
+import scrapy
+from scrapy.crawler import CrawlerProcess
+
 
 # Global variables
 json_file = []
@@ -35,7 +34,7 @@ class SpiderRES(scrapy.Spider):
 
     # -------Keys for web scraping-------------
     file_name = "data/keys.json"
-    with open(file_name) as json_file:
+    with open(file_name, encoding='utf-8') as json_file:
         json_data = json.load(json_file)
     name = json_data["INT"]["name"]
     start_urls = json_data["INT"]["url"]
@@ -101,31 +100,31 @@ class SpiderRES(scrapy.Spider):
         scrap_tool = ScrapTool(response)
         soup = scrap_tool.soup_creation()
         # Read key file instructions for scraping
-        url_divs = scrap_tool.search_nest(soup, steps["INT"]["P1"])
+        url_divs = scrap_tool.search_nest(soup, steps["INT"]["P1"]) # Gets the section that contains the posts in the Propertie Page
 
         # Logic for getting all urls
 
         for link in url_divs:
             url = (
-                (scrap_tool.search_nest(link, steps["INT"]["P2"]))
+                (scrap_tool.search_nest(link, steps["INT"]["P2"])) # Gets the link of the post
                 .find("h2")
                 .find("a")
                 .get("href")
             )
-            url_list.append(url)
+            url_list.append(url) # Appends the link to the list of links
             # logging.warning('----------------')
         logging.warning("urls a scrapear: " + str(len(url_list)))
 
         # SCRAPPEAR
         # Logic for iterating over pages
-        last_page_as = scrap_tool.search_nest(soup, steps["INT"]["P3"])
-        last_page_list = scrap_tool.search_nest(last_page_as, steps["INT"]["P4"])[-1]
-        next_page_link = last_page_list.get("href")
-        next_page_name = last_page_list.get_text()
+        last_page_as = scrap_tool.search_nest(soup, steps["INT"]["P3"]) # List of following pages
+        last_page_list = scrap_tool.search_nest(last_page_as, steps["INT"]["P4"])[-1] # Last item in the list
+        next_page_link = last_page_list.get("href") # Link to the last item in the list
+        next_page_name = last_page_list.get_text() # Name of the last it in the list
         logging.warning(next_page_name)
         if next_page_name == "Siguiente ":
             logging.warning("pagina numero: " + str(pagina_borrar))
-            yield response.follow(next_page_link, callback=self.parse)
+            yield response.follow(next_page_link, callback=self.parse) # If the name of the last item is "Siguiente " then follow the link
             pagina_borrar = pagina_borrar + 1
             logging.warning("vamos por la pag: " + str(pagina_borrar))
         else:
