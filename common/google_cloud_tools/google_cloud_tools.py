@@ -91,9 +91,9 @@ class CloudTools:
         """
         Get all files in the seame bucket
         """
-        os.environ[
-            "GOOGLE_APPLICATION_CREDENTIALS"
-        ] = "data/datalake-homyai-990ddbaa84ae.json"
+        # os.environ[
+        #     "GOOGLE_APPLICATION_CREDENTIALS"
+        # ] = "data/datalake-homyai-990ddbaa84ae.json"
         self.client = storage.Client(self.project_id)
         print(self.bucket_name + "/" + str(bucket_path))
         self.bucket = self.client.get_bucket(self.bucket_name)
