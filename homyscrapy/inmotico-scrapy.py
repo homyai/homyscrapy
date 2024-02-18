@@ -72,7 +72,7 @@ class SpiderRES(scrapy.Spider):
             time.sleep(2)
             self.last_file_scrap_links = gcs_tool.gcs_get_last_file(
                 ".json", key_bot + "/sales/houses/url-list"
-            )
+            ) 
             self.last_file_df_links = gcs_tool.gcs_read_file_pd(
                 self.last_file_scrap_links, key_bot + "/sales/houses/url-list/"
             )
