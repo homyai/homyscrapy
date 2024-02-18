@@ -66,31 +66,31 @@ class SpiderRES(scrapy.Spider):
         self.web_scrap_links = date_manager + ".json"
         self.output_file = date_manager + ".json"
 
-        # try:
-        if cr_flag:
-            print("reading last url list file ....")
-            time.sleep(2)
-            self.last_file_scrap_links = gcs_tool.gcs_get_last_file(
-                ".json", key_bot + "/sales/houses/url-list"
-            ) 
-            self.last_file_df_links = gcs_tool.gcs_read_file_pd(
-                self.last_file_scrap_links, key_bot + "/sales/houses/url-list/"
-            )
-            self.last_file_list_links = self.last_file_df_links[
-                "scrap_links"
-            ].values.tolist()
+        try:
+            if cr_flag:
+                print("reading last url list file ....")
+                time.sleep(2)
+                self.last_file_scrap_links = gcs_tool.gcs_get_last_file(
+                    ".json", key_bot + "/sales/houses/url-list"
+                ) 
+                self.last_file_df_links = gcs_tool.gcs_read_file_pd(
+                    self.last_file_scrap_links, key_bot + "/sales/houses/url-list/"
+                )
+                self.last_file_list_links = self.last_file_df_links[
+                    "scrap_links"
+                ].values.tolist()
+                cr_flag = False
+                print("file found!!!")
+                print("last week links")
+                print(len(self.last_file_list_links))
+                time.sleep(10)
+        except:
+            print("no file to read!!!")
+            self.last_file_list_links = []
             cr_flag = False
-            print("file found!!!")
             print("last week links")
             print(len(self.last_file_list_links))
             time.sleep(10)
-        # except:
-        #     print("no file to read!!!")
-        #     self.last_file_list_links = []
-        #     cr_flag = False
-        #     print("last week links")
-        #     print(len(self.last_file_list_links))
-        #     time.sleep(10)
 
         # Read step by step file
         procesos = "data/procesos.json"
