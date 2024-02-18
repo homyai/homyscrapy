@@ -65,10 +65,10 @@ class SpiderRES(scrapy.Spider):
         date_manager = gcs_tool.date_manager()
         self.web_scrap_links = date_manager + ".json"
         self.output_file = date_manager + ".json"
+        print("reading last url list file ....")
 
         try:
             if cr_flag:
-                print("reading last url list file ....")
                 time.sleep(2)
                 self.last_file_scrap_links = gcs_tool.gcs_get_last_file(
                     ".json", key_bot + "/sales/houses/url-list"
