@@ -6,6 +6,7 @@ import sys
 import time
 from datetime import datetime
 import random
+import logging
 
 import pandas as pd
 
@@ -65,10 +66,11 @@ class SpiderRES(scrapy.Spider):
         date_manager = gcs_tool.date_manager()
         self.web_scrap_links = date_manager + ".json"
         self.output_file = date_manager + ".json"
-        print("reading last url list file ....")
 
         try:
             if cr_flag:
+                logging.warning("reading last url list file ....")
+                logging.warning ("How to scrapy log messages")
                 time.sleep(2)
                 self.last_file_scrap_links = gcs_tool.gcs_get_last_file(
                     ".json", key_bot + "/sales/houses/url-list"
@@ -80,16 +82,16 @@ class SpiderRES(scrapy.Spider):
                     "scrap_links"
                 ].values.tolist()
                 cr_flag = False
-                print("file found!!!")
-                print("last week links")
-                print(len(self.last_file_list_links))
+                logging.warning("file found!!!")
+                logging.warning("last week links")
+                logging.warning(len(self.last_file_list_links))
                 time.sleep(10)
         except:
-            print("no file to read!!!")
+            logging.warning("no file to read!!!")
             self.last_file_list_links = []
             cr_flag = False
-            print("last week links")
-            print(len(self.last_file_list_links))
+            logging.warning("last week links")
+            logging.warning(len(self.last_file_list_links))
             time.sleep(10)
 
         # Read step by step file
@@ -98,7 +100,7 @@ class SpiderRES(scrapy.Spider):
             steps = json.load(step_file)
 
         # *******************STARTS-MAIN-CODE**********************
-        print('Starting to scrap')
+        logging.warning('Starting to scrap')
         scrap_tool = ScrapTool(response)
         soup = scrap_tool.soup_creation()
         # Read key file instructions for scraping
@@ -114,8 +116,8 @@ class SpiderRES(scrapy.Spider):
                 .get("href")
             )
             url_list.append(url)
-            # print('----------------')
-        print("urls a scrapear: " + str(len(url_list)))
+            # logging.warning('----------------')
+        logging.warning("urls a scrapear: " + str(len(url_list)))
 
         # SCRAPPEAR
         # Logic for iterating over pages
@@ -123,16 +125,16 @@ class SpiderRES(scrapy.Spider):
         last_page_list = scrap_tool.search_nest(last_page_as, steps["INT"]["P4"])[-1]
         next_page_link = last_page_list.get("href")
         next_page_name = last_page_list.get_text()
-        print(next_page_name)
+        logging.warning(next_page_name)
         if next_page_name == "Siguiente ":
-            print("pagina numero: " + str(pagina_borrar))
+            logging.warning("pagina numero: " + str(pagina_borrar))
             yield response.follow(next_page_link, callback=self.parse)
             pagina_borrar = pagina_borrar + 1
-            print("vamos por la pag: " + str(pagina_borrar))
+            logging.warning("vamos por la pag: " + str(pagina_borrar))
         else:
             df = pd.DataFrame({"scrap_links": url_list})
-            print("extracted links today: ")
-            print(df.shape[0])
+            logging.warning("extracted links today: ")
+            logging.warning(df.shape[0])
             # df.to_json(self.web_scrap_links,orient="records", lines=True)
             # step1. Upload todays links as Json to gcs
             gcs_tool.gcs_upload_file_pd(
@@ -150,11 +152,11 @@ class SpiderRES(scrapy.Spider):
             if len(scrap_links_today) != 0:
                 # step3. scrap the links
                 time.sleep(2)
-                print("Scrapping " + str(len(scrap_links_today)) + " links today")
+                logging.warning("Scrapping " + str(len(scrap_links_today)) + " links today")
                 # step3. scrap the links
                 lista_len = len(scrap_links_today)
-                print("tamano lista")
-                print(lista_len)
+                logging.warning("tamano lista")
+                logging.warning(lista_len)
                 scrap_date = datetime.today().strftime("%d/%m/%Y")
 
                 for page in scrap_links_today:
@@ -169,7 +171,7 @@ class SpiderRES(scrapy.Spider):
                         },
                     )
             else:
-                print("No Links to scrap today, code is over!!!!")
+                logging.warning("No Links to scrap today, code is over!!!!")
 
             # *******************STOPS-MAIN-CODE***********************
 
@@ -272,7 +274,7 @@ class SpiderRES(scrapy.Spider):
         except:
             dataset_4 = {}
 
-        # print(data_set1)
+        # logging.warning(data_set1)
         properties = url_dataset | dataset_4 | dataset_1 | dataset_3 | dataset_2
         # append to dictionary
         json_file.append(properties)
@@ -280,10 +282,10 @@ class SpiderRES(scrapy.Spider):
         data_file = pd.DataFrame(json_file)
         # data_file.to_json(self.output_file,orient="records", lines=True)
         time.sleep(2)
-        print("pagina numero " + str(contador) + " de " + str(list_size))
+        logging.warning("pagina numero " + str(contador) + " de " + str(list_size))
         list_size_2 = round((list_size * 0.98), 0)
         if contador >= list_size_2:
-            print("writing properties to cloud storage")
+            logging.warning("writing properties to cloud storage")
             time.sleep(5)
             # data_file.to_json(self.output_file,orient="records", lines=True)
             gcs_tool.gcs_upload_file_pd(
@@ -302,4 +304,4 @@ process = CrawlerProcess()
 process.crawl(SpiderRES)
 process.start()
 stopt = time.time()
-print("duracion: " + str((stopt - start) / 60) + " minutos")
+logging.warning("duracion: " + str((stopt - start) / 60) + " minutos")
