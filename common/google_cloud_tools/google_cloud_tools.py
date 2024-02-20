@@ -7,6 +7,7 @@ import unicodedata
 import re
 import pytz
 import json
+import logging
 
 def get_list_files_from_bucket(project_id: str, bucket_name: str, bucket_path: str) -> list:
     """
@@ -49,9 +50,14 @@ def get_last_file_from_bucket(project_id: str, bucket_name: str, extension: str,
     """
     Returns the last file from a bucket as a pandas DataFrame.
     """
+    logging.warning("----- Getting the last Collection of URLs from GCS -----")
     files_list = get_list_files_from_bucket(project_id, bucket_name, bucket_path)
     last_file_name = get_last_file_name_from_list(files_list, extension)
     df = get_df_from_bucket(bucket_name, last_file_name, bucket_path)
+    if df is not None:
+        logging.warning("----- Last URL Collection found -----")
+    else:
+        logging.warning("----- No URL Collection found. -----" )
     return df
 
 def date_manager():

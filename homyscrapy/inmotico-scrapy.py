@@ -23,16 +23,64 @@ contador = 1
 key_bot = "int"
 current_date = date_manager()
 
-
-
-class SpiderRES(scrapy.Spider):
+def get_properties_page_url(scrapy_name: str):
     """
-    This page won't give us lat and longitude data, but got a solid ubication structure
+    Returns the URL of the properties page.
     """
     with open("data/keys.json", encoding='utf-8') as json_file:
         keys = json.load(json_file)
-    name = keys["INT"]["name"]
-    start_urls = keys["INT"]["url"]
+    return keys[scrapy_name.upper()]["url"]
+
+def get_process_steps(scrapy_name: str):
+    """
+    Returns the steps to scrape the properties page.
+    """
+    procesos = "data/procesos.json"
+    with open(procesos, encoding='utf-8') as step_file:
+        steps = json.load(step_file)
+    return steps[scrapy_name.upper()]
+
+def scrape_urls_from_properties_page(scrap_tool, soup, steps:json) -> list:
+    """
+    Scrapes the urls from the properties page.
+    """
+    urls_list = []
+    urls_divs = scrap_tool.search_nest(soup, steps["P1"]) # Gets the section that contains the posts in the Propertie Page
+    for link in urls_divs:
+        url = (
+            (scrap_tool.search_nest(link, steps["P2"])) # Gets the link of the post
+            .find("h2")
+            .find("a")
+            .get("href")
+        )
+        urls_list.append(url) # Appends the link to the list of links
+    return urls_list
+
+def next_properties_page(scrapy_name: str, scrap_tool, soup, steps:json, response, parse):
+    """
+    Goes to the next properties page.
+    """
+    if scrapy_name == "int":
+        last_page_as = scrap_tool.search_nest(soup, steps["P3"]) # List of following pages
+        last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
+        next_page_link = last_page_list.get("href") # Link to the last item in the list
+        next_page_name = last_page_list.get_text() # Name of the last it in the list
+        yield response.follow(next_page_link, callback=parse) if next_page_name == "Siguiente " else None # If the name of the last item is "Siguiente " then follow the link
+
+def preserve_b_items_if_common(list_a: list, list_b: list) -> list:    
+    """
+    Returns True if the lists have at least one common element.
+    """
+    set_a = set(list_a)
+    set_b = set(list_b)
+    return list(set_b - set_a) if bool(set_a & set_b) else []
+
+class ScrapyINT(scrapy.Spider):
+    """
+    Spider to scrape properties from inmotico.com
+    """
+    name = key_bot.upper()
+    start_urls = get_properties_page_url(key_bot.upper())
     custom_settings = {
         "DOWNLOADER_MIDDLEWARES": {
             "scrapy.downloadermiddlewares.useragent.UserAgentMiddleware": None,
@@ -45,11 +93,10 @@ class SpiderRES(scrapy.Spider):
 
     def parse(self, response):
         """
-        Main
+        Main function to scrape.
         """
         time.sleep(round(random.randint(1, 2) * random.random(), 2))
 
-        logging.warning("----- Getting the last Collection of URLs from GCS -----")
         last_url_collection_list = get_last_file_from_bucket(
             project_id = "datalake-homyai",
             bucket_name = "web-scraper-data",
@@ -57,105 +104,58 @@ class SpiderRES(scrapy.Spider):
             bucket_path = key_bot + "/sales/houses/url-list/"
         )['scrap_links'].values.tolist()
 
-        if len(last_url_collection_list) > 0:
-            logging.warning("----- Last URL Collection found with %s URLs. -----" % str(len(last_url_collection_list)))
-        else:
-            logging.warning("----- No URL Collection found. -----" )
-
         time.sleep(10)
-        procesos = "data/procesos.json"
-        with open(procesos, encoding='utf-8') as step_file:
-            steps = json.load(step_file)
-
         logging.warning('----- Starting to scrap URLs from the first Properties Page-----')
-        self.scrap_tool = ScrapTool(response)
-        self.soup = self.scrap_tool.soup_creation()
-        url_list = self.scrape_urls_from_properties_page(steps=steps)
-        if self.lists_has_common_element(last_url_collection_list, url_list):
-            url_collection_list = list(set(url_list) - set(last_url_collection_list))
-        else:
-            last_page_as = self.scrap_tool.search_nest(self.soup, steps["INT"]["P3"]) # List of following pages
-            last_page_list = self.scrap_tool.search_nest(last_page_as, steps["INT"]["P4"])[-1] # Last item in the list
-            next_page_link = last_page_list.get("href") # Link to the last item in the list
-            next_page_name = last_page_list.get_text() # Name of the last it in the list
-            yield response.follow(next_page_link, callback=self.parse) if next_page_name == "Siguiente " else None # If the name of the last item is "Siguiente " then follow the link
+        scrap_tool = ScrapTool(response)
+        soup = scrap_tool.soup_creation()
 
+        steps = get_process_steps(key_bot)
+        url_list = scrape_urls_from_properties_page(scrap_tool, soup, steps)
+        if (url_collection_list := preserve_b_items_if_common(last_url_collection_list, url_list)) == []:
+            next_properties_page(key_bot, scrap_tool, soup, steps, response, self.parse)
 
         if len(url_collection_list) > 0:
-            df = pd.DataFrame({"scrap_links": url_collection_list})
             logging.warning("------ Scraped %s links today -----" % str(len(url_collection_list)))
-
             logging.warning("----- Uploading the new Collection of URLs to GCS -----")
-            web_scrap_links = current_date + ".json"
+            df = pd.DataFrame({"scrap_links": url_collection_list})
             gcs_upload_file_pd(
                 df = df,
                 bucket_name= 'web-scraper-data',
-                file_name = web_scrap_links,
+                file_name = current_date + ".json",
                 extension= ".json",
                 path = key_bot + "/sales/houses/url-list/"
             )
             logging.warning("----- Starting to scrap the properties from the Collection of URLs -----")
             time.sleep(3)
-            scrap_date = datetime.today().strftime("%d/%m/%Y")
+
             for page in url_collection_list:
                 yield response.follow(
                     page,
                     callback=self.int_logic,
                     meta={
-                        "enlace": page,
-                        # "tool": gcs_tool,
-                        "list_size": len(url_collection_list),
-                        "scrap_date": scrap_date,
+                        "url": page,
+                        "url_count": len(url_collection_list),
+                        "date": datetime.today().strftime("%d/%m/%Y"),
                     },
                 )
         else:
             logging.warning("----- No new URLs to scrap today -----")
-
-        # *******************STOPS-MAIN-CODE***********************
-
-    def scrape_urls_from_properties_page(self, steps:json) -> list:
-        """
-        Scrapes the urls from the properties page.
-        """
-        urls_list = []
-        urls_divs = self.scrap_tool.search_nest(self.soup, steps["INT"]["P1"]) # Gets the section that contains the posts in the Propertie Page
-        for link in urls_divs:
-            url = (
-                (self.scrap_tool.search_nest(link, steps["INT"]["P2"])) # Gets the link of the post
-                .find("h2")
-                .find("a")
-                .get("href")
-            )
-            urls_list.append(url) # Appends the link to the list of links
-        return urls_list
-    
-    def lists_has_common_element(self, list_a: list, list_b: list) -> bool:    
-        """
-        Returns True if the lists have at least one common element.
-        """
-        set_a = set(list_a)
-        set_b = set(list_b)
-        return bool(set_a & set_b)
-
     
     def int_logic(self, response):
-        # ----------------START_SCRAP_PROCEDURE-------------------------------------
         # For All Bots
+        global contador
         rand_secs = round(random.randint(1, 2) * random.random(), 2)
         time.sleep(rand_secs)
-        global contador
-        global key_bot
-        my_url = response.meta.get("enlace")
-        gcs_tool = response.meta.get("tool")
-        list_size = response.meta.get("list_size")
-        scrap_date = response.meta.get("scrap_date")
+        url = response.meta.get("url")
+        list_size = response.meta.get("url_count")
+        scrap_date = response.meta.get("date")
 
         dataset_1 = {}
         dataset_2 = {}
         dataset_3 = {}
         # For All Bots
         # add url key and date to database
-        url_dataset = {"url": my_url, "extraction_date": scrap_date}
+        url_dataset = {"url": url, "extraction_date": scrap_date}
 
         procesos = "data/procesos.json"
         with open(procesos) as step_file:
@@ -236,14 +236,14 @@ class SpiderRES(scrapy.Spider):
         except:
             dataset_4 = {}
 
-        # logging.warning(data_set1)
+
         properties = url_dataset | dataset_4 | dataset_1 | dataset_3 | dataset_2
         # append to dictionary
         json_file = []
         json_file.append(properties)
         # for all bots
         data_file = pd.DataFrame(json_file)
-        # data_file.to_json(url_collection_file_name,orient="records", lines=True)
+
         time.sleep(2)
         logging.warning("pagina numero " + str(contador) + " de " + str(list_size))
         list_size_2 = round((list_size * 0.98), 0)
@@ -251,7 +251,7 @@ class SpiderRES(scrapy.Spider):
         if contador >= list_size_2:
             logging.warning("writing properties to cloud storage")
             time.sleep(5)
-            # data_file.to_json(url_collection_file_name,orient="records", lines=True)
+
             gcs_upload_file_pd(
                 data_file,
                 "web-scraper-data",
@@ -260,13 +260,11 @@ class SpiderRES(scrapy.Spider):
                 key_bot + "/sales/houses/raw-data/",
             )
         contador = contador + 1
-        # ----------------STOP_SCRAP_PROCEDURE-------------------------------------
-
 
 time.sleep(50)
 start = time.time()
 process = CrawlerProcess()
-process.crawl(SpiderRES)
+process.crawl(ScrapyINT)
 process.start()
 stopt = time.time()
 logging.warning("duracion: " + str((stopt - start) / 60) + " minutos")
