@@ -54,42 +54,42 @@ class ScrapyINT(scrapy.Spider):
         last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
         next_page_link = last_page_list.get("href") # Link to the last item in the list
         next_page_name = last_page_list.get_text().strip() # Name of the last it in the list
-
-        yield response.follow(next_page_link, callback=self.parse) if next_page_name == "Siguiente" else None # If the name of the last item is "Siguiente " then follow the link
-
-        last_url_collection_list = get_last_file_from_bucket(
-            project_id = "datalake-homyai",
-            bucket_name = "web-scraper-data",
-            extension = ".json",
-            bucket_path = key_bot + "/sales/houses/url-list/"
-        )['scrap_links'].values.tolist()
-        url_collection_list = preserve_b_items_if_common(last_url_collection_list, url_list)
-        if len(url_collection_list) > 0:
-            logging.warning("------ Scraped %s links today -----" % str(len(url_collection_list)))
-            logging.warning("----- Uploading the new Collection of URLs to GCS -----")
-            df = pd.DataFrame({"scrap_links": url_collection_list})
-            gcs_upload_file_pd(
-                df = df,
-                bucket_name= 'web-scraper-data',
-                file_name = current_date + ".json",
-                extension= ".json",
-                path = key_bot + "/sales/houses/url-list/"
-            )
-            logging.warning("----- Starting to scrap the properties from the Collection of URLs -----")
-            time.sleep(3)
-
-            for page in url_collection_list:
-                yield response.follow(
-                    page,
-                    callback=self.int_logic,
-                    meta={
-                        "url": page,
-                        "url_count": len(url_collection_list),
-                        "date": datetime.today().strftime("%d/%m/%Y"),
-                    },
-                )
+        if next_page_name == "Siguiente":
+            yield response.follow(next_page_link, callback=self.parse)
         else:
-            logging.warning("----- No new URLs to scrap today -----")
+            last_url_collection_list = get_last_file_from_bucket(
+                project_id = "datalake-homyai",
+                bucket_name = "web-scraper-data",
+                extension = ".json",
+                bucket_path = key_bot + "/sales/houses/url-list/"
+            )['scrap_links'].values.tolist()
+            url_collection_list = preserve_b_items_if_common(last_url_collection_list, url_list)
+            if len(url_collection_list) > 0:
+                logging.warning("------ Scraped %s links today -----" % str(len(url_collection_list)))
+                logging.warning("----- Uploading the new Collection of URLs to GCS -----")
+                df = pd.DataFrame({"scrap_links": url_collection_list})
+                gcs_upload_file_pd(
+                    df = df,
+                    bucket_name= 'web-scraper-data',
+                    file_name = current_date + ".json",
+                    extension= ".json",
+                    path = key_bot + "/sales/houses/url-list/"
+                )
+                logging.warning("----- Starting to scrap the properties from the Collection of URLs -----")
+                time.sleep(3)
+
+                for page in url_collection_list:
+                    yield response.follow(
+                        page,
+                        callback=self.int_logic,
+                        meta={
+                            "url": page,
+                            "url_count": len(url_collection_list),
+                            "date": datetime.today().strftime("%d/%m/%Y"),
+                        },
+                    )
+            else:
+                logging.warning("----- No new URLs to scrap today -----")
     
     def int_logic(self, response):
         # For All Bots
