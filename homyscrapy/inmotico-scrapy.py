@@ -44,7 +44,6 @@ class ScrapyINT(scrapy.Spider):
         """
         time.sleep(round(random.randint(1, 2) * random.random(), 2))
         time.sleep(10)
-        logging.warning('----- Starting to scrap URLs from the first Properties Page-----')
             
         scrap_tool = ScrapTool(response)
         soup = scrap_tool.soup_creation()
