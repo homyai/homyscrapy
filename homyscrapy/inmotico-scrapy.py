@@ -45,9 +45,9 @@ class ScrapyINT(scrapy.Spider):
         time.sleep(round(random.randint(1, 2) * random.random(), 2))
         time.sleep(10)
             
+        steps = get_process_steps(key_bot)
         scrap_tool = ScrapTool(response)
         soup = scrap_tool.soup_creation()
-        steps = get_process_steps(key_bot)
         url_list = scrape_urls_from_properties_page(scrap_tool, soup, steps)
         last_page_as = scrap_tool.search_nest(soup, steps["P3"]) # List of following pages
         last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
