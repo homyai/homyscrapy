@@ -16,7 +16,7 @@ sys.path.append(PACKAGE_PATH)
 
 from common.soup_functions import ScrapTool
 from common.google_cloud_tools import get_last_file_from_bucket, gcs_upload_file_pd, date_manager
-from common.scrapy_tools import get_properties_page_url, get_process_steps, scrape_urls_from_properties_page, next_properties_page, preserve_b_items_if_common
+from common.scrapy_tools import get_properties_page_url, get_process_steps, scrape_urls_from_properties_page, preserve_b_items_if_common
 
 contador = 1
 key_bot = "int"
@@ -42,32 +42,28 @@ class ScrapyINT(scrapy.Spider):
         """
         Main function to scrape.
         """
-        global first_iter
-
         time.sleep(round(random.randint(1, 2) * random.random(), 2))
-        if first_iter: 
-            last_url_collection_list = get_last_file_from_bucket(
-                project_id = "datalake-homyai",
-                bucket_name = "web-scraper-data",
-                extension = ".json",
-                bucket_path = key_bot + "/sales/houses/url-list/"
-            )['scrap_links'].values.tolist()
-            time.sleep(10)
-            logging.warning('----- Starting to scrap URLs from the first Properties Page-----')
-            first_iter = False
+        time.sleep(10)
+        logging.warning('----- Starting to scrap URLs from the first Properties Page-----')
             
         scrap_tool = ScrapTool(response)
         soup = scrap_tool.soup_creation()
         steps = get_process_steps(key_bot)
         url_list = scrape_urls_from_properties_page(scrap_tool, soup, steps)
-        # next_properties_page(key_bot, scrap_tool, soup, steps, response, self.parse)
         last_page_as = scrap_tool.search_nest(soup, steps["P3"]) # List of following pages
         last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
         next_page_link = last_page_list.get("href") # Link to the last item in the list
-        next_page_name = last_page_list.get_text() # Name of the last it in the list
-        yield response.follow(next_page_link, callback=self.parse) if next_page_name == "Siguiente " else None # If the name of the last item is "Siguiente " then follow the link
-        url_collection_list = preserve_b_items_if_common(last_url_collection_list, url_list)
+        next_page_name = last_page_list.get_text().strip() # Name of the last it in the list
 
+        yield response.follow(next_page_link, callback=self.parse) if next_page_name == "Siguiente" else None # If the name of the last item is "Siguiente " then follow the link
+
+        last_url_collection_list = get_last_file_from_bucket(
+            project_id = "datalake-homyai",
+            bucket_name = "web-scraper-data",
+            extension = ".json",
+            bucket_path = key_bot + "/sales/houses/url-list/"
+        )['scrap_links'].values.tolist()
+        url_collection_list = preserve_b_items_if_common(last_url_collection_list, url_list)
         if len(url_collection_list) > 0:
             logging.warning("------ Scraped %s links today -----" % str(len(url_collection_list)))
             logging.warning("----- Uploading the new Collection of URLs to GCS -----")
