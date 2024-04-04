@@ -18,10 +18,12 @@ from common.soup_functions import ScrapTool
 from common.google_cloud_tools import get_last_file_from_bucket, gcs_upload_file_pd, date_manager
 from common.scrapy_tools import get_properties_page_url, get_process_steps, scrape_urls_from_properties_page, preserve_b_items_if_common
 
+
 contador = 1
+scraped_pages_count = 1
 key_bot = "int"
 current_date = date_manager()
-first_iter = True
+
 class ScrapyINT(scrapy.Spider):
     """
     Spider to scrape properties from inmotico.com
@@ -43,11 +45,12 @@ class ScrapyINT(scrapy.Spider):
         Main function to scrape.
         """
         time.sleep(round(random.randint(1, 2) * random.random(), 2))
-        time.sleep(10)
-            
+        scraped_pages_count =+ 1
+
         steps = get_process_steps(key_bot)
         scrap_tool = ScrapTool(response)
         soup = scrap_tool.soup_creation()
+        logging.warning(f"Page number: {scraped_pages_count}")
         url_list = scrape_urls_from_properties_page(scrap_tool, soup, steps)
         last_page_as = scrap_tool.search_nest(soup, steps["P3"]) # List of following pages
         last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
