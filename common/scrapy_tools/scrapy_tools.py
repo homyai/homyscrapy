@@ -33,17 +33,6 @@ def scrape_urls_from_properties_page(scrap_tool, soup, steps:json) -> list:
         urls_list.append(url) # Appends the link to the list of links
     return urls_list
 
-def next_properties_page(scrapy_name: str, scrap_tool, soup, steps:json, response, parse):
-    """
-    Goes to the next properties page.
-    """
-    if scrapy_name == "int":
-        last_page_as = scrap_tool.search_nest(soup, steps["P3"]) # List of following pages
-        last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
-        next_page_link = last_page_list.get("href") # Link to the last item in the list
-        next_page_name = last_page_list.get_text() # Name of the last it in the list
-        yield response.follow(next_page_link, callback=parse) if next_page_name == "Siguiente " else None # If the name of the last item is "Siguiente " then follow the link
-
 def preserve_b_items_if_common(list_a: list, list_b: list) -> list:    
     """
     Returns True if the lists have at least one common element.
