@@ -38,19 +38,21 @@ class ScrapyINT(scrapy.Spider):
             "rotating_proxies.middlewares.BanDetectionMiddleware": 800,
         },
         "DOWNLOAD_DELAY": 2,
+        'LOG_LEVEL': logging.INFO,
     }
 
     def parse(self, response):
         """
         Main function to scrape.
         """
+        global scraped_pages_count
         time.sleep(round(random.randint(1, 2) * random.random(), 2))
-        scraped_pages_count =+ 1
-
+        scraped_pages_count +=  0
+        logging.info("Starting WebScrapping")
         steps = get_process_steps(key_bot)
         scrap_tool = ScrapTool(response)
         soup = scrap_tool.soup_creation()
-        logging.warning(f"Page number: {scraped_pages_count}")
+        logging.info("Page number: %s" % str(scraped_pages_count))
         url_list = scrape_urls_from_properties_page(scrap_tool, soup, steps)
         last_page_as = scrap_tool.search_nest(soup, steps["P3"]) # List of following pages
         last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
@@ -67,8 +69,8 @@ class ScrapyINT(scrapy.Spider):
             )['scrap_links'].values.tolist()
             url_collection_list = preserve_b_items_if_common(last_url_collection_list, url_list)
             if len(url_collection_list) > 0:
-                logging.warning("------ Scraped %s links today -----" % str(len(url_collection_list)))
-                logging.warning("----- Uploading the new Collection of URLs to GCS -----")
+                logging.info("------ Scraped %s links today -----" % str(len(url_collection_list)))
+                logging.info("----- Uploading the new Collection of URLs to GCS -----")
                 df = pd.DataFrame({"scrap_links": url_collection_list})
                 gcs_upload_file_pd(
                     df = df,
@@ -77,7 +79,7 @@ class ScrapyINT(scrapy.Spider):
                     extension= ".json",
                     path = key_bot + "/sales/houses/url-list/"
                 )
-                logging.warning("----- Starting to scrap the properties from the Collection of URLs -----")
+                logging.info("----- Starting to scrap the properties from the Collection of URLs -----")
                 time.sleep(3)
 
                 for page in url_collection_list:
@@ -91,7 +93,7 @@ class ScrapyINT(scrapy.Spider):
                         },
                     )
             else:
-                logging.warning("----- No new URLs to scrap today -----")
+                logging.info("----- No new URLs to scrap today -----")
     
     def int_logic(self, response):
         # For All Bots
@@ -197,11 +199,11 @@ class ScrapyINT(scrapy.Spider):
         data_file = pd.DataFrame(json_file)
 
         time.sleep(2)
-        logging.warning("pagina numero " + str(contador) + " de " + str(list_size))
+        logging.info("pagina numero " + str(contador) + " de " + str(list_size))
         list_size_2 = round((list_size * 0.98), 0)
         url_collection_file_name = current_date + ".json"
         if contador >= list_size_2:
-            logging.warning("writing properties to cloud storage")
+            logging.info("writing properties to cloud storage")
             time.sleep(5)
 
             gcs_upload_file_pd(
@@ -220,4 +222,4 @@ if __name__ == "__main__":
     process.crawl(ScrapyINT)
     process.start()
     stopt = time.time()
-    logging.warning("duracion: " + str((stopt - start) / 60) + " minutos")
+    logging.info("duracion: " + str((stopt - start) / 60) + " minutos")
