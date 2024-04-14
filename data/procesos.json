@@ -554,7 +554,7 @@
         "P6":{
             "step1":{
                 "search":"h2",
-                "function":"find_with_key"       
+                "function":"find"       
             }
         },
         "P7":{
