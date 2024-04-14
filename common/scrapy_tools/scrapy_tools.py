@@ -33,9 +33,9 @@ def scrape_urls_from_properties_page(scrap_tool, soup, steps:json) -> list:
         urls_list.append(url) # Appends the link to the list of links
     return urls_list
 
-def preserve_b_items_if_common(list_a: list, list_b: list) -> list:    
+def preserve_unique_items_from_b(list_a: list, list_b: list) -> list:    
     """
-    Returns True if the lists have at least one common element.
+    Returns the unique items from List B if the lists have at least one common element.
     """
     set_a = set(list_a)
     set_b = set(list_b)
