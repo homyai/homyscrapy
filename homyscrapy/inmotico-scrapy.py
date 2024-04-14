@@ -7,38 +7,29 @@ import random
 import logging
 
 import pandas as pd
-
-# crawl tools
 import scrapy
 from scrapy.crawler import CrawlerProcess
 
-# Homy Libraries
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
 PACKAGE_PATH = os.path.normpath(f"{FILE_PATH}/../")
 sys.path.append(PACKAGE_PATH)
+
 from common.soup_functions import ScrapTool
-from common.google_cloud_tools import CloudTools
-
-# Global variables
-json_file = []
-url_list = []
+from common.google_cloud_tools import gcs_upload_file_pd, date_manager, get_dataframe_bq
+from common.scrapy_tools import get_properties_page_url, get_process_steps, scrape_urls_from_properties_page, preserve_unique_items_from_b
+from queries import GET_URLS_QUERY
 contador = 1
+scraped_pages_count = 0
 key_bot = "int"
-pagina_borrar = 1
-cr_flag = True
+current_date = date_manager()
+properties = []
 
-
-class SpiderRES(scrapy.Spider):
+class ScrapyINT(scrapy.Spider):
     """
-    This page won't give us lat and longitude data, but got a solid ubication structure
+    Spider to scrape properties from inmotico.com
     """
-
-    # -------Keys for web scraping-------------
-    file_name = "data/keys.json"
-    with open(file_name) as json_file:
-        json_data = json.load(json_file)
-    name = json_data["INT"]["name"]
-    start_urls = json_data["INT"]["url"]
+    name = key_bot.upper()
+    start_urls = get_properties_page_url(key_bot.upper())
     custom_settings = {
         "DOWNLOADER_MIDDLEWARES": {
             "scrapy.downloadermiddlewares.useragent.UserAgentMiddleware": None,
@@ -47,150 +38,75 @@ class SpiderRES(scrapy.Spider):
             "rotating_proxies.middlewares.BanDetectionMiddleware": 800,
         },
         "DOWNLOAD_DELAY": 2,
+        'LOG_LEVEL': logging.ERROR,
     }
 
     def parse(self, response):
         """
-        main in wich the scrapy spider runs
+        Main function to scrape.
         """
-        rand_secs = round(random.randint(1, 2) * random.random(), 2)
-        time.sleep(rand_secs)
-        global json_file
-        global key_bot
-        global pagina_borrar
-        global url_list
-        global cr_flag
-        gcs_tool = CloudTools()
-        date_manager = gcs_tool.date_manager()
-        self.web_scrap_links = date_manager + ".json"
-        self.output_file = date_manager + ".json"
-
-        try:
-            if cr_flag:
-                logging.warning("reading last url list file ....")
-                time.sleep(2)
-                self.last_file_scrap_links = gcs_tool.gcs_get_last_file(
-                    ".json", key_bot + "/sales/houses/url-list"
-                ) 
-                self.last_file_df_links = gcs_tool.gcs_read_file_pd(
-                    self.last_file_scrap_links, key_bot + "/sales/houses/url-list/"
-                )
-                self.last_file_list_links = self.last_file_df_links[
-                    "scrap_links"
-                ].values.tolist()
-                cr_flag = False
-                logging.warning("file found!!!")
-                logging.warning("last week links")
-                logging.warning(len(self.last_file_list_links))
-                time.sleep(10)
-        except:
-            logging.warning("no file to read!!!")
-            self.last_file_list_links = []
-            cr_flag = False
-            logging.warning("last week links")
-            logging.warning(len(self.last_file_list_links))
-            time.sleep(10)
-
-        # Read step by step file
-        procesos = "data/procesos.json"
-        with open(procesos) as step_file:
-            steps = json.load(step_file)
-
-        # *******************STARTS-MAIN-CODE**********************
-        logging.warning('Starting to scrap')
+        global scraped_pages_count
+        time.sleep(round(random.randint(1, 2) * random.random(), 2))
+        scraped_pages_count +=  1
+        print("----- Starting WebScraping -----")
+        steps = get_process_steps(key_bot)
         scrap_tool = ScrapTool(response)
         soup = scrap_tool.soup_creation()
-        # Read key file instructions for scraping
-        url_divs = scrap_tool.search_nest(soup, steps["INT"]["P1"])
-
-        # Logic for getting all urls
-
-        for link in url_divs:
-            url = (
-                (scrap_tool.search_nest(link, steps["INT"]["P2"]))
-                .find("h2")
-                .find("a")
-                .get("href")
+        print(f"Scraping page number: {scraped_pages_count}")
+        url_list = scrape_urls_from_properties_page(scrap_tool, soup, steps)
+        last_page_as = scrap_tool.search_nest(soup, steps["P3"]) # List of following pages
+        last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
+        next_page_link = last_page_list.get("href") # Link to the last item in the list
+        next_page_name = last_page_list.get_text().strip() # Name of the last it in the list
+        # if next_page_name == "Siguiente":
+        #     yield response.follow(next_page_link, callback=self.parse)
+        # else:
+        print(f"----- Scraped {len(url_list)} links -----")
+        existent_url_collection_list = get_dataframe_bq(query=GET_URLS_QUERY.format(bot = key_bot))['url'].values.tolist()
+        url_collection_list = preserve_unique_items_from_b(existent_url_collection_list, url_list) if existent_url_collection_list else url_list
+        if len(url_collection_list) > 0:
+            print(f"Scraped {len(url_collection_list)} new links today")
+            print("----- Uploading the new Collection of URLs to GCS -----")
+            df = pd.DataFrame({"scrap_links": url_collection_list})
+            gcs_upload_file_pd(
+                df = df,
+                bucket_name= 'web-scraper-data',
+                file_name = current_date + ".json",
+                extension= ".json",
+                path = key_bot + "/sales/houses/url-list/"
             )
-            url_list.append(url)
-            # logging.warning('----------------')
-        logging.warning("urls a scrapear: " + str(len(url_list)))
+            print("----- Starting to scrap properties -----")
 
-        # SCRAPPEAR
-        # Logic for iterating over pages
-        last_page_as = scrap_tool.search_nest(soup, steps["INT"]["P3"])
-        last_page_list = scrap_tool.search_nest(last_page_as, steps["INT"]["P4"])[-1]
-        next_page_link = last_page_list.get("href")
-        next_page_name = last_page_list.get_text()
-        logging.warning(next_page_name)
-        if next_page_name == "Siguiente ":
-            logging.warning("pagina numero: " + str(pagina_borrar))
-            yield response.follow(next_page_link, callback=self.parse)
-            pagina_borrar = pagina_borrar + 1
-            logging.warning("vamos por la pag: " + str(pagina_borrar))
+            for page in url_collection_list:
+                yield response.follow(
+                    page,
+                    callback=self.int_logic,
+                    meta={
+                        "url": page,
+                        "url_count": len(url_collection_list),
+                        "date": datetime.today().strftime("%d/%m/%Y"),
+                    },
+                )
+            
         else:
-            df = pd.DataFrame({"scrap_links": url_list})
-            logging.warning("extracted links today: ")
-            logging.warning(df.shape[0])
-            # df.to_json(self.web_scrap_links,orient="records", lines=True)
-            # step1. Upload todays links as Json to gcs
-            gcs_tool.gcs_upload_file_pd(
-                df, self.web_scrap_links, ".json", key_bot + "/sales/houses/url-list/"
-            )
-            # step2. Check wether is or not a last link file to know what sites to scrap
-            scrap_links_today = []
-            if self.last_file_list_links == []:
-                scrap_links_today = url_list
-            else:
-                for url in url_list:
-                    if url not in self.last_file_list_links:
-                        scrap_links_today.append(url)
-            scrap_links_today = list(dict.fromkeys(scrap_links_today))
-            if len(scrap_links_today) != 0:
-                # step3. scrap the links
-                time.sleep(2)
-                logging.warning("Scrapping " + str(len(scrap_links_today)) + " links today")
-                # step3. scrap the links
-                lista_len = len(scrap_links_today)
-                logging.warning("tamano lista")
-                logging.warning(lista_len)
-                scrap_date = datetime.today().strftime("%d/%m/%Y")
-
-                for page in scrap_links_today:
-                    yield response.follow(
-                        page,
-                        callback=self.int_logic,
-                        meta={
-                            "enlace": page,
-                            "tool": gcs_tool,
-                            "list_size": lista_len,
-                            "scrap_date": scrap_date,
-                        },
-                    )
-            else:
-                logging.warning("No Links to scrap today, code is over!!!!")
-
-            # *******************STOPS-MAIN-CODE***********************
-
+            print("----- No new URLs today -----")
+    
     def int_logic(self, response):
-        # ----------------START_SCRAP_PROCEDURE-------------------------------------
         # For All Bots
+        global contador
+        global properties
         rand_secs = round(random.randint(1, 2) * random.random(), 2)
         time.sleep(rand_secs)
-        global json_file
-        global contador
-        global key_bot
-        my_url = response.meta.get("enlace")
-        gcs_tool = response.meta.get("tool")
-        list_size = response.meta.get("list_size")
-        scrap_date = response.meta.get("scrap_date")
+        url = response.meta.get("url")
+        list_size = response.meta.get("url_count")
+        scrap_date = response.meta.get("date")
 
         dataset_1 = {}
         dataset_2 = {}
         dataset_3 = {}
         # For All Bots
         # add url key and date to database
-        url_dataset = {"url": my_url, "extraction_date": scrap_date}
+        url_dataset = {"url": url, "extraction_date": scrap_date}
 
         procesos = "data/procesos.json"
         with open(procesos) as step_file:
@@ -271,34 +187,26 @@ class SpiderRES(scrapy.Spider):
         except:
             dataset_4 = {}
 
-        # logging.warning(data_set1)
-        properties = url_dataset | dataset_4 | dataset_1 | dataset_3 | dataset_2
-        # append to dictionary
-        json_file.append(properties)
-        # for all bots
-        data_file = pd.DataFrame(json_file)
-        # data_file.to_json(self.output_file,orient="records", lines=True)
-        time.sleep(2)
-        logging.warning("pagina numero " + str(contador) + " de " + str(list_size))
-        list_size_2 = round((list_size * 0.98), 0)
-        if contador >= list_size_2:
-            logging.warning("writing properties to cloud storage")
-            time.sleep(5)
-            # data_file.to_json(self.output_file,orient="records", lines=True)
-            gcs_tool.gcs_upload_file_pd(
-                data_file,
-                self.output_file,
-                ".json",
-                key_bot + "/sales/houses/raw-data/",
-            )
+
+        property = url_dataset | dataset_4 | dataset_1 | dataset_3 | dataset_2
+        properties.append(property)
+        print(f"Scraping page number {contador} out of {list_size}")
         contador = contador + 1
-        # ----------------STOP_SCRAP_PROCEDURE-------------------------------------
 
-
-time.sleep(50)
-start = time.time()
-process = CrawlerProcess()
-process.crawl(SpiderRES)
-process.start()
-stopt = time.time()
-logging.warning("duracion: " + str((stopt - start) / 60) + " minutos")
+if __name__ == "__main__":
+    start = time.time()
+    process = CrawlerProcess()
+    process.crawl(ScrapyINT)
+    process.start()
+    df = pd.DataFrame(properties)
+    print("----- Scraping finished -----")
+    gcs_upload_file_pd(
+        df,
+        "web-scraper-data",
+        current_date + ".json",
+        ".json",
+        key_bot + "/sales/houses/raw-data/",
+    )
+    print(f"Uploading {len(properties)} properties to GCS")
+    stop = time.time()
+    print(f"Webscraping took: {(stop - start) / 60} minutes")
