@@ -16,10 +16,10 @@ sys.path.append(PACKAGE_PATH)
 
 from common.soup_functions import ScrapTool
 from common.google_cloud_tools import gcs_upload_file_pd, date_manager, get_dataframe_bq
-from common.scrapy_tools import get_properties_page_url, get_process_steps, scrape_urls_from_properties_page, preserve_b_items_if_common
+from common.scrapy_tools import get_properties_page_url, get_process_steps, scrape_urls_from_properties_page, preserve_unique_items_from_b
 from queries import GET_URLS_QUERY
 contador = 1
-scraped_pages_count = 1
+scraped_pages_count = 0
 key_bot = "int"
 current_date = date_manager()
 
@@ -37,7 +37,7 @@ class ScrapyINT(scrapy.Spider):
             "rotating_proxies.middlewares.BanDetectionMiddleware": 800,
         },
         "DOWNLOAD_DELAY": 2,
-        'LOG_LEVEL': logging.INFO,
+        'LOG_LEVEL': logging.ERROR,
     }
 
     def parse(self, response):
@@ -46,12 +46,12 @@ class ScrapyINT(scrapy.Spider):
         """
         global scraped_pages_count
         time.sleep(round(random.randint(1, 2) * random.random(), 2))
-        scraped_pages_count +=  0
-        logging.info("Starting WebScrapping")
+        scraped_pages_count +=  1
+        print("----- Starting WebScraping -----")
         steps = get_process_steps(key_bot)
         scrap_tool = ScrapTool(response)
         soup = scrap_tool.soup_creation()
-        logging.info("Page number: %s" % str(scraped_pages_count))
+        print(f"Scraping page number: {scraped_pages_count}")
         url_list = scrape_urls_from_properties_page(scrap_tool, soup, steps)
         last_page_as = scrap_tool.search_nest(soup, steps["P3"]) # List of following pages
         last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
@@ -60,11 +60,12 @@ class ScrapyINT(scrapy.Spider):
         # if next_page_name == "Siguiente":
         #     yield response.follow(next_page_link, callback=self.parse)
         # else:
-        last_url_collection_list = get_dataframe_bq(query=GET_URLS_QUERY.format(bot = key_bot))['url'].values.tolist()
-        url_collection_list = preserve_b_items_if_common(last_url_collection_list, url_list)
+        print(f"----- Scraped {len(url_list)} links -----")
+        existent_url_collection_list = get_dataframe_bq(query=GET_URLS_QUERY.format(bot = key_bot))['url'].values.tolist()
+        url_collection_list = preserve_unique_items_from_b(existent_url_collection_list, url_list) if existent_url_collection_list else url_list
         if len(url_collection_list) > 0:
-            logging.info("------ Scraped %s links today -----" % str(len(url_collection_list)))
-            logging.info("----- Uploading the new Collection of URLs to GCS -----")
+            print(f"Scraped {len(url_collection_list)} new links today")
+            print("----- Uploading the new Collection of URLs to GCS -----")
             df = pd.DataFrame({"scrap_links": url_collection_list})
             gcs_upload_file_pd(
                 df = df,
@@ -73,8 +74,7 @@ class ScrapyINT(scrapy.Spider):
                 extension= ".json",
                 path = key_bot + "/sales/houses/url-list/"
             )
-            logging.info("----- Starting to scrap the properties from the Collection of URLs -----")
-            time.sleep(3)
+            print("----- Starting to scrap properties -----")
 
             for page in url_collection_list:
                 yield response.follow(
@@ -87,7 +87,7 @@ class ScrapyINT(scrapy.Spider):
                     },
                 )
         else:
-            logging.info("----- No new URLs to scrap today -----")
+            print("----- No new URLs today -----")
     
     def int_logic(self, response):
         # For All Bots
@@ -193,7 +193,7 @@ class ScrapyINT(scrapy.Spider):
         data_file = pd.DataFrame(json_file)
 
         time.sleep(2)
-        logging.info("pagina numero " + str(contador) + " de " + str(list_size))
+        print(f"Scraping page number {contador} out of {list_size}")
         list_size_2 = round((list_size * 0.98), 0)
         url_collection_file_name = current_date + ".json"
         if contador >= list_size_2:
@@ -210,10 +210,9 @@ class ScrapyINT(scrapy.Spider):
         contador = contador + 1
 
 if __name__ == "__main__":
-    time.sleep(50)
     start = time.time()
     process = CrawlerProcess()
     process.crawl(ScrapyINT)
     process.start()
     stopt = time.time()
-    logging.info("duracion: " + str((stopt - start) / 60) + " minutos")
+    print(f"Webscraping took: {(stopt - start) / 60} minutes")

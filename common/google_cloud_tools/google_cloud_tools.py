@@ -110,7 +110,6 @@ def gcs_upload_file_pd(df, bucket_name, file_name, extension, path=""):
             df_real.to_json(real_path, orient="records", lines=True)
             if len(df_news.columns.tolist()) > 1:
                 df_news.to_json(real_path_log, orient="records", lines=True)
-    print("uploading in progress....")
 
 def strip_accents(text):
     """
