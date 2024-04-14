@@ -192,7 +192,7 @@ class ScrapyINT(scrapy.Spider):
 
         property = url_dataset | dataset_4 | dataset_1 | dataset_3 | dataset_2
         properties.append(property)
-        print(f"Scraping page number {contador} out of {list_size}")
+        print(f"Scraped page number {contador} out of {list_size}") if contador % 10 == 0 else None
         contador = contador + 1
 
 if __name__ == "__main__":
