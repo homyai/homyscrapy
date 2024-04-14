@@ -58,38 +58,38 @@ class ScrapyINT(scrapy.Spider):
         last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
         next_page_link = last_page_list.get("href") # Link to the last item in the list
         next_page_name = last_page_list.get_text().strip() # Name of the last it in the list
-        # if next_page_name == "Siguiente":
-        #     yield response.follow(next_page_link, callback=self.parse)
-        # else:
-        print(f"----- Scraped {len(url_list)} links -----")
-        existent_url_collection_list = get_dataframe_bq(query=GET_URLS_QUERY.format(bot = key_bot))['url'].values.tolist()
-        url_collection_list = preserve_unique_items_from_b(existent_url_collection_list, url_list) if existent_url_collection_list else url_list
-        if len(url_collection_list) > 0:
-            print(f"Scraped {len(url_collection_list)} new links today")
-            print("----- Uploading the new Collection of URLs to GCS -----")
-            df = pd.DataFrame({"scrap_links": url_collection_list})
-            gcs_upload_file_pd(
-                df = df,
-                bucket_name= 'web-scraper-data',
-                file_name = current_date + ".json",
-                extension= ".json",
-                path = key_bot + "/sales/houses/url-list/"
-            )
-            print("----- Starting to scrap properties -----")
-
-            for page in url_collection_list:
-                yield response.follow(
-                    page,
-                    callback=self.int_logic,
-                    meta={
-                        "url": page,
-                        "url_count": len(url_collection_list),
-                        "date": datetime.today().strftime("%d/%m/%Y"),
-                    },
-                )
-            
+        if next_page_name == "Siguiente":
+            yield response.follow(next_page_link, callback=self.parse)
         else:
-            print("----- No new URLs today -----")
+            print(f"----- Scraped {len(url_list)} links -----")
+            existent_url_collection_list = get_dataframe_bq(query=GET_URLS_QUERY.format(bot = key_bot))['url'].values.tolist()
+            url_collection_list = preserve_unique_items_from_b(existent_url_collection_list, url_list) if existent_url_collection_list else url_list
+            if len(url_collection_list) > 0:
+                print(f"Scraped {len(url_collection_list)} new links today")
+                print("----- Uploading the new Collection of URLs to GCS -----")
+                df = pd.DataFrame({"scrap_links": url_collection_list})
+                gcs_upload_file_pd(
+                    df = df,
+                    bucket_name= 'web-scraper-data',
+                    file_name = current_date + ".json",
+                    extension= ".json",
+                    path = key_bot + "/sales/houses/url-list/"
+                )
+                print("----- Starting to scrap properties -----")
+
+                for page in url_collection_list:
+                    yield response.follow(
+                        page,
+                        callback=self.int_logic,
+                        meta={
+                            "url": page,
+                            "url_count": len(url_collection_list),
+                            "date": datetime.today().strftime("%d/%m/%Y"),
+                        },
+                    )
+                
+            else:
+                print("----- No new URLs today -----")
     
     def int_logic(self, response):
         # For All Bots
