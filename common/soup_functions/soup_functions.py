@@ -95,18 +95,20 @@ class ScrapTool():
         """
         try:
             for step in str_dict:
-                if(str_dict[step]['function']=="find"):
+                if str_dict[step]['function']=="find":
                     response = sopa.find(str_dict[step]['search'],
-                                        {   str_dict[step]['key']:
-                                            str_dict[step]['key_name']
-                                        })
-                else:
+                        {   str_dict[step]['key']:
+                            str_dict[step]['key_name']
+                        })
+                if str_dict[step]['function']=="find_all_with_key":
                     response = sopa.find_all(str_dict[step]['search'],
                         {   str_dict[step]['key']:
                             str_dict[step]['key_name']
                         })
+                if str_dict[step]['function']=="find_all":
+                    response = sopa.find_all(str_dict[step]['search'])
                 sopa = response
-        except:
+        except AttributeError:
             for step in str_dict:
                 if(str_dict[step]['function']=="find"):
                     response = sopa.find(str_dict[step]['search'])

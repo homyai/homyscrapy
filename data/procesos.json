@@ -25,7 +25,7 @@
                         "search":"h2",
                         "key":"class",
                         "key_name":"tileHeadline",
-                        "function":"find_all"
+                        "function":"find_all_with_key"
                     }
                 },
                 "P2":
@@ -134,7 +134,7 @@
                 "search":"li",
                 "key":"class",
                 "key_name":"lslide",
-                "function":"find_all"   
+                "function":"find_all_with_key"   
             }
         },
         "P2":{
@@ -288,7 +288,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"details-section",
-                "function":"find_all"
+                "function":"find_all_with_key"
             }           
         },
         "P13":{
@@ -310,7 +310,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"features-col ",
-                "function":"find_all"
+                "function":"find_all_with_key"
             }      
         },
         "P15":{
@@ -318,7 +318,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"features-col features-col-fixed",
-                "function":"find_all"
+                "function":"find_all_with_key"
             }      
         },
         "P16":{
@@ -362,7 +362,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-ads-grid__item",
-                "function":"find_all"                 
+                "function":"find_all_with_key"                 
             }
         },
         "P2":{
@@ -422,7 +422,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-property-insight__attribute",
-                "function":"find_all"                 
+                "function":"find_all_with_key"                 
             }            
         },
         "P5":{
@@ -436,7 +436,7 @@
                 "search":"section",
                 "key":"class",
                 "key_name":"cas-property__main-content-container",
-                "function":"find_all"                 
+                "function":"find_all_with_key"                 
             }              
         },
         "P6":{
@@ -450,7 +450,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-property-details__detail-label",
-                "function":"find_all"                 
+                "function":"find_all_with_key"                 
             }            
         },
         "P7":{
@@ -464,7 +464,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-property-benefits__benefit",
-                "function":"find_all"                 
+                "function":"find_all_with_key"                 
             }             
         },
         "P8":{
@@ -508,7 +508,7 @@
                 "search":"a",
                 "key":"class",
                 "key_name":"search-result-photo",
-                "function":"find_all"
+                "function":"find_all_with_key"
             }    
         },
         "P2":{
@@ -640,7 +640,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"anunciondii",
-                "function":"find_all"  
+                "function":"find_all_with_key"  
             }
         },
         "P2":{
@@ -708,7 +708,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"details_info",
-                "function":"find_all"  
+                "function":"find_all_with_key"  
             }
         },
         "P7":{
@@ -730,7 +730,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"detalles_descripcion2",
-                "function":"find_all"  
+                "function":"find_all_with_key"  
             }
         },
         "P9":{
