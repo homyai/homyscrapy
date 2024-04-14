@@ -90,28 +90,22 @@ class ScrapTool():
         """
             Nested search for any kind of element.
         """
-        try:
-            for step in str_dict:
-                if str_dict[step]['function']=="find":
-                    response = sopa.find(str_dict[step]['search'],
-                        {   str_dict[step]['key']:
-                            str_dict[step]['key_name']
-                        })
-                if str_dict[step]['function']=="find_all_with_key":
-                    response = sopa.find_all(str_dict[step]['search'],
-                        {   str_dict[step]['key']:
-                            str_dict[step]['key_name']
-                        })
-                if str_dict[step]['function']=="find_all":
-                    response = sopa.find_all(str_dict[step]['search'])
-                sopa = response
-        except AttributeError:
-            for step in str_dict:
-                if(str_dict[step]['function']=="find"):
-                    response = sopa.find(str_dict[step]['search'])
-                else:
-                    response = sopa.find_all(str_dict[step]['search'])
-                sopa = response
+        for step in str_dict:
+            if str_dict[step]['function']=="find_with_key":
+                response = sopa.find(str_dict[step]['search'],
+                    {   str_dict[step]['key']:
+                        str_dict[step]['key_name']
+                    })
+            if str_dict[step]['function']=="find":
+                response = sopa.find(str_dict[step]['search'])
+            if str_dict[step]['function']=="find_all_with_key":
+                response = sopa.find_all(str_dict[step]['search'],
+                    {   str_dict[step]['key']:
+                        str_dict[step]['key_name']
+                    })
+            if str_dict[step]['function']=="find_all":
+                response = sopa.find_all(str_dict[step]['search'])
+            sopa = response
         return(sopa)
     
     def getatr_fromlist(self,list_,tag,attr):
