@@ -22,6 +22,8 @@ contador = 1
 scraped_pages_count = 0
 key_bot = "int"
 current_date = date_manager()
+properties = []
+property = ''
 
 class ScrapyINT(scrapy.Spider):
     """
@@ -45,6 +47,7 @@ class ScrapyINT(scrapy.Spider):
         Main function to scrape.
         """
         global scraped_pages_count
+        global property
         time.sleep(round(random.randint(1, 2) * random.random(), 2))
         scraped_pages_count +=  1
         print("----- Starting WebScraping -----")
@@ -86,6 +89,16 @@ class ScrapyINT(scrapy.Spider):
                         "date": datetime.today().strftime("%d/%m/%Y"),
                     },
                 )
+                properties.append(property)
+
+            df = pd.DataFrame(properties)
+            gcs_upload_file_pd(
+                df = df,
+                bucket_name = "web-scraper-data",
+                file_name = current_date + ".json",
+                extension = ".json",
+                path = key_bot + "/sales/houses/raw-data/",
+            )
         else:
             print("----- No new URLs today -----")
     
@@ -183,30 +196,7 @@ class ScrapyINT(scrapy.Spider):
             }
         except:
             dataset_4 = {}
-
-
-        properties = url_dataset | dataset_4 | dataset_1 | dataset_3 | dataset_2
-        # append to dictionary
-        json_file = []
-        json_file.append(properties)
-        # for all bots
-        data_file = pd.DataFrame(json_file)
-
-        time.sleep(2)
-        print(f"Scraping page number {contador} out of {list_size}")
-        list_size_2 = round((list_size * 0.98), 0)
-        url_collection_file_name = current_date + ".json"
-        if contador >= list_size_2:
-            logging.info("writing properties to cloud storage")
-            time.sleep(5)
-
-            gcs_upload_file_pd(
-                data_file,
-                "web-scraper-data",
-                url_collection_file_name,
-                ".json",
-                key_bot + "/sales/houses/raw-data/",
-            )
+        property = url_dataset | dataset_4 | dataset_1 | dataset_3 | dataset_2
         contador = contador + 1
 
 if __name__ == "__main__":
