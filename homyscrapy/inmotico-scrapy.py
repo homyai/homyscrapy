@@ -22,6 +22,7 @@ contador = 1
 scraped_pages_count = 0
 key_bot = "int"
 current_date = date_manager()
+properties = []
 
 class ScrapyINT(scrapy.Spider):
     """
@@ -86,12 +87,14 @@ class ScrapyINT(scrapy.Spider):
                         "date": datetime.today().strftime("%d/%m/%Y"),
                     },
                 )
+            
         else:
             print("----- No new URLs today -----")
     
     def int_logic(self, response):
         # For All Bots
         global contador
+        global properties
         rand_secs = round(random.randint(1, 2) * random.random(), 2)
         time.sleep(rand_secs)
         url = response.meta.get("url")
@@ -185,28 +188,9 @@ class ScrapyINT(scrapy.Spider):
             dataset_4 = {}
 
 
-        properties = url_dataset | dataset_4 | dataset_1 | dataset_3 | dataset_2
-        # append to dictionary
-        json_file = []
-        json_file.append(properties)
-        # for all bots
-        data_file = pd.DataFrame(json_file)
-
-        time.sleep(2)
+        property = url_dataset | dataset_4 | dataset_1 | dataset_3 | dataset_2
+        properties.append(property)
         print(f"Scraping page number {contador} out of {list_size}")
-        list_size_2 = round((list_size * 0.98), 0)
-        url_collection_file_name = current_date + ".json"
-        if contador >= list_size_2:
-            logging.info("writing properties to cloud storage")
-            time.sleep(5)
-
-            gcs_upload_file_pd(
-                data_file,
-                "web-scraper-data",
-                url_collection_file_name,
-                ".json",
-                key_bot + "/sales/houses/raw-data/",
-            )
         contador = contador + 1
 
 if __name__ == "__main__":
@@ -214,5 +198,15 @@ if __name__ == "__main__":
     process = CrawlerProcess()
     process.crawl(ScrapyINT)
     process.start()
-    stopt = time.time()
-    print(f"Webscraping took: {(stopt - start) / 60} minutes")
+    df = pd.DataFrame(properties)
+    print("----- Scraping finished -----")
+    gcs_upload_file_pd(
+        df,
+        "web-scraper-data",
+        current_date + ".json",
+        ".json",
+        key_bot + "/sales/houses/raw-data/",
+    )
+    print(f"Uploading {len(properties)} properties to GCS")
+    stop = time.time()
+    print(f"Webscraping took: {(stop - start) / 60} minutes")
