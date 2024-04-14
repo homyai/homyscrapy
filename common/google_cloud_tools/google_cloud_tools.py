@@ -1,6 +1,7 @@
 import os
 import json
 from gcloud import storage
+from google.cloud import bigquery
 from datetime import datetime
 import pandas as pd
 import unicodedata
@@ -180,3 +181,12 @@ def only_listed_cols(df):
     # df oficial columns
     df_oficial = df.reindex(columns=cols)
     return df_oficial, df_new_cols
+
+def get_dataframe_bq(query: str):
+    """
+    Function to query BigQuery
+    """
+    client = bigquery.Client()
+    results = client.query(query).result()
+    df = pd.DataFrame(data=[row.values() for row in results], columns=[field.name for field in results.schema])
+    return df

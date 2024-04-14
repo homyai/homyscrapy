@@ -15,10 +15,9 @@ PACKAGE_PATH = os.path.normpath(f"{FILE_PATH}/../")
 sys.path.append(PACKAGE_PATH)
 
 from common.soup_functions import ScrapTool
-from common.google_cloud_tools import get_last_file_from_bucket, gcs_upload_file_pd, date_manager
+from common.google_cloud_tools import gcs_upload_file_pd, date_manager, get_dataframe_bq
 from common.scrapy_tools import get_properties_page_url, get_process_steps, scrape_urls_from_properties_page, preserve_b_items_if_common
-
-
+from queries import GET_URLS_QUERY
 contador = 1
 scraped_pages_count = 1
 key_bot = "int"
@@ -58,42 +57,37 @@ class ScrapyINT(scrapy.Spider):
         last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
         next_page_link = last_page_list.get("href") # Link to the last item in the list
         next_page_name = last_page_list.get_text().strip() # Name of the last it in the list
-        if next_page_name == "Siguiente":
-            yield response.follow(next_page_link, callback=self.parse)
-        else:
-            last_url_collection_list = get_last_file_from_bucket(
-                project_id = "datalake-homyai",
-                bucket_name = "web-scraper-data",
-                extension = ".json",
-                bucket_path = key_bot + "/sales/houses/url-list/"
-            )['scrap_links'].values.tolist()
-            url_collection_list = preserve_b_items_if_common(last_url_collection_list, url_list)
-            if len(url_collection_list) > 0:
-                logging.info("------ Scraped %s links today -----" % str(len(url_collection_list)))
-                logging.info("----- Uploading the new Collection of URLs to GCS -----")
-                df = pd.DataFrame({"scrap_links": url_collection_list})
-                gcs_upload_file_pd(
-                    df = df,
-                    bucket_name= 'web-scraper-data',
-                    file_name = current_date + ".json",
-                    extension= ".json",
-                    path = key_bot + "/sales/houses/url-list/"
-                )
-                logging.info("----- Starting to scrap the properties from the Collection of URLs -----")
-                time.sleep(3)
+        # if next_page_name == "Siguiente":
+        #     yield response.follow(next_page_link, callback=self.parse)
+        # else:
+        last_url_collection_list = get_dataframe_bq(query=GET_URLS_QUERY.format(bot = key_bot))['url'].values.tolist()
+        url_collection_list = preserve_b_items_if_common(last_url_collection_list, url_list)
+        if len(url_collection_list) > 0:
+            logging.info("------ Scraped %s links today -----" % str(len(url_collection_list)))
+            logging.info("----- Uploading the new Collection of URLs to GCS -----")
+            df = pd.DataFrame({"scrap_links": url_collection_list})
+            gcs_upload_file_pd(
+                df = df,
+                bucket_name= 'web-scraper-data',
+                file_name = current_date + ".json",
+                extension= ".json",
+                path = key_bot + "/sales/houses/url-list/"
+            )
+            logging.info("----- Starting to scrap the properties from the Collection of URLs -----")
+            time.sleep(3)
 
-                for page in url_collection_list:
-                    yield response.follow(
-                        page,
-                        callback=self.int_logic,
-                        meta={
-                            "url": page,
-                            "url_count": len(url_collection_list),
-                            "date": datetime.today().strftime("%d/%m/%Y"),
-                        },
-                    )
-            else:
-                logging.info("----- No new URLs to scrap today -----")
+            for page in url_collection_list:
+                yield response.follow(
+                    page,
+                    callback=self.int_logic,
+                    meta={
+                        "url": page,
+                        "url_count": len(url_collection_list),
+                        "date": datetime.today().strftime("%d/%m/%Y"),
+                    },
+                )
+        else:
+            logging.info("----- No new URLs to scrap today -----")
     
     def int_logic(self, response):
         # For All Bots
