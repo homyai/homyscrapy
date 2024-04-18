@@ -7,25 +7,25 @@
                         "search":"div",
                         "key":"id",
                         "key_name":"content-wrapper",
-                        "function":"find_with_key"
+                        "function":"find"
                     },
                     "step2":{
                         "search":"div",
                         "key":"class",
                         "key_name":"row portlet-right",
-                        "function":"find_with_key"
+                        "function":"find"
                     },
                     "step3":{
                         "search":"section",
                         "key":"id",
                         "key_name":"listing-search",
-                        "function":"find_with_key"
+                        "function":"find"
                     },
                     "step4":{
                         "search":"h2",
                         "key":"class",
                         "key_name":"tileHeadline",
-                        "function":"find_all_with_key"
+                        "function":"find_all"
                     }
                 },
                 "P2":
@@ -34,31 +34,31 @@
                         "search":"div",
                         "key":"id",
                         "key_name":"content-wrapper",
-                        "function":"find_with_key"
+                        "function":"find"
                     },
                     "step2":{
                         "search":"div",
                         "key":"class",
                         "key_name":"row portlet-right",
-                        "function":"find_with_key"
+                        "function":"find"
                     },
                     "step3":{
                         "search":"section",
                         "key":"id",
                         "key_name":"listing-search",
-                        "function":"find_with_key"
+                        "function":"find"
                     },
                     "step4":{
                         "search":"div",
                         "key":"class",
                         "key_name":"listingBar",
-                        "function":"find_with_key"
+                        "function":"find"
                     },
                     "step5":{
                         "search":"span",
                         "key":"class",
                         "key_name":"next",
-                        "function":"find_with_key"
+                        "function":"find"
                     }
                 },
                 "P3":{
@@ -66,7 +66,7 @@
                         "search":"div",
                         "key":"id",
                         "key_name":"listing-info",
-                        "function":"find_with_key"   
+                        "function":"find"   
                     }
                 },
                 "P4":{
@@ -74,7 +74,7 @@
                         "search":"dd",
                         "key":"id",
                         "key_name":"fieldset-listing-details",
-                        "function":"find_with_key"   
+                        "function":"find"   
                     }
                 },
                 "P5":{
@@ -82,7 +82,7 @@
                         "search":"dd",
                         "key":"id",
                         "key_name":"fieldset-geographic-information",
-                        "function":"find_with_key"   
+                        "function":"find"   
                     }
                 },
                 "P6":{
@@ -90,7 +90,7 @@
                         "search":"dd",
                         "key":"id",
                         "key_name":"fieldset-features-amenities",
-                        "function":"find_with_key"   
+                        "function":"find"   
                     }
                 },
                 "P7":{
@@ -98,7 +98,7 @@
                         "search":"dd",
                         "key":"id",
                         "key_name":"fieldset-infrastructure",
-                        "function":"find_with_key"   
+                        "function":"find"   
                     }
                 },
                 "P8":{
@@ -106,7 +106,7 @@
                         "search":"dd",
                         "key":"id",
                         "key_name":"fieldset-financial-information",
-                        "function":"find_with_key"   
+                        "function":"find"   
                     }
                 }
         },
@@ -116,25 +116,25 @@
                 "search":"div",
                 "key":"id",
                 "key_name":"search-results-list",
-                "function":"find_with_key"
+                "function":"find"
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"listings",
-                "function":"find_with_key"   
+                "function":"find"   
             },
             "step3":{
                 "search":"ul",
                 "key":"class",
                 "key_name":"items",
-                "function":"find_with_key"   
+                "function":"find"   
             },
             "step4":{
                 "search":"li",
                 "key":"class",
                 "key_name":"lslide",
-                "function":"find_all_with_key"   
+                "function":"find_all"   
             }
         },
         "P2":{
@@ -142,25 +142,25 @@
                 "search":"div",
                 "key":"id",
                 "key_name":"bottom-list-pager",
-                "function":"find_with_key"
+                "function":"find"
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"list-pager",
-                "function":"find_with_key"   
+                "function":"find"   
             },
             "step3":{
                 "search":"div",
                 "key":"class",
                 "key_name":"pager",
-                "function":"find_with_key"   
+                "function":"find"   
             },
             "step4":{
                 "search":"li",
                 "key":"class",
                 "key_name":"next",
-                "function":"find_with_key"   
+                "function":"find"   
             }         
         },
         "P3":{
@@ -168,25 +168,25 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"container details-page",
-                "function":"find_with_key"
+                "function":"find"
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"container-inner",
-                "function":"find_with_key"
+                "function":"find"
             },
             "step3":{
                 "search":"div",
                 "key":"class",
                 "key_name":"content-wrapper",
-                "function":"find_with_key"
+                "function":"find"
             },
             "step4":{
                 "search":"div",
                 "key":"class",
                 "key_name":"content-main",
-                "function":"find_with_key"
+                "function":"find"
             }              
         },
         "P4":{
@@ -194,7 +194,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"property-address",
-                "function":"find_with_key"
+                "function":"find"
             }            
         },
         "P5":{
@@ -202,7 +202,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"property-actions",
-                "function":"find_with_key"
+                "function":"find"
             }       
         },
         "P6":{
@@ -216,13 +216,13 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"property-basic-details",
-                "function":"find_with_key"
+                "function":"find"
             }, 
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"property-summary-inner",
-                "function":"find_with_key"
+                "function":"find"
             }         
         },
         "P8":{
@@ -230,7 +230,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"price",
-                "function":"find_with_key"
+                "function":"find"
             }            
         },
         "P9":{
@@ -238,13 +238,13 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"characteristics-cnt",
-                "function":"find_with_key"
+                "function":"find"
             }                           
         },
         "P10":{
             "step1":{
                 "search":"ul",
-                "function":"find_with_key"
+                "function":"find"
             },
             "step2":{
                 "search":"li",
@@ -256,25 +256,25 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"property-details",
-                "function":"find_with_key"
+                "function":"find"
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"details-section",
-                "function":"find_with_key"
+                "function":"find"
             },
             "step3":{
                 "search":"div",
                 "key":"class",
                 "key_name":"details-section",
-                "function":"find_with_key"
+                "function":"find"
             },
             "step4":{
                 "search":"div",
                 "key":"class",
                 "key_name":"details-charcs",
-                "function":"find_with_key"
+                "function":"find"
             }               
         },
         "P12":{
@@ -282,13 +282,13 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"property-details",
-                "function":"find_with_key"
+                "function":"find"
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"details-section",
-                "function":"find_all_with_key"
+                "function":"find_all"
             }           
         },
         "P13":{
@@ -296,13 +296,13 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"description-full-cnt",
-                "function":"find_with_key"
+                "function":"find"
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"description-text clearfix",
-                "function":"find_with_key"
+                "function":"find"
             }           
         },
         "P14":{
@@ -310,7 +310,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"features-col ",
-                "function":"find_all_with_key"
+                "function":"find_all"
             }      
         },
         "P15":{
@@ -318,7 +318,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"features-col features-col-fixed",
-                "function":"find_all_with_key"
+                "function":"find_all"
             }      
         },
         "P16":{
@@ -334,7 +334,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"elementor-section-wrap",
-                "function":"find_with_key"                
+                "function":"find"                
             }
         }        
     },
@@ -344,25 +344,25 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-container cas-category-gallery__container",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-category-gallery__ads-container",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step3":{
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-ads-grid cas-ads-grid--category-gallery",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step4":{
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-ads-grid__item",
-                "function":"find_all_with_key"                 
+                "function":"find_all"                 
             }
         },
         "P2":{
@@ -370,7 +370,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-ad-tile",
-                "function":"find_with_key"                   
+                "function":"find"                   
             }
         },
         "P3":{
@@ -378,31 +378,31 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-container cas-category-gallery__container",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-category-gallery__ads-container",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step3":{
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-category-gallery__bottom-pagination",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step4":{
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-pagination",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step5":{
                 "search":"a",
                 "key":"class",
                 "key_name":"cas-pagination__arrow cas-pagination__arrow--next",
-                "function":"find_with_key"                 
+                "function":"find"                 
             }           
         },
         "P4":{
@@ -410,19 +410,19 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-property__insight cas-container",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-property-insight",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step3":{
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-property-insight__attribute",
-                "function":"find_all_with_key"                 
+                "function":"find_all"                 
             }            
         },
         "P5":{
@@ -430,13 +430,13 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-property__description cas-container",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step2":{
                 "search":"section",
                 "key":"class",
                 "key_name":"cas-property__main-content-container",
-                "function":"find_all_with_key"                 
+                "function":"find_all"                 
             }              
         },
         "P6":{
@@ -444,13 +444,13 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-property-details__content",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-property-details__detail-label",
-                "function":"find_all_with_key"                 
+                "function":"find_all"                 
             }            
         },
         "P7":{
@@ -458,13 +458,13 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-property-benefits",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-property-benefits__benefit",
-                "function":"find_all_with_key"                 
+                "function":"find_all"                 
             }             
         },
         "P8":{
@@ -472,13 +472,13 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"cas-container cas-property-breadcrumbcatandregion",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step2":{
                 "search":"ol",
                 "key":"class",
                 "key_name":"breadcrumb",
-                "function":"find_with_key"                 
+                "function":"find"                 
             }          
         },
         "P9":{
@@ -492,7 +492,7 @@
                 "search":"section",
                 "key":"class",
                 "key_name":"cas-property__map",
-                "function":"find_with_key"                 
+                "function":"find"                 
             }
         }
     },
@@ -502,13 +502,13 @@
                 "search":"div",
                 "key":"id",
                 "key_name":"propertySearchResults",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step2":{
                 "search":"a",
                 "key":"class",
                 "key_name":"search-result-photo",
-                "function":"find_all_with_key"
+                "function":"find_all"
             }    
         },
         "P2":{
@@ -516,19 +516,19 @@
                 "search":"div",
                 "key":"id",
                 "key_name":"propertySearchResults",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"row",
-                "function":"find_with_key"                 
+                "function":"find"                 
             },
             "step3":{
                 "search":"ul",
                 "key":"class",
                 "key_name":"pagination",
-                "function":"find_with_key"                 
+                "function":"find"                 
             }                                          
         },
         "P3":{
@@ -548,7 +548,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"layout-content detail-body",
-                "function":"find_with_key"                 
+                "function":"find"                 
             }                
         },
         "P6":{
@@ -562,7 +562,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"pull-left detail-data-primary",
-                "function":"find_with_key"   
+                "function":"find"   
             }
         },
         "P8":{
@@ -570,7 +570,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"detail-data-secondary",
-                "function":"find_with_key"   
+                "function":"find"   
             }
         },
         "P9":{
@@ -584,19 +584,19 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"translate-wrapper",
-                "function":"find_with_key"  
+                "function":"find"  
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"translate-section",
-                "function":"find_with_key"  
+                "function":"find"  
             },
             "step3":{
                 "search":"div",
                 "key":"class",
                 "key_name":"remarksSection clear-background",
-                "function":"find_with_key"  
+                "function":"find"  
             }
         },
         "P11":{
@@ -604,7 +604,7 @@
                 "search":"ul",
                 "key":"class",
                 "key_name":"row features-list",
-                "function":"find_with_key"  
+                "function":"find"  
             }
         },
         "P12":{
@@ -618,13 +618,13 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"detail-map",
-                "function":"find_with_key"  
+                "function":"find"  
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"c21-map",
-                "function":"find_with_key"  
+                "function":"find"  
             }
         }
     },
@@ -634,13 +634,13 @@
                 "search":"div",
                 "key":"id",
                 "key_name":"resultadosRight",
-                "function":"find_with_key"  
+                "function":"find"  
             }, 
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"anunciondii",
-                "function":"find_all_with_key"  
+                "function":"find_all"  
             }
         },
         "P2":{
@@ -648,7 +648,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"contenido_anuncio",
-                "function":"find_with_key"  
+                "function":"find"  
             }
         },
         "P3":{
@@ -656,13 +656,13 @@
                 "search":"div",
                 "key":"id",
                 "key_name":"resultadosRight",
-                "function":"find_with_key"  
+                "function":"find"  
             },
             "step2":{
                 "search":"div",
                 "key":"id",
                 "key_name":"paginacion",
-                "function":"find_with_key"  
+                "function":"find"  
             }
         },
         "P4":{
@@ -676,19 +676,19 @@
                 "search":"div",
                 "key":"id",
                 "key_name":"info_container",
-                "function":"find_with_key"  
+                "function":"find"  
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"mas_info_ii",
-                "function":"find_with_key"  
+                "function":"find"  
             },
             "step3":{
                 "search":"h5",
                 "key":"class",
                 "key_name":"precio",
-                "function":"find_with_key"  
+                "function":"find"  
             }
         },
         "P6":{
@@ -696,19 +696,19 @@
                 "search":"div",
                 "key":"id",
                 "key_name":"info_container",
-                "function":"find_with_key"  
+                "function":"find"  
             },
             "step2":{
                 "search":"div",
                 "key":"id",
                 "key_name":"details_add",
-                "function":"find_with_key"  
+                "function":"find"  
             },
             "step3":{
                 "search":"div",
                 "key":"class",
                 "key_name":"details_info",
-                "function":"find_all_with_key"  
+                "function":"find_all"  
             }
         },
         "P7":{
@@ -716,13 +716,13 @@
                 "search":"div",
                 "key":"id",
                 "key_name":"info_anuncio_superior",
-                "function":"find_with_key"  
+                "function":"find"  
             },
             "step2":{
                 "search":"span",
                 "key":"class",
                 "key_name":"descripcion_2",
-                "function":"find_with_key"  
+                "function":"find"  
             }      
         },
         "P8":{
@@ -730,7 +730,7 @@
                 "search":"div",
                 "key":"class",
                 "key_name":"detalles_descripcion2",
-                "function":"find_all_with_key"  
+                "function":"find_all"  
             }
         },
         "P9":{
@@ -738,7 +738,7 @@
                 "search":"div",
                 "key":"id",
                 "key_name":"mapa_google",
-                "function":"find_with_key"  
+                "function":"find"  
             } 
         },
         "P10":{
@@ -746,13 +746,13 @@
                 "search":"div",
                 "key":"id",
                 "key_name":"seccion_superior",
-                "function":"find_with_key"  
+                "function":"find"  
             },
             "step2":{
                 "search":"div",
                 "key":"class",
                 "key_name":"breadcrumbs_container",
-                "function":"find_with_key"  
+                "function":"find"  
             }     
         },
         "P11":{
