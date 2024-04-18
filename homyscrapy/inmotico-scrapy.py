@@ -5,7 +5,6 @@ import time
 from datetime import datetime
 import random
 import logging
-
 import pandas as pd
 import scrapy
 from scrapy.crawler import CrawlerProcess
