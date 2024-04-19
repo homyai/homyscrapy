@@ -51,22 +51,22 @@ class ScrapyINT(scrapy.Spider):
         steps = get_process_steps(key_bot)
         scrap_tool = ScrapTool(response)
         soup = scrap_tool.soup_creation()
-        print(f"Scraping page number: {scraped_pages_count}")
-        scraped_pages_count +=  1
         url_list = scrape_urls_from_properties_page(scrap_tool, soup, steps)
         urls.extend(url_list)
         last_page_as = scrap_tool.search_nest(soup, steps["P3"]) # List of following pages
         last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
         next_page_link = last_page_list.get("href") # Link to the last item in the list
         next_page_name = last_page_list.get_text().strip() # Name of the last it in the list
+        scraped_pages_count +=  1
+        print(f"Scraped page: {scraped_pages_count}") if scraped_pages_count % 10 == 0 else None
         if next_page_name == "Siguiente":
             yield response.follow(next_page_link, callback=self.parse)
         else:
-            print(f"----- Scraped {len(urls)} links -----")
+            print(f"----- Scraped {len(urls)} total links -----")
             existent_url_collection_list = get_dataframe_bq(query=GET_URLS_QUERY.format(bot = key_bot))['url'].values.tolist()
-            url_collection_list = preserve_unique_items_from_b(existent_url_collection_list, url_list) if existent_url_collection_list else urls
+            url_collection_list = preserve_unique_items_from_b(existent_url_collection_list, urls) if existent_url_collection_list else urls
             if len(url_collection_list) > 0:
-                print(f"Scraped {len(url_collection_list)} links")
+                print(f"Scraped {len(url_collection_list)} new links, {len(urls) - len(url_collection_list)} already exist in the database.")
                 print("----- Uploading the new Collection of URLs to GCS -----")
                 df = pd.DataFrame({"scrap_links": url_collection_list})
                 gcs_upload_file_pd(
@@ -91,7 +91,7 @@ class ScrapyINT(scrapy.Spider):
                 
             else:
                 print("----- No new URLs today -----")
-    
+
     def int_logic(self, response):
         # For All Bots
         global contador
