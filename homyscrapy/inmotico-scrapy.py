@@ -22,7 +22,7 @@ contador = 1
 scraped_pages_count = 0
 key_bot = "int"
 current_date = date_manager()
-urls = []
+# urls = []
 properties = []
 
 class ScrapyINT(scrapy.Spider):
@@ -53,7 +53,7 @@ class ScrapyINT(scrapy.Spider):
         scrap_tool = ScrapTool(response)
         soup = scrap_tool.soup_creation()
         url_list = scrape_urls_from_properties_page(scrap_tool, soup, steps)
-        urls.extend(url_list)
+        # urls.extend(url_list)
         last_page_as = scrap_tool.search_nest(soup, steps["P3"]) # List of following pages
         last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
         next_page_link = last_page_list.get("href") # Link to the last item in the list
@@ -63,9 +63,9 @@ class ScrapyINT(scrapy.Spider):
         if next_page_name == "Siguiente":
             yield response.follow(next_page_link, callback=self.parse)
         else:
-            print(f"----- Scraped {len(urls)} links -----")
+            print(f"----- Scraped {len(url_list)} links -----")
             existent_url_collection_list = get_dataframe_bq(query=GET_URLS_QUERY.format(bot = key_bot))['url'].values.tolist()
-            url_collection_list = preserve_unique_items_from_b(existent_url_collection_list, url_list) if existent_url_collection_list else urls
+            url_collection_list = preserve_unique_items_from_b(existent_url_collection_list, url_list) if existent_url_collection_list else url_list
             if len(url_collection_list) > 0:
                 print(f"Scraped {len(url_collection_list)} new links, {len(urls) - len(url_collection_list)} already exist in the database.")
                 print("----- Uploading the new Collection of URLs to GCS -----")
