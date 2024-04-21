@@ -58,7 +58,8 @@ class ScrapyINT(scrapy.Spider):
         next_page_link = last_page_list.get("href") # Link to the last item in the list
         next_page_name = last_page_list.get_text().strip() # Name of the last it in the list
         scraped_pages_count +=  1
-        print(f"Scraped page: {scraped_pages_count}") if scraped_pages_count % 10 == 0 else None
+        if scraped_pages_count % 10 == 0:
+            print(f"Scraped page: {scraped_pages_count}")
         if next_page_name == "Siguiente":
             yield response.follow(next_page_link, callback=self.parse)
         else:
