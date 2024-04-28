@@ -14,9 +14,9 @@ FILE_PATH = os.path.dirname(os.path.realpath(__file__))
 PACKAGE_PATH = os.path.normpath(f"{FILE_PATH}/../")
 sys.path.append(PACKAGE_PATH)
 
-from common.soup_functions import ScrapTool
+from common.scraper import Scraper
 from common.google_cloud_tools import gcs_upload_file_pd, date_manager, get_dataframe_bq
-from common.scrapy_tools import get_properties_page_url, get_process_steps, scrape_urls_from_properties_page, preserve_unique_items_from_b
+from common.toolkit import get_properties_page_url, get_process_steps, preserve_unique_items_from_b
 from queries import GET_URLS_QUERY
 contador = 1
 scraped_pages_count = 0
@@ -49,23 +49,24 @@ class ScrapyINT(scrapy.Spider):
         global scraped_pages_count
         time.sleep(round(random.randint(1, 2) * random.random(), 2))
         steps = get_process_steps(key_bot)
-        scrap_tool = ScrapTool(response)
-        soup = scrap_tool.soup_creation()
-        url_list = scrape_urls_from_properties_page(scrap_tool, soup, steps)
+        scrap_tool = Scraper(response)
+        url_list = scrap_tool.scrape_urls_from_properties_page(steps)
         urls.extend(url_list)
-        last_page_as = scrap_tool.search_nest(soup, steps["P3"]) # List of following pages
-        last_page_list = scrap_tool.search_nest(last_page_as, steps["P4"])[-1] # Last item in the list
+        last_page_as = scrap_tool.search_nest(steps["P3"]) # List of following pages
+        last_page_list = scrap_tool.search_nest(steps["P4"], last_page_as)[-1] # Last item in the list
         next_page_link = last_page_list.get("href") # Link to the last item in the list
         next_page_name = last_page_list.get_text().strip() # Name of the last it in the list
         scraped_pages_count +=  1
         if scraped_pages_count % 10 == 0:
             print(f"Scraped page: {scraped_pages_count}")
-        if next_page_name == "Siguiente":
+        # if next_page_name == "Siguiente" and scraped_pages_count < 10: # Line for debugging
+        if next_page_name == "Siguiente": 
             yield response.follow(next_page_link, callback=self.parse)
         else:
             print(f"----- Scraped {len(urls)} total links -----")
             existent_url_collection_list = get_dataframe_bq(query=GET_URLS_QUERY.format(bot = key_bot))['url'].values.tolist()
             url_collection_list = preserve_unique_items_from_b(existent_url_collection_list, urls) if existent_url_collection_list else urls
+            # url_collection_list = urls # Line for debugging
             if len(url_collection_list) > 0:
                 print(f"Scraped {len(url_collection_list)} new links, {len(urls) - len(url_collection_list)} already exist in the database.")
                 print("----- Uploading the new Collection of URLs to GCS -----")
@@ -113,12 +114,11 @@ class ScrapyINT(scrapy.Spider):
         procesos = "data/procesos.json"
         with open(procesos) as step_file:
             steps = json.load(step_file)
-        scrap_tool = ScrapTool(response)
-        soup = scrap_tool.soup_creation()
+        scrap_tool = Scraper(response)
         # -------------------scrapy code----------------
         # step 1: primary details
-        price = scrap_tool.search_nest(soup, steps["INT"]["P5"]).get_text()
-        primary_details = scrap_tool.search_nest(soup, steps["INT"]["P6"])
+        price = scrap_tool.search_nest(steps["INT"]["P5"]).get_text()
+        primary_details = scrap_tool.search_nest(steps["INT"]["P6"])
         title_ds1 = []
         values_ds1 = []
         for i in primary_details:
@@ -130,13 +130,13 @@ class ScrapyINT(scrapy.Spider):
         dataset_1 = dict(zip_prim_feat)
         dataset_1 = {"price": price} | dataset_1
         # step 2: secondary details
-        sec_details_div = scrap_tool.search_nest(soup, steps["INT"]["P7"])
+        sec_details_div = scrap_tool.search_nest(steps["INT"]["P7"])
         try:
             location_pcd = sec_details_div.find("h3").find("a").get_text()
         except:
             location_pcd = ""
         secondary_features_div = scrap_tool.search_nest(
-            sec_details_div, steps["INT"]["P8"]
+            steps["INT"]["P8"], sec_details_div
         )
         remarks = str(sec_details_div).split("</h3>")[1]
         remarks = remarks.split("<br/>")[0]
@@ -159,7 +159,7 @@ class ScrapyINT(scrapy.Spider):
 
         # step 3: lat & long
         try:
-            lat_lon = scrap_tool.search_nest(soup, steps["INT"]["P9"])
+            lat_lon = scrap_tool.search_nest(steps["INT"]["P9"])
 
             latitud = lat_lon.find("input").get("value").split(",")[0]
             longitud = lat_lon.find("input").get("value").split(",")[1]
@@ -168,10 +168,10 @@ class ScrapyINT(scrapy.Spider):
             pass
         # dataset of PCD Breadcum and property type & category
         try:
-            div_breadcrumbs = scrap_tool.search_nest(soup, steps["INT"]["P10"])
+            div_breadcrumbs = scrap_tool.search_nest(steps["INT"]["P10"])
             property_category = div_breadcrumbs.find("span").get_text()
             location_breadcrumbs_list = scrap_tool.search_nest(
-                div_breadcrumbs, steps["INT"]["P11"]
+                steps["INT"]["P11"], div_breadcrumbs
             )
             location_breadcrumbs = ""
             for x in location_breadcrumbs_list:
