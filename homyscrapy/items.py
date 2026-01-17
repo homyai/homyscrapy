@@ -27,3 +27,7 @@ class PropertyItem(scrapy.Item):
     # Metadata
     source = scrapy.Field()
     country = scrapy.Field()
+    status = scrapy.Field()
+    city = scrapy.Field()
+    state = scrapy.Field()
+    external_id = scrapy.Field()
