@@ -16,7 +16,7 @@ class PropertyItem(scrapy.Item):
     # Features
     bedrooms = scrapy.Field()
     bathrooms = scrapy.Field()
-    area = scrapy.Field() # Construction area
+    area = scrapy.Field()
     lot_area = scrapy.Field()
     
     # Additional data
