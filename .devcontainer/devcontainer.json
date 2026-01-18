@@ -13,7 +13,7 @@
 		".devcontainer/.env",
 	],
 	"mounts": [
-		"source=${localWorkspaceFolder}/data/datalake-homyai-990ddbaa84ae.json,target=/workspaces/homyscrapy/data/datalake-homyai-990ddbaa84ae.json,type=bind,consistency=cached"
+		"source=${localWorkspaceFolder}/.devcontainer/datalake-homyai-990ddbaa84ae.json,target=/workspaces/homyscrapy/.devcontainer/datalake-homyai-990ddbaa84ae.json,type=bind,consistency=cached"
 	],
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
