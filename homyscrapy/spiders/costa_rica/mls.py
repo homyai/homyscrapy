@@ -59,4 +59,35 @@ class MLSSpider(scrapy.Spider):
         raw_desc = " ".join(response.css('#tab-listing-description div *::text').getall())
         item['description'] = " ".join(raw_desc.split())
         
+        # Extract Images (Large version)
+        item['images'] = response.css('#tab-pictures a::attr(href)').getall()
+        
+        # Extract Areas
+        # Using XPath for efficient text matching in Definition Types <dt>
+        lot_area = response.xpath('//dt[contains(text(), "Total Lot Size")]/following-sibling::dd[1]/text()').get()
+        if lot_area:
+             item['lot_area'] = lot_area.strip()
+             
+        living_area = response.xpath('//dt[contains(text(), "Total Living Area")]/following-sibling::dd[1]/text()').get()
+        if living_area:
+             item['area'] = living_area.strip()
+        
+        # Extract Dynamic Details (Details, Geography, Features, etc.)
+        item['metadata'] = {}
+        target_tabs = ['#listing-details', '#geography', '#features', '#infrastructure', '#financial-legal-information']
+        
+        for tab in target_tabs:
+            # Select all DT elements within the specific tab ID
+            for dt in response.css(f'{tab} dl dt'):
+                key = dt.css('::text').get('').strip()
+                if not key:
+                    continue
+                    
+                # Get the value from the immediate next DD sibling
+                # Note: using xpath . here refers to the dt element context
+                val = dt.xpath('following-sibling::dd[1]/text()').get()
+                
+                if val:
+                    item['metadata'][key] = val.strip()
+        
         yield item

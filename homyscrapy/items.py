@@ -31,3 +31,4 @@ class PropertyItem(scrapy.Item):
     city = scrapy.Field()
     state = scrapy.Field()
     external_id = scrapy.Field()
+    metadata = scrapy.Field()
