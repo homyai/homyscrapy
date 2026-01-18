@@ -31,6 +31,7 @@ Create a `.env` file in `.devcontainer/` (or root if local) with your Google Clo
 ```ini
 GOOGLE_APPLICATION_CREDENTIALS=./.devcontainer/datalake-homyai-990ddbaa84ae.json
 ```
+*New to proxies? See our [Residential Proxy Setup Guide](docs/proxy_setup_guide.md).*
 
 ### 2. Configuration
 Marketplaces are defined in `data/keys.json`. You can add or modify spider targets there.

@@ -4,11 +4,22 @@ from scrapy_playwright.page import PageMethod
 from datetime import datetime
 from parsel import Selector
 import random
+import os
 
 class Encuentra24Spider(scrapy.Spider):
     name = 'encuentra24'
     allowed_domains = ['casas24.com', 'encuentra24.com']
     start_urls = ['https://www.casas24.com/costa-rica-es/propiedades-residenciales?q=withcat.propiedades-residenciales-venta-casas']
+
+    # Dynamic Proxy Configuration
+    proxy_config = {}
+    proxy_server = os.getenv("PROXY_SERVER")
+    if proxy_server:
+        proxy_config = {
+            "server": proxy_server,
+            "username": os.getenv("PROXY_USER"),
+            "password": os.getenv("PROXY_PASSWORD")
+        }
 
     custom_settings = {
         'ROBOTSTXT_OBEY': False,
@@ -21,6 +32,7 @@ class Encuentra24Spider(scrapy.Spider):
                  'viewport': {'width': 1920, 'height': 1080},
                  'java_script_enabled': True,
                  'ignore_https_errors': True,
+                 'proxy': proxy_config if proxy_server else None
              }
         }
     }
