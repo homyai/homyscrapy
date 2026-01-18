@@ -96,14 +96,18 @@ class Encuentra24Spider(scrapy.Spider):
             details = ad.css('.cas-ad-tile__details-item')
             for d in details:
                 text = "".join(d.css('::text').getall()).strip()
-                icon_href = d.xpath('.//use/@*[local-name()="href"]').get('')
+                html_content = d.get()
                 
-                if 'bed' in icon_href:
+                if 'sprites.svg#bed' in html_content:
                     item['bedrooms'] = text
-                elif 'bath' in icon_href:
+                elif 'sprites.svg#bath' in html_content:
                     item['bathrooms'] = text
-                elif 'size' in icon_href or 'm' in text: 
+                elif 'sprites.svg#size' in html_content or 'm' in text: 
                      item['area'] = text
+                elif 'sprites.svg#parking' in html_content:
+                     item['garage'] = text
+                     if text and text != '0':
+                         item.setdefault('features', []).append(f"Parking: {text}")
             
             # Images
             images = []
@@ -119,7 +123,7 @@ class Encuentra24Spider(scrapy.Spider):
             item['description'] = desc
             
             # Inferred Features from Description
-            features = []
+            features = item.get('features', [])
             keywords = {
                 'piscina': 'Piscina',
                 'pool': 'Piscina',
@@ -139,7 +143,13 @@ class Encuentra24Spider(scrapy.Spider):
                 'gimnasio': 'Gimnasio',
                 'gym': 'Gimnasio',
                 'bodega': 'Bodega',
-                'storage': 'Bodega'
+                'storage': 'Bodega',
+                'lujo': 'Acabados de Lujo',
+                'luxury': 'Acabados de Lujo',
+                'vista': 'Vista Panorámica',
+                'view': 'Vista Panorámica',
+                'jardin': 'Jardín',
+                'garden': 'Jardín'
             }
             
             desc_lower = desc.lower() + " " + item['title'].lower()
