@@ -18,6 +18,7 @@ class PropertyItem(scrapy.Item):
     bathrooms = scrapy.Field()
     area = scrapy.Field()
     lot_area = scrapy.Field()
+    features = scrapy.Field()
     
     # Additional data
     remarks = scrapy.Field()
