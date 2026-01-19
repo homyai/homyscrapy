@@ -92,24 +92,7 @@ class Encuentra24Spider(scrapy.Spider):
             # Price
             item['price'] = ad.css('.cas-ad-tile__price::text').get('').strip()
             
-            # Specs
-            details = ad.css('.cas-ad-tile__details-item')
-            for d in details:
-                text = "".join(d.css('::text').getall()).strip()
-                html_content = d.get()
-                
-                if 'sprites.svg#bed' in html_content:
-                    item['bedrooms'] = text
-                elif 'sprites.svg#bath' in html_content:
-                    item['bathrooms'] = text
-                elif 'sprites.svg#size' in html_content or 'm' in text: 
-                     item['area'] = text
-                elif 'sprites.svg#parking' in html_content:
-                     item['garage'] = text
-                     if text and text != '0':
-                         item.setdefault('features', []).append(f"Parking: {text}")
-            
-            # Images
+            # Images - Collect from card but allow update from detail
             images = []
             imgs = ad.css('.cas-photos-carousel__photo')
             for img in imgs:
@@ -118,59 +101,22 @@ class Encuentra24Spider(scrapy.Spider):
                      images.append(src)
             item['images'] = images
             
-            # Description & Feature Extraction
-            desc = ad.css('.cas-ad-tile__short-description::text').get('').strip()
-            item['description'] = desc
-            
-            # Inferred Features from Description
-            features = item.get('features', [])
-            keywords = {
-                'piscina': 'Piscina',
-                'pool': 'Piscina',
-                'terraza': 'Terraza',
-                'terrace': 'Terraza',
-                'balcon': 'Balcón',
-                'balcony': 'Balcón',
-                'seguridad': 'Seguridad 24/7',
-                'security': 'Seguridad 24/7',
-                'parqueo': 'Parqueo',
-                'garage': 'Garage',
-                'cochera': 'Cochera',
-                'amueblado': 'Amueblado',
-                'furniture': 'Amueblado',
-                'linea blanca': 'Línea Blanca',
-                'appliances': 'Línea Blanca',
-                'gimnasio': 'Gimnasio',
-                'gym': 'Gimnasio',
-                'bodega': 'Bodega',
-                'storage': 'Bodega',
-                'lujo': 'Acabados de Lujo',
-                'luxury': 'Acabados de Lujo',
-                'vista': 'Vista Panorámica',
-                'view': 'Vista Panorámica',
-                'jardin': 'Jardín',
-                'garden': 'Jardín'
-            }
-            
-            desc_lower = desc.lower() + " " + item['title'].lower()
-            for k, v in keywords.items():
-                if k in desc_lower:
-                    if v not in features:
-                        features.append(v)
-            
-            item['features'] = features
-            
-            # Metadata (Inferred)
-            meta = {}
-            # Try to find fees
-            import re
-            img = re.search(r'(?:cuota|mantenimiento)\s*:?\s*\$?(\d+)', desc_lower)
-            if img:
-                 meta['Mantenimiento'] = img.group(1)
-            
-            item['metadata'] = meta
-
-            yield item
+            # Follow to detail page
+            yield response.follow(
+                item['url'],
+                callback=self.parse_detail,
+                meta={
+                    'item': item,
+                    'playwright': True,
+                    'playwright_context': f"detail_{random.randint(0, 100000)}",
+                    'playwright_include_page': True,
+                    'playwright_page_methods': [
+                        PageMethod("wait_for_selector", "div.cas-property-details", timeout=30000), 
+                        PageMethod("wait_for_timeout", 2000),
+                    ],
+                    'errback': self.errback_save_screenshot
+                }
+            )
 
         # Pagination
         next_page = sel.css('a.cas-pagination__arrow--next::attr(href)').get()
@@ -190,6 +136,66 @@ class Encuentra24Spider(scrapy.Spider):
                     'errback': self.errback_save_screenshot
                 }
             )
+
+    async def parse_detail(self, response):
+        page = response.meta["playwright_page"]
+        html = await page.content()
+        await page.close()
+        
+        sel = Selector(text=html)
+        item = response.meta['item']
+        
+        # 1. Full Description
+        # .cas-property-about__text
+        desc_lines = sel.css('.cas-property-about__text *::text').getall()
+        full_desc = "\n".join([line.strip() for line in desc_lines if line.strip()])
+        item['description'] = full_desc
+        
+        # 2. Features / Amenities
+        # .cas-property-benefits__benefit
+        benefits = sel.css('.cas-property-benefits__benefit::text').getall()
+        clean_features = [f.strip() for f in benefits if f.strip()]
+        
+        # Merge with any existing features inferred (none yet in this flow)
+        item['features'] = clean_features
+        
+        # 3. Specs from Hero Insight (more accurate than card)
+        # Bedrooms, Bathrooms, Area, Parking
+        # .cas-property-insight__attribute
+        attributes = sel.css('.cas-property-insight__attribute')
+        for attr in attributes:
+            text = attr.css('.cas-property-insight__attribute-value::text').get('').strip()
+            icon_html = attr.get() # Check SVG
+            
+            if 'sprites.svg#bed' in icon_html:
+                item['bedrooms'] = text
+            elif 'sprites.svg#bath' in icon_html:
+                item['bathrooms'] = text
+            elif 'sprites.svg#size' in icon_html:
+                item['area'] = text
+            elif 'sprites.svg#parking' in icon_html:
+                item['garage'] = text
+
+        # 4. Detailed Metadata
+        # .cas-property-details__content > .cas-property-details__detail-label
+        meta = {}
+        details = sel.css('.cas-property-details__detail-label')
+        for d in details:
+            # The label text is strictly the text node of the parent, not the child <p>
+            # But the structure is <div>Label <p>Value</p></div>
+            # So d.css('::text').get() might be "Label "
+            label = d.css('::text').get('').strip()
+            value = d.css('p.cas-property-details__detail::text').get('').strip()
+            
+            if label and value:
+                meta[label] = value
+                
+        # 5. Extract specific fields from metadata map to top-level if needed
+        # e.g. Year Built, Maintenance Fee
+        
+        item['metadata'] = meta
+        
+        yield item
 
     async def errback_save_screenshot(self, failure):
         page = failure.request.meta.get("playwright_page")
