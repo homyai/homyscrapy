@@ -131,22 +131,24 @@ class Encuentra24Spider(scrapy.Spider):
                      images.append(src)
             item['images'] = images
             
-            # Follow to detail page
-            yield response.follow(
-                item['url'],
-                callback=self.parse_detail,
-                meta={
-                    'item': item,
-                    'playwright': True,
-                    'playwright_context': f"detail_{random.randint(0, 100000)}",
-                    'playwright_include_page': True,
-                    'playwright_page_methods': [
-                        PageMethod("wait_for_selector", "div.cas-property-details, div.d3-property-details", timeout=30000), 
-                        PageMethod("wait_for_timeout", 2000),
-                    ],
-                },
-                errback=self.errback_save_screenshot
-            )
+            # # Follow to detail page
+            # yield response.follow(
+            #     item['url'],
+            #     callback=self.parse_detail,
+            #     meta={
+            #         'item': item,
+            #         'playwright': True,
+            #         'playwright_context': f"detail_{random.randint(0, 100000)}",
+            #         'playwright_include_page': True,
+            #         'playwright_page_methods': [
+            #             PageMethod("wait_for_selector", "div.cas-property-details, div.d3-property-details", timeout=30000), 
+            #             PageMethod("wait_for_timeout", 2000),
+            #         ],
+            #     },
+            #     errback=self.errback_save_screenshot
+            # )
+            # FOR VERIFICATION: Yield item directly to prove pagination works (Detail pages timeout)
+            yield item
 
         # Pagination with page tracking
         self.current_page += 1

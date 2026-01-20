@@ -16,9 +16,11 @@ DOWNLOAD_HANDLERS = {
 
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 
+PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 90 * 1000  # 90 seconds
+
 PLAYWRIGHT_LAUNCH_OPTIONS = {
     "headless": True,
-    "timeout": 20 * 1000,  # 20 seconds
+    "timeout": 60 * 1000,  # 60 seconds
     "args": [
         "--disable-blink-features=AutomationControlled",
         "--no-sandbox",
@@ -32,7 +34,6 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
 
 PLAYWRIGHT_CONTEXTS = {
     "default": {
-        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "viewport": {
             "width": 1920,
             "height": 1080,
@@ -45,9 +46,22 @@ PLAYWRIGHT_CONTEXTS = {
 CONCURRENT_REQUESTS = 1
 DOWNLOAD_DELAY = 10
 RANDOMIZE_DOWNLOAD_DELAY = True
-COOKIES_ENABLED = True
+# Retry settings
+RETRY_ENABLED = True
+RETRY_TIMES = 3
 
-USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+# Anti-Blocking Settings
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 400,
+    # 'scrapy_fake_useragent.middleware.RetryUserAgentMiddleware': 401, # CAUSES CRASH
+    'homyscrapy.middlewares.RandomProxyMiddleware': 410,
+}
+
+FAKEUSERAGENT_PROVIDERS = [
+    'scrapy_fake_useragent.providers.FakerProvider',
+    'scrapy_fake_useragent.providers.FixedUserAgentProvider',
+]
 
 
 ITEM_PIPELINES = {
