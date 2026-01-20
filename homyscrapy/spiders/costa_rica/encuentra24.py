@@ -4,6 +4,9 @@ from scrapy_playwright.page import PageMethod
 from datetime import datetime
 from parsel import Selector
 import random
+from datetime import datetime
+from parsel import Selector
+import random
 import os
 
 class Encuentra24Spider(scrapy.Spider):
@@ -131,24 +134,30 @@ class Encuentra24Spider(scrapy.Spider):
                      images.append(src)
             item['images'] = images
             
-            # # Follow to detail page
-            # yield response.follow(
-            #     item['url'],
-            #     callback=self.parse_detail,
-            #     meta={
-            #         'item': item,
-            #         'playwright': True,
-            #         'playwright_context': f"detail_{random.randint(0, 100000)}",
-            #         'playwright_include_page': True,
-            #         'playwright_page_methods': [
-            #             PageMethod("wait_for_selector", "div.cas-property-details, div.d3-property-details", timeout=30000), 
-            #             PageMethod("wait_for_timeout", 2000),
-            #         ],
-            #     },
-            #     errback=self.errback_save_screenshot
-            # )
-            # FOR VERIFICATION: Yield item directly to prove pagination works (Detail pages timeout)
-            yield item
+            # Prepare meta for detail page
+            detail_meta = {
+                'item': item,
+                'playwright': True,
+                'playwright_context': 'default', 
+                'playwright_include_page': True,
+                'playwright_page_methods': [
+                    # REMOVED stric wait_for_selector to avoid timeout. We will check content in parse_detail.
+                    PageMethod("wait_for_timeout", 5000), # 5s wait for arbitrary loading
+                ],
+            }
+            
+            # Pass the CURRENT proxy to the detail request to maintain session continuity
+            current_context = response.meta.get('playwright_context_kwargs', {})
+            if 'proxy' in current_context:
+                detail_meta['playwright_context_kwargs'] = {'proxy': current_context['proxy']}
+            
+            # Follow to detail page
+            yield response.follow(
+                item['url'],
+                callback=self.parse_detail,
+                meta=detail_meta,
+                errback=self.errback_save_screenshot
+            )
 
         # Pagination with page tracking
         self.current_page += 1
@@ -195,6 +204,13 @@ class Encuentra24Spider(scrapy.Spider):
         desc_lines = sel.css('.cas-property-about__text *::text').getall()
         full_desc = "\n".join([line.strip() for line in desc_lines if line.strip()])
         item['description'] = full_desc
+        
+        if not full_desc:
+             self.logger.warning(f"Empty description for {response.url}. Dumping HTML.")
+             debug_filename = f"data/debug_detail_{datetime.now().strftime('%H%M%S')}.html"
+             with open(debug_filename, 'w', encoding='utf-8') as f:
+                 f.write(html)
+             self.logger.info(f"Saved debug HTML to {debug_filename}")
         
         # 2. Features / Amenities
         # .cas-property-benefits__benefit
