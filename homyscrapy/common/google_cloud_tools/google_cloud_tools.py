@@ -1,6 +1,6 @@
 import os
 import json
-from gcloud import storage
+from google.cloud import storage
 from google.cloud import bigquery
 from datetime import datetime
 import pandas as pd
@@ -14,7 +14,7 @@ def get_list_files_from_bucket(project_id: str, bucket_name: str, bucket_path: s
     """
     Returns a list of files in a bucket.
     """
-    client = storage.Client(project_id)
+    client = storage.Client(project=project_id)
     bucket = client.get_bucket(bucket_name)
     blobs = bucket.list_blobs(prefix=bucket_path)
     files_list = [blob.name for blob in blobs]

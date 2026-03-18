@@ -1,9 +1,9 @@
 import scrapy
 from homyscrapy.items import PropertyItem
 from scrapy_playwright.page import PageMethod
-from datetime import datetime
-from parsel import Selector
-import random
+from playwright_stealth import Stealth
+_stealth = Stealth()
+stealth_async = _stealth.apply_stealth_async
 from datetime import datetime
 from parsel import Selector
 import random
@@ -37,10 +37,11 @@ class Encuentra24Spider(scrapy.Spider):
 
     custom_settings = {
         'ROBOTSTXT_OBEY': False,
-        'DOWNLOAD_DELAY': 5,
+        'DOWNLOAD_DELAY': 8,
+        'RANDOMIZE_DOWNLOAD_DELAY': True,  # effective range: 4–12s
         'CONCURRENT_REQUESTS': 1,
         'RETRY_TIMES': 3,
-        'RETRY_HTTP_CODES': [500, 502, 503, 504, 522, 524, 408, 429],
+        'RETRY_HTTP_CODES': [502, 503, 504, 522, 524, 408, 429],
         'PLAYWRIGHT_LAUNCH_OPTIONS': {
             'headless': True,
             'args': [
@@ -48,6 +49,10 @@ class Encuentra24Spider(scrapy.Spider):
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
                 '--disable-infobars',
+                '--disable-dev-shm-usage',
+                '--disable-extensions',
+                '--disable-gpu',
+                '--start-maximized',
                 '--window-position=0,0',
                 '--ignore-certificate-errors',
                 '--ignore-certificate-errors-spki-list',
@@ -55,18 +60,22 @@ class Encuentra24Spider(scrapy.Spider):
         },
         'PLAYWRIGHT_CONTEXTS': {
              'default': {
-                 'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                 'viewport': {'width': 1280, 'height': 720},
+                 'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+                 'viewport': {'width': 1920, 'height': 1080},
                  'java_script_enabled': True,
                  'ignore_https_errors': True,
                  'bypass_csp': True,
                  'proxy': proxy_config if proxy_server else None
              }
         },
-        'HTTPERROR_ALLOWED_CODES': [403],
+        'HTTPERROR_ALLOWED_CODES': [403, 500],
         'FEED_EXPORT_ENCODING': 'utf-8'
     }
 
+
+    async def init_page(self, page, request):
+        """Apply stealth patches before any page script runs (pre-navigation)."""
+        await stealth_async(page)
 
     def start_requests(self):
         for url in self.start_urls:
@@ -75,10 +84,10 @@ class Encuentra24Spider(scrapy.Spider):
                 meta={
                     'playwright': True,
                     'playwright_context': 'default',
-                    'playwright_include_page': True, 
+                    'playwright_include_page': True,
+                    'playwright_page_init_callback': self.init_page,
                     'playwright_page_methods': [
-                        PageMethod("wait_for_selector", "div.cas-ad-tile, div.d3-ad-tile, .d3-pagination, .cas-pagination", timeout=30000),
-                        PageMethod("wait_for_timeout", 5000),
+                        PageMethod("wait_for_timeout", 20000),
                     ],
                     'errback': self.errback_save_screenshot,
                 }
@@ -86,7 +95,13 @@ class Encuentra24Spider(scrapy.Spider):
 
     async def parse(self, response):
         page = response.meta["playwright_page"]
-        
+
+        # Human-like scroll before extracting
+        await page.evaluate("window.scrollTo(0, document.body.scrollHeight / 3)")
+        await page.wait_for_timeout(random.randint(1200, 2800))
+        await page.evaluate("window.scrollTo(0, document.body.scrollHeight / 2)")
+        await page.wait_for_timeout(random.randint(800, 1800))
+
         # Snapshot content
         html = await page.content()
         await page.close()
@@ -97,12 +112,15 @@ class Encuentra24Spider(scrapy.Spider):
         ads = sel.css('div.cas-ad-tile, div.d3-ad-tile')
         self.logger.info(f"Found {len(ads)} ads on page {self.current_page}")
         
-        if len(ads) == 0:
-            self.logger.warning(f"No ads found on page {self.current_page}. Dumping HTML for inspection.")
+        # Always dump HTML for page 0 to inspect Cloudflare status; only on empty for subsequent pages
+        if len(ads) == 0 or self.current_page == 0:
             debug_filename = f"data/debug_page_{self.current_page}.html"
             with open(debug_filename, 'w', encoding='utf-8') as f:
                 f.write(html)
-            self.logger.info(f"Saved debug HTML to {debug_filename}")
+            if len(ads) == 0:
+                self.logger.warning(f"No ads found on page {self.current_page}. HTML dumped to {debug_filename}")
+            else:
+                self.logger.info(f"Dumped page 0 HTML to {debug_filename} for inspection")
         
         for ad in ads:
             item = PropertyItem()
@@ -138,11 +156,11 @@ class Encuentra24Spider(scrapy.Spider):
             detail_meta = {
                 'item': item,
                 'playwright': True,
-                'playwright_context': 'default', 
+                'playwright_context': 'default',
                 'playwright_include_page': True,
+                'playwright_page_init_callback': self.init_page,
                 'playwright_page_methods': [
-                    # REMOVED stric wait_for_selector to avoid timeout. We will check content in parse_detail.
-                    PageMethod("wait_for_timeout", 5000), # 5s wait for arbitrary loading
+                    PageMethod("wait_for_timeout", 5000),
                 ],
             }
             
@@ -176,14 +194,15 @@ class Encuentra24Spider(scrapy.Spider):
                     'playwright': True,
                     'playwright_context': 'default',
                     'playwright_include_page': True,
+                    'playwright_page_init_callback': self.init_page,
                     'playwright_page_methods': [
-                         PageMethod("wait_for_selector", "div.cas-ad-tile, div.d3-ad-tile, .d3-pagination, .cas-pagination", timeout=30000),
-                         PageMethod("evaluate", "window.scrollBy(0, 300)"),
-                         PageMethod("wait_for_timeout", 2000), 
+                        PageMethod("wait_for_selector", "div.cas-ad-tile, div.d3-ad-tile, .d3-pagination, .cas-pagination", timeout=60000),
+                        PageMethod("evaluate", "window.scrollBy(0, 300)"),
+                        PageMethod("wait_for_timeout", 2000),
                     ],
                 },
                 errback=self.errback_save_screenshot,
-                dont_filter=True  # Allow re-visiting pages if needed
+                dont_filter=True
             )
         else:
             if not next_page:
@@ -193,6 +212,7 @@ class Encuentra24Spider(scrapy.Spider):
 
     async def parse_detail(self, response):
         page = response.meta["playwright_page"]
+
         html = await page.content()
         await page.close()
         
