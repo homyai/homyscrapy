@@ -1,4 +1,5 @@
 .devcontainer/.env
+.env
 proxies.txt
 __pycache__
 data/datalake-homyai-990ddbaa84ae.json

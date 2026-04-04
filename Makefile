@@ -1,6 +1,9 @@
 IMAGE := homyscrapy-test
 SPIDER ?= encuentra24
 
+-include .env
+export
+
 .PHONY: help build test shell crawl list
 .DEFAULT_GOAL := help
 
