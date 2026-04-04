@@ -8,6 +8,10 @@ from homyscrapy.common.google_cloud_tools.google_cloud_tools import gcs_upload_f
 # Spiders not listed here default to spider.name.upper().
 SPIDER_KEY_MAP = {
     'encuentra24': 'C24',
+    'mls':         'MLS',
+    'recr':        'RECR',
+    'inhaus':      'INHAUS',
+    'century21':   'C21',
 }
 
 

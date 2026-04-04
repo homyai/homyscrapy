@@ -47,6 +47,13 @@ class Century21Spider(scrapy.Spider):
         await stealth_async(page)
 
     async def start(self):
+        self.logger.error(
+            "Century21 spider is disabled — blocked by reCAPTCHA v3. "
+            "Integrate a CAPTCHA solving service before running this spider."
+        )
+        return
+        yield  # keeps this a generator
+
         yield scrapy.Request(
             url=self.base_url,
             meta=dict(

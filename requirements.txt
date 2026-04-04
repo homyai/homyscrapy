@@ -6,4 +6,6 @@ pandas
 gcsfs
 google-cloud-storage
 google-cloud-bigquery
+itemadapter
 pytz
+pytest
