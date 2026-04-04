@@ -2,6 +2,20 @@
 __pycache__
 data/datalake-homyai-990ddbaa84ae.json
 
+# Spider outputs and debug artifacts
+data/debug_*.html
+data/error_*.png
+data/test_*.json
+data/*.log
+data/C24/
+data/INHAUS/
+data/MLS/
+data/RECR/
+data/INT/
+
+# Claude Code session files
+.claude/
+
 # macOS system files
 .DS_Store
 .AppleDouble
