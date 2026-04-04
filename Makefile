@@ -1,21 +1,25 @@
 IMAGE := homyscrapy-test
 SPIDER ?= encuentra24
 
-.PHONY: build test shell crawl list
+.PHONY: help build test shell crawl list
+.DEFAULT_GOAL := help
 
-build:
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
+
+build: ## Build the Docker image
 	docker build -t $(IMAGE) .
 
-test:
+test: ## Run the test suite inside Docker
 	docker run --rm -v $(PWD):/app $(IMAGE) python -m pytest tests/ -v
 
-shell:
+shell: ## Open a bash shell inside the Docker container
 	docker run --rm -it -v $(PWD):/app $(IMAGE) bash
 
-list:
+list: ## List all available spiders
 	docker run --rm -v $(PWD):/app $(IMAGE) scrapy list
 
-crawl:
+crawl: ## Run a spider (default: encuentra24). Override with SPIDER=mls
 	docker run --rm \
 	  -v $(PWD):/app \
 	  -e PROXY_SERVER=$(PROXY_SERVER) \
