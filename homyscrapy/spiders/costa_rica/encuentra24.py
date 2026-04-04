@@ -119,15 +119,8 @@ class Encuentra24Spider(scrapy.Spider):
         theme = 'd3' if ads_d3 else 'm3'
         self.logger.info(f"Found {len(ads)} ads on page {self.current_page} (theme: {theme})")
 
-        # Always dump HTML for page 0; only on empty for subsequent pages
-        if len(ads) == 0 or self.current_page == 0:
-            debug_filename = f"data/debug_page_{self.current_page}.html"
-            with open(debug_filename, 'w', encoding='utf-8') as f:
-                f.write(html)
-            if len(ads) == 0:
-                self.logger.warning(f"No ads found on page {self.current_page}. HTML dumped to {debug_filename}")
-            else:
-                self.logger.info(f"Dumped page 0 HTML to {debug_filename} for inspection")
+        if len(ads) == 0:
+            self.logger.warning(f"No ads found on page {self.current_page} — possible selector change or bot block.")
 
         for ad in ads:
             item = PropertyItem()
