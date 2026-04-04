@@ -1,7 +1,9 @@
-IMAGE := homyscrapy-test
-SPIDER ?= encuentra24
+IMAGE   := homyscrapy-test
+SPIDER  ?= encuentra24
+LIMIT   ?= 0
+STORAGE ?= local
 
--include .env
+-include .devcontainer/.env
 export
 
 .PHONY: help build test shell crawl list
@@ -22,11 +24,12 @@ shell: ## Open a bash shell inside the Docker container
 list: ## List all available spiders
 	docker run --rm -v $(PWD):/app $(IMAGE) scrapy list
 
-crawl: ## Run a spider (default: encuentra24). Override with SPIDER=mls
+crawl: ## Run a spider. Opts: SPIDER=mls LIMIT=50 STORAGE=local|gcs
 	docker run --rm \
 	  -v $(PWD):/app \
 	  -e PROXY_SERVER=$(PROXY_SERVER) \
 	  -e PROXY_USER=$(PROXY_USER) \
 	  -e PROXY_PASSWORD=$(PROXY_PASSWORD) \
-	  -e GOOGLE_APPLICATION_CREDENTIALS=$(GOOGLE_APPLICATION_CREDENTIALS) \
-	  $(IMAGE) scrapy crawl $(SPIDER)
+	  $(if $(filter gcs,$(STORAGE)),-e GOOGLE_APPLICATION_CREDENTIALS=$(GOOGLE_APPLICATION_CREDENTIALS)) \
+	  $(IMAGE) scrapy crawl $(SPIDER) \
+	  $(if $(filter-out 0,$(LIMIT)),-s CLOSESPIDER_ITEMCOUNT=$(LIMIT))
