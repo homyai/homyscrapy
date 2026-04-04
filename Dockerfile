@@ -1,6 +1,11 @@
 # Use the official Playwright image which includes Python and browsers
 FROM mcr.microsoft.com/playwright/python:v1.40.0-jammy
 
+# Install Node.js 20 and Claude Code CLI
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g @anthropic-ai/claude-code
+
 # Set working directory
 WORKDIR /app
 

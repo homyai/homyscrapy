@@ -1,0 +1,27 @@
+{
+    "columnas": [
+        "extraction_date",
+        "price",
+        "title",
+        "description",
+        "location_pcd",
+        "lat",
+        "lon",
+        "bedrooms",
+        "bathrooms",
+        "area",
+        "lot_area",
+        "features",
+        "garage",
+        "remarks",
+        "images",
+        "property_category",
+        "source",
+        "country",
+        "status",
+        "city",
+        "state",
+        "external_id",
+        "metadata"
+    ]
+}

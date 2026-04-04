@@ -11,8 +11,8 @@ import os
 
 class Encuentra24Spider(scrapy.Spider):
     name = 'encuentra24'
-    allowed_domains = ['casas24.com', 'encuentra24.com', 'googleusercontent.com', 'webcache.googleusercontent.com']
-    start_urls = ['https://www.casas24.com/costa-rica-es/propiedades-residenciales?q=withcat.propiedades-residenciales-venta-casas']
+    allowed_domains = ['encuentra24.com', 'googleusercontent.com', 'webcache.googleusercontent.com']
+    start_urls = ['https://www.encuentra24.com/costa-rica-es/bienes-raices-venta-de-propiedades-casas/']
     
     # Configurable scraping parameters
     def __init__(self, max_pages=0, start_page=1, output_date=None, *args, **kwargs):
@@ -77,7 +77,7 @@ class Encuentra24Spider(scrapy.Spider):
         """Apply stealth patches before any page script runs (pre-navigation)."""
         await stealth_async(page)
 
-    def start_requests(self):
+    async def start(self):
         for url in self.start_urls:
             yield scrapy.Request(
                 url,
@@ -86,11 +86,13 @@ class Encuentra24Spider(scrapy.Spider):
                     'playwright_context': 'default',
                     'playwright_include_page': True,
                     'playwright_page_init_callback': self.init_page,
+                    # Stop navigation as soon as DOM is ready — avoids timeout on slow analytics/ad scripts
+                    'playwright_page_goto_kwargs': {'wait_until': 'domcontentloaded'},
                     'playwright_page_methods': [
                         PageMethod("wait_for_timeout", 20000),
                     ],
-                    'errback': self.errback_save_screenshot,
-                }
+                },
+                errback=self.errback_save_screenshot,
             )
 
     async def parse(self, response):
@@ -107,12 +109,17 @@ class Encuentra24Spider(scrapy.Spider):
         await page.close()
         
         sel = Selector(text=html)
-        
-        # Support both 'cas-' (legacy) and 'd3-' (new theme) classes
-        ads = sel.css('div.cas-ad-tile, div.d3-ad-tile')
-        self.logger.info(f"Found {len(ads)} ads on page {self.current_page}")
-        
-        # Always dump HTML for page 0 to inspect Cloudflare status; only on empty for subsequent pages
+
+        # Support two themes served by the site:
+        # d3-* (SSR, class=d3): div.d3-ad-tile
+        # m3-* (CSR, class=m3): div.card[data-adid]
+        ads_d3 = sel.css('div.d3-ad-tile')
+        ads_m3 = sel.css('div.card[data-adid]')
+        ads = ads_d3 if ads_d3 else ads_m3
+        theme = 'd3' if ads_d3 else 'm3'
+        self.logger.info(f"Found {len(ads)} ads on page {self.current_page} (theme: {theme})")
+
+        # Always dump HTML for page 0; only on empty for subsequent pages
         if len(ads) == 0 or self.current_page == 0:
             debug_filename = f"data/debug_page_{self.current_page}.html"
             with open(debug_filename, 'w', encoding='utf-8') as f:
@@ -121,36 +128,67 @@ class Encuentra24Spider(scrapy.Spider):
                 self.logger.warning(f"No ads found on page {self.current_page}. HTML dumped to {debug_filename}")
             else:
                 self.logger.info(f"Dumped page 0 HTML to {debug_filename} for inspection")
-        
+
         for ad in ads:
             item = PropertyItem()
             item['source'] = 'Encuentra24'
             item['country'] = 'Costa Rica'
             item['extraction_date'] = datetime.today().strftime("%Y-%m-%d")
-            
-            # Base info - try both selector styles
-            relative_url = ad.css('a.cas-ad-tile__cover::attr(href), a.d3-ad-tile__cover::attr(href)').get()
-            item['url'] = response.urljoin(relative_url)
-            
-            title = ad.css('.cas-ad-tile__title::text, .d3-ad-tile__title::text').get()
-            item['title'] = title.strip() if title else ''
-            
-            location = ad.css('.cas-ad-tile__location::text, .d3-ad-tile__location::text').get()
-            item['location_pcd'] = location.strip() if location else ''
-            
-            # Price
-            price = ad.css('.cas-ad-tile__price::text, .d3-ad-tile__price::text').get()
-            item['price'] = price.strip() if price else ''
-            
-            # Images - Collect from card but allow update from detail
-            images = []
-            # Try both legacy and new carousel classes
-            imgs = ad.css('.cas-photos-carousel__photo, .d3-photos-carousel__photo')
-            for img in imgs:
-                src = img.css('::attr(data-src)').get() or img.css('::attr(src)').get()
-                if src and 'base64' not in src:
-                     images.append(src)
-            item['images'] = images
+
+            if theme == 'd3':
+                relative_url = ad.css('a.d3-ad-tile__description::attr(href)').get()
+                item['url'] = response.urljoin(relative_url) if relative_url else ''
+                title = ad.css('span.d3-ad-tile__title::text').get()
+                item['title'] = title.strip() if title else ''
+                location_texts = ad.css('div.d3-ad-tile__location span::text').getall()
+                item['location_pcd'] = ' '.join(t.strip() for t in location_texts if t.strip())
+                price = ad.css('div.d3-ad-tile__price::text').get()
+                item['price'] = price.strip() if price else ''
+                images = []
+                for img in ad.css('img.d3-photos-carousel__photo'):
+                    src = img.css('::attr(data-src)').get() or img.css('::attr(src)').get()
+                    if src and 'base64' not in src:
+                        images.append(src)
+                item['images'] = images
+                for spec in ad.css('li.d3-ad-tile__details-item'):
+                    text = ' '.join(t.strip() for t in spec.css('::text').getall() if t.strip())
+                    icon_html = spec.get()
+                    if '#resize"' in icon_html or '#size"' in icon_html:
+                        item['area'] = text
+                    elif '#bed"' in icon_html:
+                        item['bedrooms'] = text
+                    elif '#bath"' in icon_html:
+                        item['bathrooms'] = text
+                ext_id = ad.css('a.tool-favorite::attr(data-adid)').get()
+            else:
+                # m3-* theme
+                relative_url = ad.css('a.ad-name::attr(href)').get()
+                item['url'] = response.urljoin(relative_url) if relative_url else ''
+                title = ad.css('a.ad-name::text').get()
+                item['title'] = title.strip() if title else ''
+                location_texts = ad.css('div.ad-location::text').getall()
+                item['location_pcd'] = ' '.join(t.strip() for t in location_texts if t.strip())
+                price = ad.css('div.ad-price::text').get()
+                item['price'] = price.strip() if price else ''
+                images = []
+                for img in ad.css('img.m3-photos-carousel__photo'):
+                    src = img.css('::attr(data-src)').get() or img.css('::attr(src)').get()
+                    if src and 'base64' not in src:
+                        images.append(src)
+                item['images'] = images
+                for icon_item in ad.css('div.ad-icons-item'):
+                    text = ' '.join(t.strip() for t in icon_item.css('::text').getall() if t.strip())
+                    icon_html = icon_item.get()
+                    if '#ic-resize"' in icon_html or '#ic-size"' in icon_html:
+                        item['area'] = text
+                    elif '#ic-bed"' in icon_html:
+                        item['bedrooms'] = text
+                    elif '#ic-bath"' in icon_html:
+                        item['bathrooms'] = text
+                ext_id = ad.attrib.get('data-adid')
+
+            if ext_id:
+                item['external_id'] = ext_id
             
             # Prepare meta for detail page
             detail_meta = {
@@ -159,8 +197,9 @@ class Encuentra24Spider(scrapy.Spider):
                 'playwright_context': 'default',
                 'playwright_include_page': True,
                 'playwright_page_init_callback': self.init_page,
+                'playwright_page_goto_kwargs': {'wait_until': 'domcontentloaded'},
                 'playwright_page_methods': [
-                    PageMethod("wait_for_timeout", 5000),
+                    PageMethod("wait_for_timeout", 10000),
                 ],
             }
             
@@ -170,6 +209,9 @@ class Encuentra24Spider(scrapy.Spider):
                 detail_meta['playwright_context_kwargs'] = {'proxy': current_context['proxy']}
             
             # Follow to detail page
+            if not item['url']:
+                self.logger.warning(f"Skipping ad with no URL: {item.get('title', 'unknown')}")
+                continue
             yield response.follow(
                 item['url'],
                 callback=self.parse_detail,
@@ -181,8 +223,8 @@ class Encuentra24Spider(scrapy.Spider):
         self.current_page += 1
         self.logger.info(f"Completed page {self.current_page}")
         
-        # Check if we should continue to next page
-        next_page = sel.css('a.cas-pagination__arrow--next::attr(href), a.d3-pagination__arrow--next::attr(href)').get()
+        # Next page arrow link
+        next_page = sel.css('a.d3-pagination__arrow--next::attr(href)').get()
         should_continue = next_page and (self.max_pages == 0 or self.current_page < self.max_pages)
         
         if should_continue:
@@ -195,10 +237,9 @@ class Encuentra24Spider(scrapy.Spider):
                     'playwright_context': 'default',
                     'playwright_include_page': True,
                     'playwright_page_init_callback': self.init_page,
+                    'playwright_page_goto_kwargs': {'wait_until': 'domcontentloaded'},
                     'playwright_page_methods': [
-                        PageMethod("wait_for_selector", "div.cas-ad-tile, div.d3-ad-tile, .d3-pagination, .cas-pagination", timeout=60000),
-                        PageMethod("evaluate", "window.scrollBy(0, 300)"),
-                        PageMethod("wait_for_timeout", 2000),
+                        PageMethod("wait_for_timeout", 20000),
                     ],
                 },
                 errback=self.errback_save_screenshot,
@@ -219,59 +260,70 @@ class Encuentra24Spider(scrapy.Spider):
         sel = Selector(text=html)
         item = response.meta['item']
         
-        # 1. Full Description
-        # .cas-property-about__text
-        desc_lines = sel.css('.cas-property-about__text *::text').getall()
+        # 1. Full Description — d3-* theme or m3-* (product-comments) theme
+        desc_lines = sel.css('.d3-property-about__text *::text, .cas-property-about__text *::text').getall()
+        if not any(line.strip() for line in desc_lines):
+            desc_lines = sel.css('.product-comments *::text, .product-comments::text').getall()
         full_desc = "\n".join([line.strip() for line in desc_lines if line.strip()])
         item['description'] = full_desc
-        
+
         if not full_desc:
-             self.logger.warning(f"Empty description for {response.url}. Dumping HTML.")
-             debug_filename = f"data/debug_detail_{datetime.now().strftime('%H%M%S')}.html"
-             with open(debug_filename, 'w', encoding='utf-8') as f:
-                 f.write(html)
-             self.logger.info(f"Saved debug HTML to {debug_filename}")
-        
-        # 2. Features / Amenities
-        # .cas-property-benefits__benefit
-        benefits = sel.css('.cas-property-benefits__benefit::text').getall()
-        clean_features = [f.strip() for f in benefits if f.strip()]
-        
-        # Merge with any existing features inferred (none yet in this flow)
-        item['features'] = clean_features
-        
-        # 3. Specs from Hero Insight (more accurate than card)
-        # Bedrooms, Bathrooms, Area, Parking
-        attributes = sel.css('.cas-property-insight__attribute, .d3-property-insight__attribute')
+            debug_filename = f"data/debug_detail_{datetime.now().strftime('%H%M%S')}.html"
+            with open(debug_filename, 'w', encoding='utf-8') as f:
+                f.write(html)
+            self.logger.warning(f"Empty description for {response.url}. HTML dumped to {debug_filename}")
+
+        # 2. Features / Amenities — d3-* or m3-* (product-extras-extra)
+        benefits = sel.css('.d3-property-benefits__benefit::text, .cas-property-benefits__benefit::text').getall()
+        if not benefits:
+            benefits = sel.css('.product-extras-extra::text').getall()
+        item['features'] = [f.strip() for f in benefits if f.strip()]
+
+        # 3. Specs — d3-* insight attributes or m3-* product-icons-icon
+        attributes = sel.css('.d3-property-insight__attribute, .cas-property-insight__attribute')
         for attr in attributes:
-            text = attr.css('.cas-property-insight__attribute-value::text, .d3-property-insight__attribute-value::text').get('').strip()
-            icon_html = attr.get() # Check SVG
-            
-            if 'sprites.svg#bed' in icon_html:
+            text = attr.css('.d3-property-insight__attribute-value::text, .cas-property-insight__attribute-value::text').get('').strip()
+            icon_html = attr.get()
+            if '#bed"' in icon_html:
                 item['bedrooms'] = text
-            elif 'sprites.svg#bath' in icon_html:
+            elif '#bath"' in icon_html:
                 item['bathrooms'] = text
-            elif 'sprites.svg#size' in icon_html:
+            elif '#resize"' in icon_html or '#size"' in icon_html:
                 item['area'] = text
-            elif 'sprites.svg#parking' in icon_html:
+            elif '#parking"' in icon_html:
                 item['garage'] = text
 
-        # 4. Detailed Metadata
+        if not attributes:
+            for icon_item in sel.css('div.product-icons-icon'):
+                icon_html = icon_item.get()
+                text_parts = [t.strip() for t in icon_item.css('::text').getall() if t.strip()]
+                text = ' '.join(text_parts)
+                if '#ic-bed"' in icon_html:
+                    item['bedrooms'] = text
+                elif '#ic-bath"' in icon_html:
+                    item['bathrooms'] = text
+                elif '#ic-resize"' in icon_html or '#ic-size"' in icon_html:
+                    item['area'] = text
+                elif '#ic-parking"' in icon_html:
+                    item['garage'] = text
+
+        # 4. Detailed Metadata — d3-* detail labels or m3-* product-publication col-6 pairs
         meta = {}
-        details = sel.css('.cas-property-details__detail-label, .d3-property-details__detail-label')
+        details = sel.css('.d3-property-details__detail-label, .cas-property-details__detail-label')
         for d in details:
-            # The label text is strictly the text node of the parent, not the child <p>
-            # But the structure is <div>Label <p>Value</p></div>
-            # So d.css('::text').get() might be "Label "
             label = d.css('::text').get('').strip()
-            value = d.css('p.cas-property-details__detail::text, p.d3-property-details__detail::text').get('').strip()
-            
+            value = d.css('p.d3-property-details__detail::text, p.cas-property-details__detail::text').get('').strip()
             if label and value:
                 meta[label] = value
-                
-        # 5. Extract specific fields from metadata map to top-level if needed
-        # e.g. Year Built, Maintenance Fee
-        
+
+        if not meta:
+            cols = sel.css('.product-publication .col-6')
+            col_texts = [c.css('::text, strong::text').get('').strip() for c in cols]
+            for i in range(0, len(col_texts) - 1, 2):
+                label, value = col_texts[i], col_texts[i + 1]
+                if label and value:
+                    meta[label] = value
+
         item['metadata'] = meta
         
         yield item
