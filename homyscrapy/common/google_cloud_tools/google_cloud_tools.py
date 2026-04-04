@@ -1,14 +1,13 @@
 import os
 import json
-from google.cloud import storage
-from google.cloud import bigquery
-from datetime import datetime
-import pandas as pd
-import unicodedata
-import re
-import pytz
-import json
 import logging
+import re
+import unicodedata
+from datetime import datetime
+
+import pandas as pd
+import pytz
+from google.cloud import bigquery, storage
 
 def get_list_files_from_bucket(project_id: str, bucket_name: str, bucket_path: str) -> list:
     """
@@ -26,7 +25,7 @@ def get_last_file_name_from_list(files_list: list, extension: str) -> str:
     """
     try:
         dates_list = [int(file.split("/")[-1][:8]) for file in files_list]
-    except:
+    except (ValueError, IndexError):
         dates_list = [int(file.split("/")[-1][:8]) for file in files_list[1:]]
     last_date = max(dates_list)
     last_file_name = str(last_date) + extension
@@ -142,16 +141,12 @@ def text_to_id(text):
     :rtype: String.
     """
     text = strip_accents(text.lower())
-    text = re.sub("[ ]+", "_", text)
-    text = re.sub("[^0-9a-zA-Z_-]", "", text)
-    text = re.sub("1", "", text)
+    text = re.sub(r"[ ]+", "_", text)
+    text = re.sub(r"[^0-9a-zA-Z_-]", "", text)
 
-    # First number character fixing
-    try:
-        first_number = int(text[0])
+    # Prepend underscore if the first character is a digit (BigQuery requirement)
+    if text and text[0].isdigit():
         text = "_" + text
-    except:
-        pass
     return text
 
 def only_listed_cols(df):

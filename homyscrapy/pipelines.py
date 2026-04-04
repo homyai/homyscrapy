@@ -2,7 +2,14 @@ from itemadapter import ItemAdapter
 import pandas as pd
 import os
 from datetime import datetime
-from homyscrapy.common.google_cloud_tools.google_cloud_tools import gcs_upload_file_pd, date_manager
+from homyscrapy.common.google_cloud_tools.google_cloud_tools import gcs_upload_file_pd
+
+# Maps spider name → GCS/local path prefix.
+# Spiders not listed here default to spider.name.upper().
+SPIDER_KEY_MAP = {
+    'encuentra24': 'C24',
+}
+
 
 class HomyscrapyPipeline:
     def open_spider(self, spider):
@@ -19,13 +26,8 @@ class HomyscrapyPipeline:
 
         df = pd.DataFrame(self.items)
         current_date = datetime.today().strftime("%Y-%m-%d")
-
-        bot_key_map = {
-            'inmotico': 'INT',
-            'encuentra24': 'C24'
-        }
-        key_bot = bot_key_map.get(spider.name, spider.name.upper())
-        path = f"{key_bot}/sales/houses/raw-data/"
+        key = SPIDER_KEY_MAP.get(spider.name, spider.name.upper())
+        path = f"{key}/sales/houses/raw-data/"
         file_name = f"{current_date}.json"
 
         # Always save locally
