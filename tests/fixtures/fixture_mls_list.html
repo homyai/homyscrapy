@@ -1,0 +1,2699 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    
+
+
+  <title>Buscar Listados &mdash; Real Estate Costa Rica MLS</title>
+
+
+
+  <meta name="description"
+        content="Costa Rica Real Estate MLS, Official Multiple Listing Services with verified Homes and Condos for Rent and Sale, Land and Commercial Properties for Sale, short and long term Residential for Sale and Rent Properties and Commercial Leases." />
+
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript"
+src="https://maps.googleapis.com/maps/api/js?key=REDACTED_API_KEY"></script>
+  <link rel="stylesheet" type="text/css" href="https://mls.re.cr/assets/bootstrap/:version:2.3.1/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="https://mls.re.cr/assets/bootstrap/:version:2.3.1/css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" type="text/css" href="https://mls.re.cr/assets/fotorama/:version:4.2.1/fotorama.css" />
+<link rel="stylesheet" type="text/css" href="https://mls.re.cr/assets/jqueryui/:version:1.10.3/themes/bootstrap/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="https://mls.re.cr/assets/fontawesome/:version:3.2.1/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="https://mls.re.cr/assets/propertyshelf/:version:2024-08-04T23:59:21.24/css/application.css" />
+<link rel="stylesheet" type="text/css" href="https://mls.re.cr/assets/costarica/:version:2024-08-04T23:59:12.69/application.css" />
+<script type="text/javascript" src="https://mls.re.cr/assets/jquery/:version:1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://mls.re.cr/assets/bootstrap/:version:2.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://mls.re.cr/assets/fotorama/:version:4.2.1/fotorama.js"></script>
+<script type="text/javascript" src="https://mls.re.cr/assets/jquery_autosize/:version:1.17.1/jquery.autosize.min.js"></script>
+<script type="text/javascript" src="https://mls.re.cr/assets/jqueryui/:version:1.10.3/ui/minified/:bundle:jquery.ui.core.min.js;jquery.ui.widget.min.js;jquery.ui.button.min.js"></script>
+<script type="text/javascript" src="https://mls.re.cr/assets/propertyshelf/:version:2024-08-04T23:59:21.24/js/:bundle:mls.min.js;forms.min.js"></script>
+<link rel="shortcut icon" type="image/x-icon" href="https://mls.re.cr/assets/propertyshelf/:version:2024-08-04T23:59:21.24/images/favicon.ico"/></head>
+
+  <body class="mls">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-my-navbar btn-danger pull-right" data-toggle="collapse" data-target=".nav-collapse">
+            <i class="icon-collapse icon-large"></i>
+          </a>
+          <a class="brand" href="https://mls.re.cr">Real Estate Costa Rica MLS</a>
+          <div>
+  
+    
+    <div class="pull-right btn-group"><a
+    class="btn btn-success"
+    href="https://mls.re.cr/loginForm.html"><i class="icon-signin"></i> Entrar</a></div>
+  
+
+</div>
+          <div id="header_nav" class="collapse nav-collapse">
+  <ul class="nav">
+    
+  <li class=" cms"><a href="https://www.re.cr/es">Inicio</a>
+    </li>
+
+
+
+  <li class=" index.html"><a href="https://mls.re.cr/index.html">MLS</a>
+    </li>
+
+
+
+  <li class="active search"><a
+    href="https://mls.re.cr/search">Búsqueda</a>
+    </li>
+
+
+
+  <li class=" agencies"><a href="https://mls.re.cr/agencies">Directorio de la Agencia</a>
+    </li>
+
+
+
+  <li class=" contact"><a href="https://mls.re.cr/contact">Contacto</a>
+    </li>
+
+
+  </ul>
+
+
+
+
+  <ul class="nav">
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#"><i class="icon-flag"></i> Español <b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li class=""><a href="?setLanguage=en&amp;form.widgets.object_type%3Alist=house&amp;batch-limit=25&amp;offset=0">English</a></li>
+        <li class="disabled"><a
+    href="?setLanguage=es&amp;form.widgets.object_type%3Alist=house&amp;batch-limit=25&amp;offset=0">Español</a></li>
+        </ul>
+    </li>
+  </ul>
+
+
+
+
+  
+
+</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid" style="padding-top: 30px;">
+      
+  <div class="row-fluid">
+    <div class="span12">
+      <ul class="breadcrumb"><li class="you-are-here"><span>Usted está aquí:</span></li><li><a href="https://mls.re.cr">MLS</a></li><li><span class="divider">/</span><a href="https://mls.re.cr/search">Buscar Listados</a></li></ul>
+    </div>
+  </div>
+
+
+
+  
+
+
+      <div>
+
+        
+        <div class="row-fluid">
+          <div class="span12" id="content" role="main">
+  <article id="listing-search-results">
+    <hgroup class="page-header">
+      <h1 class="document-first-heading"><span>Buscar Listados</span> &mdash; Venta Residencial</h1>
+    </hgroup>
+
+    <section id="search-form">
+      <div style="display: none; padding-bottom: 20px" class="slider-control"><a
+    class="btn" href="#">Modificar Búsqueda</a></div>
+      
+  <form action="https://mls.re.cr/search/rs" method="GET"
+        enctype="multipart/form-data"
+        class="form-horizontal" name="form" id="form">
+
+  
+    
+      
+        
+      
+
+      
+        
+      
+
+      
+        
+      
+
+      
+
+      <div class="column-wrapper container_12">
+      <div class="buttons-top">
+        <div class="form-actions">
+          
+  <button id="form-buttons-search"
+          name="form.buttons.search"
+          class="submit-widget button-field btn btn-primary"
+          type="submit"
+          aria-describedby="form-buttons-search-help"><i
+    class="icon-search"></i> Buscar</button>
+          
+
+
+        </div>
+      </div>
+      
+        <div class="column-top">
+          
+            <div id="form-widgets-searchable_text-row"
+                 class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-searchable_text">Búsqueda de Texto</label>
+                <div class="widget text-widget textline-field controls">
+                  
+    <input id="form-widgets-searchable_text"
+           name="form.widgets.searchable_text"
+           class="text-widget textline-field" title="None"
+           value="" type="text" />
+
+<small class="help-block">Usted puede utilizar * para comodines.</small>
+                </div>
+              
+            </div>
+            
+          
+        </div>
+
+        <hr />
+
+        <div class="column-one">
+          
+            <div id="form-widgets-country-row" class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-country">País</label>
+                <div class="widget select-widget choice-field controls">
+                  
+<select id="form-widgets-country"
+        name="form.widgets.country:list"
+        class="select-widget choice-field" size="1"
+        title="None">
+<option id="form-widgets-country-novalue"
+        value="--NOVALUE--" selected="selected">Todos</option>
+<option id="form-widgets-country-0" value="CR">Costa Rica</option>
+</select>
+<input name="form.widgets.country-empty-marker"
+       type="hidden" value="1" />
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-state-row" class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-state">Provincia</label>
+                <div class="widget optgroup-widget choice-field controls">
+                  
+
+  <select id="form-widgets-state"
+          name="form.widgets.state:list"
+          class="optgroup-widget choice-field" size="1"
+          title="None">
+    
+      
+        <option id="form-widgets-state-novalue"
+                value="--NOVALUE--" selected="selected">Todos</option>
+        
+      
+      
+    
+    
+      
+      <optgroup label="Costa Rica">
+        
+          
+          <option id="form-widgets-state-0" value="CR-A">Alajuela</option>
+        
+        
+          
+          <option id="form-widgets-state-1" value="CR-C">Cartago</option>
+        
+        
+          
+          <option id="form-widgets-state-2" value="CR-G">Guanacaste</option>
+        
+        
+          
+          <option id="form-widgets-state-3" value="CR-H">Heredia</option>
+        
+        
+          
+          <option id="form-widgets-state-4" value="CR-L">Limón</option>
+        
+        
+          
+          <option id="form-widgets-state-5" value="CR-P">Puntarenas</option>
+        
+        
+          
+          <option id="form-widgets-state-6" value="CR-SJ">San José</option>
+        
+      </optgroup>
+    
+  </select>
+  <input name="form.widgets.state-empty-marker"
+         type="hidden" value="1" />
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-county-row" class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-county">Cantón</label>
+                <div class="widget optgroup-widget choice-field controls">
+                  
+
+  <select id="form-widgets-county"
+          name="form.widgets.county:list"
+          class="optgroup-widget choice-field" size="1"
+          title="None">
+    
+      
+        <option id="form-widgets-county-novalue"
+                value="--NOVALUE--" selected="selected">Todos</option>
+        
+      
+      
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela">
+        
+          
+          <option id="form-widgets-county-0" value="CR-A-AL">Alajuela</option>
+        
+        
+          
+          <option id="form-widgets-county-1" value="CR-A-AT">Atenas</option>
+        
+        
+          
+          <option id="form-widgets-county-2" value="CR-A-GR">Grecia</option>
+        
+        
+          
+          <option id="form-widgets-county-3" value="CR-A-GU">Guatuso</option>
+        
+        
+          
+          <option id="form-widgets-county-4" value="CR-A-LC">Los Chiles</option>
+        
+        
+          
+          <option id="form-widgets-county-5" value="CR-A-NA">Naranjo</option>
+        
+        
+          
+          <option id="form-widgets-county-6" value="CR-A-OR">Orotina</option>
+        
+        
+          
+          <option id="form-widgets-county-7" value="CR-A-PA">Palmares</option>
+        
+        
+          
+          <option id="form-widgets-county-8" value="CR-A-PO">Poás</option>
+        
+        
+          
+          <option id="form-widgets-county-9" value="CR-A-SC">San Carlos</option>
+        
+        
+          
+          <option id="form-widgets-county-10"
+                  value="CR-A-SM">San Mateo</option>
+        
+        
+          
+          <option id="form-widgets-county-11"
+                  value="CR-A-SR">San Ramón</option>
+        
+        
+          
+          <option id="form-widgets-county-12"
+                  value="CR-A-UP">Upala</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Cartago">
+        
+          
+          <option id="form-widgets-county-13"
+                  value="CR-C-AL">Alvarado</option>
+        
+        
+          
+          <option id="form-widgets-county-14"
+                  value="CR-C-CA">Cartago</option>
+        
+        
+          
+          <option id="form-widgets-county-15"
+                  value="CR-C-EC">El Guarco</option>
+        
+        
+          
+          <option id="form-widgets-county-16"
+                  value="CR-C-LU">La Unión</option>
+        
+        
+          
+          <option id="form-widgets-county-17"
+                  value="CR-C-OR">Oreamuno</option>
+        
+        
+          
+          <option id="form-widgets-county-18"
+                  value="CR-C-PA">Paraíso</option>
+        
+        
+          
+          <option id="form-widgets-county-19"
+                  value="CR-C-TU">Turrialba</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Guanacaste">
+        
+          
+          <option id="form-widgets-county-20"
+                  value="CR-G-AB">Abangares</option>
+        
+        
+          
+          <option id="form-widgets-county-21"
+                  value="CR-G-BA">Bagaces</option>
+        
+        
+          
+          <option id="form-widgets-county-22"
+                  value="CR-G-CR">Carrillo</option>
+        
+        
+          
+          <option id="form-widgets-county-23"
+                  value="CR-G-HO">Hojancha</option>
+        
+        
+          
+          <option id="form-widgets-county-24"
+                  value="CR-G-LC">La Cruz</option>
+        
+        
+          
+          <option id="form-widgets-county-25"
+                  value="CR-G-LI">Liberia</option>
+        
+        
+          
+          <option id="form-widgets-county-26"
+                  value="CR-G-NA">Nandayure</option>
+        
+        
+          
+          <option id="form-widgets-county-27"
+                  value="CR-G-NI">Nicoya</option>
+        
+        
+          
+          <option id="form-widgets-county-28"
+                  value="CR-G-SC">Santa Cruz</option>
+        
+        
+          
+          <option id="form-widgets-county-29"
+                  value="CR-G-TI">Tilarán</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Heredia">
+        
+          
+          <option id="form-widgets-county-30"
+                  value="CR-H-BA">Barva</option>
+        
+        
+          
+          <option id="form-widgets-county-31"
+                  value="CR-H-BE">Belén</option>
+        
+        
+          
+          <option id="form-widgets-county-32"
+                  value="CR-H-FL">Flores</option>
+        
+        
+          
+          <option id="form-widgets-county-33"
+                  value="CR-H-HE">Heredia</option>
+        
+        
+          
+          <option id="form-widgets-county-34"
+                  value="CR-H-SB">Santa Bárbara</option>
+        
+        
+          
+          <option id="form-widgets-county-35"
+                  value="CR-H-SD">Santo Domingo</option>
+        
+        
+          
+          <option id="form-widgets-county-36"
+                  value="CR-H-SI">San Isidro</option>
+        
+        
+          
+          <option id="form-widgets-county-37"
+                  value="CR-H-SP">San Pablo</option>
+        
+        
+          
+          <option id="form-widgets-county-38"
+                  value="CR-H-SR">San Rafael</option>
+        
+        
+          
+          <option id="form-widgets-county-39"
+                  value="CR-H-SA">Sarapiquí</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Limón">
+        
+          
+          <option id="form-widgets-county-40"
+                  value="CR-L-LI">Limón</option>
+        
+        
+          
+          <option id="form-widgets-county-41"
+                  value="CR-L-PO">Pococí</option>
+        
+        
+          
+          <option id="form-widgets-county-42"
+                  value="CR-L-TA">Talamanca</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Puntarenas">
+        
+          
+          <option id="form-widgets-county-43"
+                  value="CR-P-AG">Aguirre</option>
+        
+        
+          
+          <option id="form-widgets-county-44"
+                  value="CR-P-BA">Buenos Aires</option>
+        
+        
+          
+          <option id="form-widgets-county-45"
+                  value="CR-P-CO">Corredores</option>
+        
+        
+          
+          <option id="form-widgets-county-46"
+                  value="CR-P-CB">Coto Brus</option>
+        
+        
+          
+          <option id="form-widgets-county-47"
+                  value="CR-P-ES">Esparza</option>
+        
+        
+          
+          <option id="form-widgets-county-48"
+                  value="CR-P-GA">Garabito</option>
+        
+        
+          
+          <option id="form-widgets-county-49"
+                  value="CR-P-GO">Golfito</option>
+        
+        
+          
+          <option id="form-widgets-county-50"
+                  value="CR-P-MO">Montes de Oro</option>
+        
+        
+          
+          <option id="form-widgets-county-51"
+                  value="CR-P-OS">Osa</option>
+        
+        
+          
+          <option id="form-widgets-county-52"
+                  value="CR-P-PA">Parrita</option>
+        
+        
+          
+          <option id="form-widgets-county-53"
+                  value="CR-P-PU">Puntarenas</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José">
+        
+          
+          <option id="form-widgets-county-54"
+                  value="CR-SJ-AS">Aserrí</option>
+        
+        
+          
+          <option id="form-widgets-county-55"
+                  value="CR-SJ-CU">Curridabat</option>
+        
+        
+          
+          <option id="form-widgets-county-56"
+                  value="CR-SJ-DE">Desamparados</option>
+        
+        
+          
+          <option id="form-widgets-county-57"
+                  value="CR-SJ-DO">Dota</option>
+        
+        
+          
+          <option id="form-widgets-county-58"
+                  value="CR-SJ-ES">Escazú</option>
+        
+        
+          
+          <option id="form-widgets-county-59"
+                  value="CR-SJ-GO">Goicoechea</option>
+        
+        
+          
+          <option id="form-widgets-county-60"
+                  value="CR-SJ-MO">Montes de Oca</option>
+        
+        
+          
+          <option id="form-widgets-county-61"
+                  value="CR-SJ-MV">Moravia</option>
+        
+        
+          
+          <option id="form-widgets-county-62"
+                  value="CR-SJ-MR">Mora</option>
+        
+        
+          
+          <option id="form-widgets-county-63"
+                  value="CR-SJ-PZ">Pérez Zeledón</option>
+        
+        
+          
+          <option id="form-widgets-county-64"
+                  value="CR-SJ-SA">Santa Ana</option>
+        
+        
+          
+          <option id="form-widgets-county-65"
+                  value="CR-SJ-SJ">San José</option>
+        
+        
+          
+          <option id="form-widgets-county-66"
+                  value="CR-SJ-TA">Tarrazú</option>
+        
+        
+          
+          <option id="form-widgets-county-67"
+                  value="CR-SJ-TI">Tibás</option>
+        
+        
+          
+          <option id="form-widgets-county-68"
+                  value="CR-SJ-TU">Turrubares</option>
+        
+        
+          
+          <option id="form-widgets-county-69"
+                  value="CR-SJ-VC">Vázquez de Coronado</option>
+        
+      </optgroup>
+    
+  </select>
+  <input name="form.widgets.county-empty-marker"
+         type="hidden" value="1" />
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-district-row" class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-district">Distrito</label>
+                <div class="widget optgroup-widget choice-field controls">
+                  
+
+  <select id="form-widgets-district"
+          name="form.widgets.district:list"
+          class="optgroup-widget choice-field" size="1"
+          title="None">
+    
+      
+        <option id="form-widgets-district-novalue"
+                value="--NOVALUE--" selected="selected">Todos</option>
+        
+      
+      
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela - Alajuela">
+        
+          
+          <option id="form-widgets-district-0"
+                  value="CR-A-AL-AL">Alajuela</option>
+        
+        
+          
+          <option id="form-widgets-district-1"
+                  value="CR-A-AL-DE">Desamparados</option>
+        
+        
+          
+          <option id="form-widgets-district-2"
+                  value="CR-A-AL-GA">Garita</option>
+        
+        
+          
+          <option id="form-widgets-district-3"
+                  value="CR-A-AL-GU">Guácima</option>
+        
+        
+          
+          <option id="form-widgets-district-4"
+                  value="CR-A-AL-RS">Río Segundo</option>
+        
+        
+          
+          <option id="form-widgets-district-5"
+                  value="CR-A-AL-SB">Sabanilla</option>
+        
+        
+          
+          <option id="form-widgets-district-6"
+                  value="CR-A-AL-SR">San Rafael</option>
+        
+        
+          
+          <option id="form-widgets-district-7"
+                  value="CR-A-AL-TU">Turrúcares</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela - Atenas">
+        
+          
+          <option id="form-widgets-district-8"
+                  value="CR-A-AT-AT">Atenas</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela - Grecia">
+        
+          
+          <option id="form-widgets-district-9"
+                  value="CR-A-GR-BO">Bolívar</option>
+        
+        
+          
+          <option id="form-widgets-district-10"
+                  value="CR-A-GR-GR">Grecia</option>
+        
+        
+          
+          <option id="form-widgets-district-11"
+                  value="CR-A-GR-SI">San Isidro</option>
+        
+        
+          
+          <option id="form-widgets-district-12"
+                  value="CR-A-GR-TA">Tacares</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela - Guatuso">
+        
+          
+          <option id="form-widgets-district-13"
+                  value="CR-A-GU-CO">Cote</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela - Los Chiles">
+        
+          
+          <option id="form-widgets-district-14"
+                  value="CR-A-LC-CN">Caño Negro</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela - Naranjo">
+        
+          
+          <option id="form-widgets-district-15"
+                  value="CR-A-NA-CS">Cirrí Sur</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela - Orotina">
+        
+          
+          <option id="form-widgets-district-16"
+                  value="CR-A-OR-CO">Coyolar</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela - Palmares">
+        
+          
+          <option id="form-widgets-district-17"
+                  value="CR-A-PA-ZA">Zaragoza</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela - Poás">
+        
+          
+          <option id="form-widgets-district-18"
+                  value="CR-A-PO-SP">San Pedro</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela - San Carlos">
+        
+          
+          <option id="form-widgets-district-19"
+                  value="CR-A-SC-AZ">Aguas Zarcas</option>
+        
+        
+          
+          <option id="form-widgets-district-20"
+                  value="CR-A-SC-LF">La Fortuna</option>
+        
+        
+          
+          <option id="form-widgets-district-21"
+                  value="CR-A-SC-LT">La Tigra</option>
+        
+        
+          
+          <option id="form-widgets-district-22"
+                  value="CR-A-SC-QU">Quesada</option>
+        
+        
+          
+          <option id="form-widgets-district-23"
+                  value="CR-A-SC-VA">Venado</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela - San Mateo">
+        
+          
+          <option id="form-widgets-district-24"
+                  value="CR-A-SM-DE">Desmonte</option>
+        
+        
+          
+          <option id="form-widgets-district-25"
+                  value="CR-A-SM-JM">Jesús María</option>
+        
+        
+          
+          <option id="form-widgets-district-26"
+                  value="CR-A-SM-SM">San Mateo</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela - San Ramón">
+        
+          
+          <option id="form-widgets-district-27"
+                  value="CR-A-SR-AL">Alfaro</option>
+        
+        
+          
+          <option id="form-widgets-district-28"
+                  value="CR-A-SR-PN">Piedades Norte</option>
+        
+        
+          
+          <option id="form-widgets-district-29"
+                  value="CR-A-SR-SRF">San Rafael</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Alajuela - Upala">
+        
+          
+          <option id="form-widgets-district-30"
+                  value="CR-A-UP-BI">Bijagua</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Cartago - Cartago">
+        
+          
+          <option id="form-widgets-district-31"
+                  value="CR-C-CA-DN">Dulce Nombre</option>
+        
+        
+          
+          <option id="form-widgets-district-32"
+                  value="CR-C-CA-QU">Quebradilla</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Cartago - El Guarco">
+        
+          
+          <option id="form-widgets-district-33"
+                  value="CR-C-EC-SI">San Isidro</option>
+        
+        
+          
+          <option id="form-widgets-district-34"
+                  value="CR-C-EC-TE">Tejar</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Cartago - La Unión">
+        
+          
+          <option id="form-widgets-district-35"
+                  value="CR-C-LU-SRM">San Ramón</option>
+        
+        
+          
+          <option id="form-widgets-district-36"
+                  value="CR-C-LU-TR">Tres Ríos</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Cartago - Oreamuno">
+        
+          
+          <option id="form-widgets-district-37"
+                  value="CR-C-OR-SRF">San Rafael</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Cartago - Turrialba">
+        
+          
+          <option id="form-widgets-district-38"
+                  value="CR-C-TU-TU">Turrialba</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Guanacaste - Abangares">
+        
+          
+          <option id="form-widgets-district-39"
+                  value="CR-G-AB-SR">Sierra</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Guanacaste - Bagaces">
+        
+          
+          <option id="form-widgets-district-40"
+                  value="CR-G-BA-FO">Fortuna</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Guanacaste - Carrillo">
+        
+          
+          <option id="form-widgets-district-41"
+                  value="CR-G-CR-BE">Belén</option>
+        
+        
+          
+          <option id="form-widgets-district-42"
+                  value="CR-G-CR-PA">Palmira</option>
+        
+        
+          
+          <option id="form-widgets-district-43"
+                  value="CR-G-CR-SA">Sardinal</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Guanacaste - Hojancha">
+        
+          
+          <option id="form-widgets-district-44"
+                  value="CR-G-HO-HO">Hojancha</option>
+        
+        
+          
+          <option id="form-widgets-district-45"
+                  value="CR-G-HO-PC">Puerto Carrillo</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Guanacaste - La Cruz">
+        
+          
+          <option id="form-widgets-district-46"
+                  value="CR-G-LC-LC">La Cruz</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Guanacaste - Liberia">
+        
+          
+          <option id="form-widgets-district-47"
+                  value="CR-G-LI-CU">Curubandé</option>
+        
+        
+          
+          <option id="form-widgets-district-48"
+                  value="CR-G-LI-NA">Nacascolo</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Guanacaste - Nandayure">
+        
+          
+          <option id="form-widgets-district-49"
+                  value="CR-G-NA-BJ">Bejuco</option>
+        
+        
+          
+          <option id="form-widgets-district-50"
+                  value="CR-G-NA-ZA">Zapotal</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Guanacaste - Nicoya">
+        
+          
+          <option id="form-widgets-district-51"
+                  value="CR-G-NI-BN">Belén de Nosarita</option>
+        
+        
+          
+          <option id="form-widgets-district-52"
+                  value="CR-G-NI-NI">Nicoya</option>
+        
+        
+          
+          <option id="form-widgets-district-53"
+                  value="CR-G-NI-NO">Nosara</option>
+        
+        
+          
+          <option id="form-widgets-district-54"
+                  value="CR-G-NI-QH">Quebrada Honda</option>
+        
+        
+          
+          <option id="form-widgets-district-55"
+                  value="CR-G-NI-SM">Sámara</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Guanacaste - Santa Cruz">
+        
+          
+          <option id="form-widgets-district-56"
+                  value="CR-G-SC-CV">Cabo Velas</option>
+        
+        
+          
+          <option id="form-widgets-district-57"
+                  value="CR-G-SC-CA">Cartagena</option>
+        
+        
+          
+          <option id="form-widgets-district-58"
+                  value="CR-G-SC-CU">Cuajiniquil</option>
+        
+        
+          
+          <option id="form-widgets-district-59"
+                  value="CR-G-SC-SC">Santa Cruz</option>
+        
+        
+          
+          <option id="form-widgets-district-60"
+                  value="CR-G-SC-TA">Tamarindo</option>
+        
+        
+          
+          <option id="form-widgets-district-61"
+                  value="CR-G-SC-TE">Tempate</option>
+        
+        
+          
+          <option id="form-widgets-district-62"
+                  value="CR-G-SC-VA">Veintisiete de Abril</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Guanacaste - Tilarán">
+        
+          
+          <option id="form-widgets-district-63"
+                  value="CR-G-TI-AR">Arenal</option>
+        
+        
+          
+          <option id="form-widgets-district-64"
+                  value="CR-G-TI-QG">Quebrada Grande</option>
+        
+        
+          
+          <option id="form-widgets-district-65"
+                  value="CR-G-TI-SR">Santa Rosa</option>
+        
+        
+          
+          <option id="form-widgets-district-66"
+                  value="CR-G-TI-TM">Tierras Morenas</option>
+        
+        
+          
+          <option id="form-widgets-district-67"
+                  value="CR-G-TI-TI">Tilarán</option>
+        
+        
+          
+          <option id="form-widgets-district-68"
+                  value="CR-G-TI-TR">Tronadora</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Heredia - Barva">
+        
+          
+          <option id="form-widgets-district-69"
+                  value="CR-H-BA-BA">Barva</option>
+        
+        
+          
+          <option id="form-widgets-district-70"
+                  value="CR-H-BA-SPA">San Pablo</option>
+        
+        
+          
+          <option id="form-widgets-district-71"
+                  value="CR-H-BA-SPE">San Pedro</option>
+        
+        
+          
+          <option id="form-widgets-district-72"
+                  value="CR-H-BA-SL">Santa Lucía</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Heredia - Belén">
+        
+          
+          <option id="form-widgets-district-73"
+                  value="CR-H-BE-AS">Asunción</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Heredia - Flores">
+        
+          
+          <option id="form-widgets-district-74"
+                  value="CR-H-FL-LL">Llorente</option>
+        
+        
+          
+          <option id="form-widgets-district-75"
+                  value="CR-H-FL-SJ">San Joaquín de Flores</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Heredia - Heredia">
+        
+          
+          <option id="form-widgets-district-76"
+                  value="CR-H-HE-ME">Mercedes</option>
+        
+        
+          
+          <option id="form-widgets-district-77"
+                  value="CR-H-HE-UL">Ulloa</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Heredia - Santa Bárbara">
+        
+          
+          <option id="form-widgets-district-78"
+                  value="CR-H-SB-PU">Purabá</option>
+        
+        
+          
+          <option id="form-widgets-district-79"
+                  value="CR-H-SB-SJ">San Juan</option>
+        
+        
+          
+          <option id="form-widgets-district-80"
+                  value="CR-H-SB-SB">Santa Bárbara</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Heredia - Santo Domingo">
+        
+          
+          <option id="form-widgets-district-81"
+                  value="CR-H-SD-PA">Pará</option>
+        
+        
+          
+          <option id="form-widgets-district-82"
+                  value="CR-H-SD-SV">San Vicente</option>
+        
+        
+          
+          <option id="form-widgets-district-83"
+                  value="CR-H-SD-SR">Santa Rosa</option>
+        
+        
+          
+          <option id="form-widgets-district-84"
+                  value="CR-H-SD-ST">Santo Tomás</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Heredia - San Isidro">
+        
+          
+          <option id="form-widgets-district-85"
+                  value="CR-H-SI-CO">Concepción</option>
+        
+        
+          
+          <option id="form-widgets-district-86"
+                  value="CR-H-SI-SI">San Isidro</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Heredia - San Pablo">
+        
+          
+          <option id="form-widgets-district-87"
+                  value="CR-H-SP-RS">Rincón de Sabanilla</option>
+        
+        
+          
+          <option id="form-widgets-district-88"
+                  value="CR-H-SP-SP">San Pablo</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Heredia - San Rafael">
+        
+          
+          <option id="form-widgets-district-89"
+                  value="CR-H-SR-CO">Concepción</option>
+        
+        
+          
+          <option id="form-widgets-district-90"
+                  value="CR-H-SR-LA">Los Ángeles</option>
+        
+        
+          
+          <option id="form-widgets-district-91"
+                  value="CR-H-SR-SR">San Rafael</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Heredia - Sarapiquí">
+        
+          
+          <option id="form-widgets-district-92"
+                  value="CR-H-SA-HQ">Horquetas</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Limón - Limón">
+        
+          
+          <option id="form-widgets-district-93"
+                  value="CR-L-LI-LI">Limón</option>
+        
+        
+          
+          <option id="form-widgets-district-94"
+                  value="CR-L-LI-RB">Río Blanco</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Limón - Pococí">
+        
+          
+          <option id="form-widgets-district-95"
+                  value="CR-L-PO-GU">Guápiles</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Limón - Talamanca">
+        
+          
+          <option id="form-widgets-district-96"
+                  value="CR-L-TA-CA">Cahuita</option>
+        
+        
+          
+          <option id="form-widgets-district-97"
+                  value="CR-L-TA-SI">Sixaola</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Puntarenas - Aguirre">
+        
+          
+          <option id="form-widgets-district-98"
+                  value="CR-P-AG-NA">Naranjito</option>
+        
+        
+          
+          <option id="form-widgets-district-99"
+                  value="CR-P-AG-QU">Quepos</option>
+        
+        
+          
+          <option id="form-widgets-district-100"
+                  value="CR-P-AG-SA">Savegre</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Puntarenas - Buenos Aires">
+        
+          
+          <option id="form-widgets-district-101"
+                  value="CR-P-BA-BA">Buenos Aires</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Puntarenas - Corredores">
+        
+          
+          <option id="form-widgets-district-102"
+                  value="CR-P-CO-CO">Corredor</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Puntarenas - Coto Brus">
+        
+          
+          <option id="form-widgets-district-103"
+                  value="CR-P-CB-SV">San Vito</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Puntarenas - Esparza">
+        
+          
+          <option id="form-widgets-district-104"
+                  value="CR-P-ES-ES">Espíritu Santo</option>
+        
+        
+          
+          <option id="form-widgets-district-105"
+                  value="CR-P-ES-MA">Macacona</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Puntarenas - Garabito">
+        
+          
+          <option id="form-widgets-district-106"
+                  value="CR-P-GA-JA">Jacó</option>
+        
+        
+          
+          <option id="form-widgets-district-107"
+                  value="CR-P-GA-TA">Tárcoles</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Puntarenas - Golfito">
+        
+          
+          <option id="form-widgets-district-108"
+                  value="CR-P-GO-PJ">Puerto Jimenez</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Puntarenas - Montes de Oro">
+        
+          
+          <option id="form-widgets-district-109"
+                  value="CR-P-MO-MI">Miramar</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Puntarenas - Osa">
+        
+          
+          <option id="form-widgets-district-110"
+                  value="CR-P-OS-BB">Bahía Ballena</option>
+        
+        
+          
+          <option id="form-widgets-district-111"
+                  value="CR-P-OS-PA">Palmar</option>
+        
+        
+          
+          <option id="form-widgets-district-112"
+                  value="CR-P-OS-PC">Puerto Cortés</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Puntarenas - Parrita">
+        
+          
+          <option id="form-widgets-district-113"
+                  value="CR-P-PA-PA">Parrita</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - Puntarenas - Puntarenas">
+        
+          
+          <option id="form-widgets-district-114"
+                  value="CR-P-PU-CB">Cóbano</option>
+        
+        
+          
+          <option id="form-widgets-district-115"
+                  value="CR-P-PU-ER">El Roble</option>
+        
+        
+          
+          <option id="form-widgets-district-116"
+                  value="CR-P-PU-MV">Monte Verde</option>
+        
+        
+          
+          <option id="form-widgets-district-117"
+                  value="CR-P-PU-PA">Paquera</option>
+        
+        
+          
+          <option id="form-widgets-district-118"
+                  value="CR-P-PU-PU">Puntarenas</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Aserrí">
+        
+          
+          <option id="form-widgets-district-119"
+                  value="CR-SJ-AS-AS">Aserrí</option>
+        
+        
+          
+          <option id="form-widgets-district-120"
+                  value="CR-SJ-AS-SA">Salitrillos</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Curridabat">
+        
+          
+          <option id="form-widgets-district-121"
+                  value="CR-SJ-CU-CU">Curridabat</option>
+        
+        
+          
+          <option id="form-widgets-district-122"
+                  value="CR-SJ-CU-GR">Granadilla</option>
+        
+        
+          
+          <option id="form-widgets-district-123"
+                  value="CR-SJ-CU-SA">Sánchez</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Desamparados">
+        
+          
+          <option id="form-widgets-district-124"
+                  value="CR-SJ-DE-DE">Desamparados</option>
+        
+        
+          
+          <option id="form-widgets-district-125"
+                  value="CR-SJ-DE-GR">Gravilias</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Dota">
+        
+          
+          <option id="form-widgets-district-126"
+                  value="CR-SJ-DO-CO">Copey</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Escazú">
+        
+          
+          <option id="form-widgets-district-127"
+                  value="CR-SJ-ES-ES">Escazú</option>
+        
+        
+          
+          <option id="form-widgets-district-128"
+                  value="CR-SJ-ES-SA">San Antonio</option>
+        
+        
+          
+          <option id="form-widgets-district-129"
+                  value="CR-SJ-ES-SR">San Rafael</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Goicoechea">
+        
+          
+          <option id="form-widgets-district-130"
+                  value="CR-SJ-GO-CB">Calle Blancos</option>
+        
+        
+          
+          <option id="form-widgets-district-131"
+                  value="CR-SJ-GO-MP">Mata de Plátano</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Montes de Oca">
+        
+          
+          <option id="form-widgets-district-132"
+                  value="CR-SJ-MO-SB">Sabanilla</option>
+        
+        
+          
+          <option id="form-widgets-district-133"
+                  value="CR-SJ-MO-SP">San Pedro</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Moravia">
+        
+          
+          <option id="form-widgets-district-134"
+                  value="CR-SJ-MV-SV">San Vicente</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Mora">
+        
+          
+          <option id="form-widgets-district-135"
+                  value="CR-SJ-MR-CO">Colón</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Pérez Zeledón">
+        
+          
+          <option id="form-widgets-district-136"
+                  value="CR-SJ-PZ-BA">Barú</option>
+        
+        
+          
+          <option id="form-widgets-district-137"
+                  value="CR-SJ-PZ-CA">Cajón</option>
+        
+        
+          
+          <option id="form-widgets-district-138"
+                  value="CR-SJ-PZ-GE">General</option>
+        
+        
+          
+          <option id="form-widgets-district-139"
+                  value="CR-SJ-PZ-PL">Platanares</option>
+        
+        
+          
+          <option id="form-widgets-district-140"
+                  value="CR-SJ-PZ-RI">Rivas</option>
+        
+        
+          
+          <option id="form-widgets-district-141"
+                  value="CR-SJ-PZ-SI">San Isidro del General</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Santa Ana">
+        
+          
+          <option id="form-widgets-district-142"
+                  value="CR-SJ-SA-BR">Brasil</option>
+        
+        
+          
+          <option id="form-widgets-district-143"
+                  value="CR-SJ-SA-PI">Piedades</option>
+        
+        
+          
+          <option id="form-widgets-district-144"
+                  value="CR-SJ-SA-PO">Pozos</option>
+        
+        
+          
+          <option id="form-widgets-district-145"
+                  value="CR-SJ-SA-SL">Salitral</option>
+        
+        
+          
+          <option id="form-widgets-district-146"
+                  value="CR-SJ-SA-SA">Santa Ana</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - San José">
+        
+          
+          <option id="form-widgets-district-147"
+                  value="CR-SJ-SJ-CM">Carmen</option>
+        
+        
+          
+          <option id="form-widgets-district-148"
+                  value="CR-SJ-SJ-HA">Hatillo</option>
+        
+        
+          
+          <option id="form-widgets-district-149"
+                  value="CR-SJ-SJ-MR">Mata Redonda</option>
+        
+        
+          
+          <option id="form-widgets-district-150"
+                  value="CR-SJ-SJ-MC">Merced</option>
+        
+        
+          
+          <option id="form-widgets-district-151"
+                  value="CR-SJ-SJ-PA">Pavas</option>
+        
+        
+          
+          <option id="form-widgets-district-152"
+                  value="CR-SJ-SJ-SF">San Francisco de Dos Ríos</option>
+        
+        
+          
+          <option id="form-widgets-district-153"
+                  value="CR-SJ-SJ-SS">San Sebastián</option>
+        
+        
+          
+          <option id="form-widgets-district-154"
+                  value="CR-SJ-SJ-UR">Uruca</option>
+        
+        
+          
+          <option id="form-widgets-district-155"
+                  value="CR-SJ-SJ-ZA">Zapote</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Tarrazú">
+        
+          
+          <option id="form-widgets-district-156"
+                  value="CR-SJ-TA-SL">San Lorenzo</option>
+        
+        
+          
+          <option id="form-widgets-district-157"
+                  value="CR-SJ-TA-SM">San Marcos</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Turrubares">
+        
+          
+          <option id="form-widgets-district-158"
+                  value="CR-SJ-TU-CA">Carara</option>
+        
+      </optgroup>
+    
+    
+      
+      <optgroup label="Costa Rica - San José - Vázquez de Coronado">
+        
+          
+          <option id="form-widgets-district-159"
+                  value="CR-SJ-VC-PA">Patalillo</option>
+        
+        
+          
+          <option id="form-widgets-district-160"
+                  value="CR-SJ-VC-SI">San Isidro</option>
+        
+      </optgroup>
+    
+  </select>
+  <input name="form.widgets.district-empty-marker"
+         type="hidden" value="1" />
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-city-row" class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-city">Ciudad/Pueblo</label>
+                <div class="widget text-widget textline-field controls">
+                  
+    <input id="form-widgets-city" name="form.widgets.city"
+           class="text-widget textline-field" title="None"
+           value="" type="text" />
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-location_type-row"
+                 class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-location_type">Tipo de Ubicación</label>
+                <div class="widget select-widget choice-field controls">
+                  
+<select id="form-widgets-location_type"
+        name="form.widgets.location_type:list"
+        class="select-widget choice-field" size="1"
+        title="None">
+<option id="form-widgets-location_type-novalue"
+        value="--NOVALUE--">Todos</option>
+<option id="form-widgets-location_type-0"
+        value="oceanvicinity">Cerca del Mar</option>
+<option id="form-widgets-location_type-1" value="lakefront">Frente al Lago</option>
+<option id="form-widgets-location_type-2" value="oceanfront">Frente del Mar</option>
+<option id="form-widgets-location_type-3" value="riverfront">Frente del Río</option>
+<option id="form-widgets-location_type-4" value="mountain">Montaña</option>
+<option id="form-widgets-location_type-5" value="rural">Rural</option>
+<option id="form-widgets-location_type-6" value="suburban">Suburban</option>
+<option id="form-widgets-location_type-7" value="urban">Urbana</option>
+</select>
+<input name="form.widgets.location_type-empty-marker"
+       type="hidden" value="1" />
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-geographic_type-row"
+                 class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-geographic_type">Tipo de Geografía</label>
+                <div class="widget select-widget choice-field controls">
+                  
+<select id="form-widgets-geographic_type"
+        name="form.widgets.geographic_type:list"
+        class="select-widget choice-field" size="1"
+        title="None">
+<option id="form-widgets-geographic_type-novalue"
+        value="--NOVALUE--">Todos</option>
+<option id="form-widgets-geographic_type-0"
+        value="cloud_forest">Bosque Nuboso</option>
+<option id="form-widgets-geographic_type-1"
+        value="dry_forest">Bosque Tropical Seco</option>
+<option id="form-widgets-geographic_type-2"
+        value="highland_forest">Bosque de Altura</option>
+<option id="form-widgets-geographic_type-3"
+        value="swamp_forest">Humedales</option>
+<option id="form-widgets-geographic_type-4"
+        value="rain_forest">Oriente</option>
+</select>
+<input name="form.widgets.geographic_type-empty-marker"
+       type="hidden" value="1" />
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-view_type-row" class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-view_type">Tipo de Vista</label>
+                <div class="widget select-widget choice-field controls">
+                  
+<select id="form-widgets-view_type"
+        name="form.widgets.view_type:list"
+        class="select-widget choice-field" size="1"
+        title="None">
+<option id="form-widgets-view_type-novalue"
+        value="--NOVALUE--">Todos</option>
+<option id="form-widgets-view_type-0" value="bay_view">Vista a la Bahía</option>
+<option id="form-widgets-view_type-1" value="city_view">Vista a la Ciudad</option>
+<option id="form-widgets-view_type-2" value="mountain_view">Vista a la Montaña</option>
+<option id="form-widgets-view_type-3" value="beach_view">Vista a la Playa</option>
+<option id="form-widgets-view_type-4" value="greenbelt_view">Vista a Áreas Verdes</option>
+<option id="form-widgets-view_type-5" value="wooded_view">Vista al Bosque</option>
+<option id="form-widgets-view_type-6" value="garden_view">Vista al Jardín</option>
+<option id="form-widgets-view_type-7" value="lake_view">Vista al Lago</option>
+<option id="form-widgets-view_type-8" value="pond_view">Vista al Laguito</option>
+<option id="form-widgets-view_type-9" value="ocean_view">Vista al Mar</option>
+<option id="form-widgets-view_type-10" value="river_view">Vista al Río</option>
+<option id="form-widgets-view_type-11" value="valley_view">Vista al Valle</option>
+<option id="form-widgets-view_type-12" value="eastern_view">Vista hacia el Este</option>
+<option id="form-widgets-view_type-13" value="northern_view">Vista hacia el Norte</option>
+<option id="form-widgets-view_type-14" value="western_view">Vista hacia el Oeste</option>
+<option id="form-widgets-view_type-15" value="southern_view">Vista hacia el Sur</option>
+</select>
+<input name="form.widgets.view_type-empty-marker"
+       type="hidden" value="1" />
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-object_type-row"
+                 class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-object_type">Tipo de Propiedad</label>
+                <div class="widget select-widget choice-field controls">
+                  
+<select id="form-widgets-object_type"
+        name="form.widgets.object_type:list"
+        class="select-widget choice-field" size="1"
+        title="None">
+<option id="form-widgets-object_type-novalue"
+        value="--NOVALUE--">Todos</option>
+<option id="form-widgets-object_type-0" value="apartment">Apartamento</option>
+<option id="form-widgets-object_type-1" value="house"
+        selected="selected">Casa</option>
+<option id="form-widgets-object_type-2" value="mobile">Casa Prefabricada</option>
+<option id="form-widgets-object_type-3" value="condominium">Condominio Residencial</option>
+<option id="form-widgets-object_type-4" value="half_duplex">Medio Duplex</option>
+<option id="form-widgets-object_type-5" value="multiplex">Multiplex</option>
+<option id="form-widgets-object_type-6" value="townhouse">Townhouse</option>
+<option id="form-widgets-object_type-7"
+        value="freestanding_villa">Villa</option>
+</select>
+<input name="form.widgets.object_type-empty-marker"
+       type="hidden" value="1" />
+
+
+                </div>
+              
+            </div>
+            
+          
+        </div>
+
+        <div class="column-two">
+          
+            <div id="form-widgets-price_asking-row"
+                 class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-price_asking">Precio</label>
+                <div class="widget value-range-widget choice-field controls">
+                  
+<select id="form-widgets-price_asking-min"
+        name="form.widgets.price_asking-min"
+        class="value-range-widget choice-field" title="None">
+    <option value="--MINVALUE--" selected="selected"
+            id="form-widgets-price_asking-novalue">Min</option>
+    <option value="50000" id="form-widgets-price_asking-0">50k USD</option>
+    <option value="75000" id="form-widgets-price_asking-1">75k USD</option>
+    <option value="100000" id="form-widgets-price_asking-2">100k USD</option>
+    <option value="150000" id="form-widgets-price_asking-3">150k USD</option>
+    <option value="200000" id="form-widgets-price_asking-4">200k USD</option>
+    <option value="250000" id="form-widgets-price_asking-5">250k USD</option>
+    <option value="300000" id="form-widgets-price_asking-6">300k USD</option>
+    <option value="500000" id="form-widgets-price_asking-7">500k USD</option>
+    <option value="1000000" id="form-widgets-price_asking-8">1m USD</option>
+    <option value="--MAXVALUE--"
+            id="form-widgets-price_asking-9">&gt; 1m USD</option>
+</select> <span class="separator">&mdash;</span>
+<select id="form-widgets-price_asking-max"
+        name="form.widgets.price_asking-max"
+        class="value-range-widget choice-field" title="None">
+    <option value="50000" id="form-widgets-price_asking-0">50k USD</option>
+    <option value="75000" id="form-widgets-price_asking-1">75k USD</option>
+    <option value="100000" id="form-widgets-price_asking-2">100k USD</option>
+    <option value="150000" id="form-widgets-price_asking-3">150k USD</option>
+    <option value="200000" id="form-widgets-price_asking-4">200k USD</option>
+    <option value="250000" id="form-widgets-price_asking-5">250k USD</option>
+    <option value="300000" id="form-widgets-price_asking-6">300k USD</option>
+    <option value="500000" id="form-widgets-price_asking-7">500k USD</option>
+    <option value="1000000" id="form-widgets-price_asking-8">1m USD</option>
+    <option value="--MAXVALUE--" selected="selected"
+            id="form-widgets-price_asking-novalue">Max</option>
+</select>
+<input name="form.widgets.price_asking-empty-marker"
+       type="hidden" value="1" />
+
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-number_of_bedrooms-row"
+                 class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-number_of_bedrooms">Número de Dormitorios</label>
+                <div class="widget value-range-widget choice-field controls">
+                  
+<select id="form-widgets-number_of_bedrooms-min"
+        name="form.widgets.number_of_bedrooms-min"
+        class="value-range-widget choice-field" title="None">
+    <option value="--MINVALUE--" selected="selected"
+            id="form-widgets-number_of_bedrooms-novalue">Min</option>
+    <option value="1" id="form-widgets-number_of_bedrooms-0">1</option>
+    <option value="2" id="form-widgets-number_of_bedrooms-1">2</option>
+    <option value="3" id="form-widgets-number_of_bedrooms-2">3</option>
+    <option value="4" id="form-widgets-number_of_bedrooms-3">4</option>
+    <option value="5" id="form-widgets-number_of_bedrooms-4">5</option>
+    <option value="6" id="form-widgets-number_of_bedrooms-5">6</option>
+    <option value="7" id="form-widgets-number_of_bedrooms-6">7</option>
+    <option value="8" id="form-widgets-number_of_bedrooms-7">8</option>
+    <option value="9" id="form-widgets-number_of_bedrooms-8">9</option>
+    <option value="--MAXVALUE--"
+            id="form-widgets-number_of_bedrooms-9">&gt; 9</option>
+</select> <span class="separator">&mdash;</span>
+<select id="form-widgets-number_of_bedrooms-max"
+        name="form.widgets.number_of_bedrooms-max"
+        class="value-range-widget choice-field" title="None">
+    <option value="1" id="form-widgets-number_of_bedrooms-0">1</option>
+    <option value="2" id="form-widgets-number_of_bedrooms-1">2</option>
+    <option value="3" id="form-widgets-number_of_bedrooms-2">3</option>
+    <option value="4" id="form-widgets-number_of_bedrooms-3">4</option>
+    <option value="5" id="form-widgets-number_of_bedrooms-4">5</option>
+    <option value="6" id="form-widgets-number_of_bedrooms-5">6</option>
+    <option value="7" id="form-widgets-number_of_bedrooms-6">7</option>
+    <option value="8" id="form-widgets-number_of_bedrooms-7">8</option>
+    <option value="9" id="form-widgets-number_of_bedrooms-8">9</option>
+    <option value="--MAXVALUE--" selected="selected"
+            id="form-widgets-number_of_bedrooms-novalue">Max</option>
+</select>
+<input name="form.widgets.number_of_bedrooms-empty-marker"
+       type="hidden" value="1" />
+
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-number_of_bathrooms-row"
+                 class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-number_of_bathrooms">Baños</label>
+                <div class="widget value-range-widget choice-field controls">
+                  
+<select id="form-widgets-number_of_bathrooms-min"
+        name="form.widgets.number_of_bathrooms-min"
+        class="value-range-widget choice-field" title="None">
+    <option value="--MINVALUE--" selected="selected"
+            id="form-widgets-number_of_bathrooms-novalue">Min</option>
+    <option value="1"
+            id="form-widgets-number_of_bathrooms-0">1</option>
+    <option value="2"
+            id="form-widgets-number_of_bathrooms-1">2</option>
+    <option value="3"
+            id="form-widgets-number_of_bathrooms-2">3</option>
+    <option value="4"
+            id="form-widgets-number_of_bathrooms-3">4</option>
+    <option value="5"
+            id="form-widgets-number_of_bathrooms-4">5</option>
+    <option value="6"
+            id="form-widgets-number_of_bathrooms-5">6</option>
+    <option value="7"
+            id="form-widgets-number_of_bathrooms-6">7</option>
+    <option value="8"
+            id="form-widgets-number_of_bathrooms-7">8</option>
+    <option value="9"
+            id="form-widgets-number_of_bathrooms-8">9</option>
+    <option value="--MAXVALUE--"
+            id="form-widgets-number_of_bathrooms-9">&gt; 9</option>
+</select> <span class="separator">&mdash;</span>
+<select id="form-widgets-number_of_bathrooms-max"
+        name="form.widgets.number_of_bathrooms-max"
+        class="value-range-widget choice-field" title="None">
+    <option value="1"
+            id="form-widgets-number_of_bathrooms-0">1</option>
+    <option value="2"
+            id="form-widgets-number_of_bathrooms-1">2</option>
+    <option value="3"
+            id="form-widgets-number_of_bathrooms-2">3</option>
+    <option value="4"
+            id="form-widgets-number_of_bathrooms-3">4</option>
+    <option value="5"
+            id="form-widgets-number_of_bathrooms-4">5</option>
+    <option value="6"
+            id="form-widgets-number_of_bathrooms-5">6</option>
+    <option value="7"
+            id="form-widgets-number_of_bathrooms-6">7</option>
+    <option value="8"
+            id="form-widgets-number_of_bathrooms-7">8</option>
+    <option value="9"
+            id="form-widgets-number_of_bathrooms-8">9</option>
+    <option value="--MAXVALUE--" selected="selected"
+            id="form-widgets-number_of_bathrooms-novalue">Max</option>
+</select>
+<input name="form.widgets.number_of_bathrooms-empty-marker"
+       type="hidden" value="1" />
+
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-size_living_area-row"
+                 class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-size_living_area">Área Interior</label>
+                <div class="widget value-range-widget choice-field controls">
+                  
+<select id="form-widgets-size_living_area-min"
+        name="form.widgets.size_living_area-min"
+        class="value-range-widget choice-field" title="None">
+    <option value="--MINVALUE--" selected="selected"
+            id="form-widgets-size_living_area-novalue">Min</option>
+    <option value="25" id="form-widgets-size_living_area-0">25 m²</option>
+    <option value="50" id="form-widgets-size_living_area-1">50 m²</option>
+    <option value="75" id="form-widgets-size_living_area-2">75 m²</option>
+    <option value="100" id="form-widgets-size_living_area-3">100 m²</option>
+    <option value="125" id="form-widgets-size_living_area-4">125 m²</option>
+    <option value="150" id="form-widgets-size_living_area-5">150 m²</option>
+    <option value="175" id="form-widgets-size_living_area-6">175 m²</option>
+    <option value="200" id="form-widgets-size_living_area-7">200 m²</option>
+    <option value="225" id="form-widgets-size_living_area-8">225 m²</option>
+    <option value="--MAXVALUE--"
+            id="form-widgets-size_living_area-9">&gt; 225 m²</option>
+</select> <span class="separator">&mdash;</span>
+<select id="form-widgets-size_living_area-max"
+        name="form.widgets.size_living_area-max"
+        class="value-range-widget choice-field" title="None">
+    <option value="25" id="form-widgets-size_living_area-0">25 m²</option>
+    <option value="50" id="form-widgets-size_living_area-1">50 m²</option>
+    <option value="75" id="form-widgets-size_living_area-2">75 m²</option>
+    <option value="100" id="form-widgets-size_living_area-3">100 m²</option>
+    <option value="125" id="form-widgets-size_living_area-4">125 m²</option>
+    <option value="150" id="form-widgets-size_living_area-5">150 m²</option>
+    <option value="175" id="form-widgets-size_living_area-6">175 m²</option>
+    <option value="200" id="form-widgets-size_living_area-7">200 m²</option>
+    <option value="225" id="form-widgets-size_living_area-8">225 m²</option>
+    <option value="--MAXVALUE--" selected="selected"
+            id="form-widgets-size_living_area-novalue">Max</option>
+</select>
+<input name="form.widgets.size_living_area-empty-marker"
+       type="hidden" value="1" />
+
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-size_lot-row" class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-size_lot">Área de Terreno</label>
+                <div class="widget value-range-widget choice-field controls">
+                  
+<select id="form-widgets-size_lot-min"
+        name="form.widgets.size_lot-min"
+        class="value-range-widget choice-field" title="None">
+    <option value="--MINVALUE--" selected="selected"
+            id="form-widgets-size_lot-novalue">Min</option>
+    <option value="500" id="form-widgets-size_lot-0">500 m²</option>
+    <option value="1000" id="form-widgets-size_lot-1">1000 m²</option>
+    <option value="2000" id="form-widgets-size_lot-2">2000 m²</option>
+    <option value="4000" id="form-widgets-size_lot-3">4000 m²</option>
+    <option value="6000" id="form-widgets-size_lot-4">6000 m²</option>
+    <option value="8000" id="form-widgets-size_lot-5">8000 m²</option>
+    <option value="10000" id="form-widgets-size_lot-6">1 hec</option>
+    <option value="20000" id="form-widgets-size_lot-7">2 hec</option>
+    <option value="100000" id="form-widgets-size_lot-8">10 hec</option>
+    <option value="--MAXVALUE--"
+            id="form-widgets-size_lot-9">&gt; 10 hec</option>
+</select> <span class="separator">&mdash;</span>
+<select id="form-widgets-size_lot-max"
+        name="form.widgets.size_lot-max"
+        class="value-range-widget choice-field" title="None">
+    <option value="500" id="form-widgets-size_lot-0">500 m²</option>
+    <option value="1000" id="form-widgets-size_lot-1">1000 m²</option>
+    <option value="2000" id="form-widgets-size_lot-2">2000 m²</option>
+    <option value="4000" id="form-widgets-size_lot-3">4000 m²</option>
+    <option value="6000" id="form-widgets-size_lot-4">6000 m²</option>
+    <option value="8000" id="form-widgets-size_lot-5">8000 m²</option>
+    <option value="10000" id="form-widgets-size_lot-6">1 hec</option>
+    <option value="20000" id="form-widgets-size_lot-7">2 hec</option>
+    <option value="100000" id="form-widgets-size_lot-8">10 hec</option>
+    <option value="--MAXVALUE--" selected="selected"
+            id="form-widgets-size_lot-novalue">Max</option>
+</select>
+<input name="form.widgets.size_lot-empty-marker"
+       type="hidden" value="1" />
+
+
+
+                </div>
+              
+            </div>
+            
+          
+        </div>
+
+        <div class="column-three">
+          
+            <div id="form-widgets-air_condition-row"
+                 class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-air_condition">Aire Acondicionado</label>
+                <div class="widget radio-widget choice-field controls">
+                  
+
+    <input id="form-widgets-air_condition-0"
+           name="form.widgets.air_condition"
+           class="radio-widget choice-field" title="None"
+           value="true" type="radio" />
+    <label for="form-widgets-air_condition-0" class="radio">Sí</label>
+  
+
+    <input id="form-widgets-air_condition-1"
+           name="form.widgets.air_condition"
+           class="radio-widget choice-field" title="None"
+           value="false" type="radio" />
+    <label for="form-widgets-air_condition-1" class="radio">No</label>
+  
+
+    <input id="form-widgets-air_condition-2"
+           name="form.widgets.air_condition"
+           class="radio-widget choice-field" title="None"
+           value="--NOVALUE--" checked="checked"
+           type="radio" />
+    <label for="form-widgets-air_condition-2" class="radio">Todos</label>
+  
+  <input name="form.widgets.air_condition-empty-marker"
+         type="hidden" value="1" />
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-pool-row" class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-pool">Piscina</label>
+                <div class="widget radio-widget choice-field controls">
+                  
+
+    <input id="form-widgets-pool-0" name="form.widgets.pool"
+           class="radio-widget choice-field" title="None"
+           value="true" type="radio" />
+    <label for="form-widgets-pool-0" class="radio">Sí</label>
+  
+
+    <input id="form-widgets-pool-1" name="form.widgets.pool"
+           class="radio-widget choice-field" title="None"
+           value="false" type="radio" />
+    <label for="form-widgets-pool-1" class="radio">No</label>
+  
+
+    <input id="form-widgets-pool-2" name="form.widgets.pool"
+           class="radio-widget choice-field" title="None"
+           value="--NOVALUE--" checked="checked"
+           type="radio" />
+    <label for="form-widgets-pool-2" class="radio">Todos</label>
+  
+  <input name="form.widgets.pool-empty-marker" type="hidden"
+         value="1" />
+
+
+                </div>
+              
+            </div>
+            
+          
+          
+            <div id="form-widgets-jacuzzi-row" class="row">
+              
+                  <label class="control-label"
+                         for="form-widgets-jacuzzi">Jacuzzi</label>
+                <div class="widget radio-widget choice-field controls">
+                  
+
+    <input id="form-widgets-jacuzzi-0"
+           name="form.widgets.jacuzzi"
+           class="radio-widget choice-field" title="None"
+           value="true" type="radio" />
+    <label for="form-widgets-jacuzzi-0" class="radio">Sí</label>
+  
+
+    <input id="form-widgets-jacuzzi-1"
+           name="form.widgets.jacuzzi"
+           class="radio-widget choice-field" title="None"
+           value="false" type="radio" />
+    <label for="form-widgets-jacuzzi-1" class="radio">No</label>
+  
+
+    <input id="form-widgets-jacuzzi-2"
+           name="form.widgets.jacuzzi"
+           class="radio-widget choice-field" title="None"
+           value="--NOVALUE--" checked="checked"
+           type="radio" />
+    <label for="form-widgets-jacuzzi-2" class="radio">Todos</label>
+  
+  <input name="form.widgets.jacuzzi-empty-marker"
+         type="hidden" value="1" />
+
+
+                </div>
+              
+            </div>
+            
+          
+        </div>
+
+        
+            <hr />
+
+            <div class="column-bottom">
+              
+                <div id="form-widgets-ownership_type-row"
+                     class="row">
+                  
+                  <label class="control-label"
+                         for="form-widgets-ownership_type">Tipo de Dueño</label>
+                <div class="widget checkbox-widget list-field controls">
+                  
+  
+      <input id="form-widgets-ownership_type-0"
+             name="form.widgets.ownership_type:list"
+             class="checkbox-widget list-field" title="None"
+             value="legal_partnership" type="checkbox" />
+    <label for="form-widgets-ownership_type-0"
+           class="checkbox">
+      Compañia en Nombre Colectivo
+    </label>
+  
+  
+      <input id="form-widgets-ownership_type-1"
+             name="form.widgets.ownership_type:list"
+             class="checkbox-widget list-field" title="None"
+             value="concession" type="checkbox" />
+    <label for="form-widgets-ownership_type-1"
+           class="checkbox">
+      Concesión
+    </label>
+  
+  
+      <input id="form-widgets-ownership_type-2"
+             name="form.widgets.ownership_type:list"
+             class="checkbox-widget list-field" title="None"
+             value="legal_corporation" type="checkbox" />
+    <label for="form-widgets-ownership_type-2"
+           class="checkbox">
+      Corporación Legal
+    </label>
+  
+  
+      <input id="form-widgets-ownership_type-3"
+             name="form.widgets.ownership_type:list"
+             class="checkbox-widget list-field" title="None"
+             value="fractional" type="checkbox" />
+    <label for="form-widgets-ownership_type-3"
+           class="checkbox">
+      Fraccional
+    </label>
+  
+  
+      <input id="form-widgets-ownership_type-4"
+             name="form.widgets.ownership_type:list"
+             class="checkbox-widget list-field" title="None"
+             value="freehold" type="checkbox" />
+    <label for="form-widgets-ownership_type-4"
+           class="checkbox">
+      Freehold
+    </label>
+  
+  
+      <input id="form-widgets-ownership_type-5"
+             name="form.widgets.ownership_type:list"
+             class="checkbox-widget list-field" title="None"
+             value="indenture" type="checkbox" />
+    <label for="form-widgets-ownership_type-5"
+           class="checkbox">
+      Indenture
+    </label>
+  
+  
+      <input id="form-widgets-ownership_type-6"
+             name="form.widgets.ownership_type:list"
+             class="checkbox-widget list-field" title="None"
+             value="personal" type="checkbox" />
+    <label for="form-widgets-ownership_type-6"
+           class="checkbox">
+      Persona Natural
+    </label>
+  
+  
+      <input id="form-widgets-ownership_type-7"
+             name="form.widgets.ownership_type:list"
+             class="checkbox-widget list-field" title="None"
+             value="pre_titled" type="checkbox" />
+    <label for="form-widgets-ownership_type-7"
+           class="checkbox">
+      Pre-Titulado
+    </label>
+  
+  
+      <input id="form-widgets-ownership_type-8"
+             name="form.widgets.ownership_type:list"
+             class="checkbox-widget list-field" title="None"
+             value="bank_owned" type="checkbox" />
+    <label for="form-widgets-ownership_type-8"
+           class="checkbox">
+      Remate
+    </label>
+  
+  
+      <input id="form-widgets-ownership_type-9"
+             name="form.widgets.ownership_type:list"
+             class="checkbox-widget list-field" title="None"
+             value="timeshare" type="checkbox" />
+    <label for="form-widgets-ownership_type-9"
+           class="checkbox">
+      Tiempo Compartido
+    </label>
+  
+  
+      <input id="form-widgets-ownership_type-10"
+             name="form.widgets.ownership_type:list"
+             class="checkbox-widget list-field" title="None"
+             value="fee_simple" type="checkbox" />
+    <label for="form-widgets-ownership_type-10"
+           class="checkbox">
+      Titulada
+    </label>
+  
+  <input name="form.widgets.ownership_type-empty-marker"
+         type="hidden" value="1" />
+
+
+                </div>
+              
+                </div>
+                
+              
+            </div>
+        
+      
+    </div>
+
+      
+    
+
+    
+      <div class="buttons-bottom">
+        <div class="form-actions">
+          
+  <button id="form-buttons-search"
+          name="form.buttons.search"
+          class="submit-widget button-field btn btn-primary"
+          type="submit"
+          aria-describedby="form-buttons-search-help"><i
+    class="icon-search"></i> Buscar</button>
+          
+
+
+        </div>
+      </div>
+    
+
+    
+  
+</form>
+
+      <script type="text/javascript">
+        // Hide next button if JS is enabled and proceed to search form on click.
+        $('form#basic-search .buttons').hide();
+        $('form#basic-search .widget input').click(function() {
+          $('form .form-actions button').click();
+          $('form .buttons button').click();
+        });
+      </script>
+    </section>
+
+    <section id="search-results-table"
+             class="visual-padding">
+      <p>Hemos encontrado 1415 resultados en su búsqueda.</p>
+      <table class="table table-striped table-bordered table-hover listing">
+  <thead>
+    <tr>
+      <th class="image"></th>
+      <th class="sorted-on descending"><a href="https://mls.re.cr/search/rs?table-sortOrder=ascending&amp;form.widgets.object_type%3Alist=house&amp;batch-limit=25&amp;table-sortOn=table-listing_id-1&amp;offset=0" title="Sort table by 'header_listing_id_column'" class="ascending">ID del MLS</a></th>
+      <th><a href="https://mls.re.cr/search/rs?table-sortOrder=descending&amp;form.widgets.object_type%3Alist=house&amp;batch-limit=25&amp;table-sortOn=table-sortable_title-2&amp;offset=0" title="Sort table by 'label_listing_info_title'" class="plain">Título</a></th>
+      <th><a href="https://mls.re.cr/search/rs?table-sortOrder=descending&amp;form.widgets.object_type%3Alist=house&amp;batch-limit=25&amp;table-sortOn=table-price_asking-3&amp;offset=0" title="Sort table by 'header_price_column'" class="plain">Precio</a></th>
+      <th><a href="https://mls.re.cr/search/rs?table-sortOrder=descending&amp;form.widgets.object_type%3Alist=house&amp;batch-limit=25&amp;table-sortOn=table-sortable_workflow_state-4&amp;offset=0" title="Sort table by 'header_workflow_state_column'" class="plain">Estado</a></th>
+      <th><a href="https://mls.re.cr/search/rs?table-sortOrder=descending&amp;form.widgets.object_type%3Alist=house&amp;batch-limit=25&amp;table-sortOn=table-number_of_bedrooms-5&amp;offset=0" title="Sort table by 'header_bedrooms_column'" class="plain">Dorm.</a></th>
+      <th><a href="https://mls.re.cr/search/rs?table-sortOrder=descending&amp;form.widgets.object_type%3Alist=house&amp;batch-limit=25&amp;table-sortOn=table-number_of_bathrooms-6&amp;offset=0" title="Sort table by 'header_bathrooms_column'" class="plain">Baños</a></th>
+      <th><a href="https://mls.re.cr/search/rs?table-sortOrder=descending&amp;form.widgets.object_type%3Alist=house&amp;batch-limit=25&amp;table-sortOn=table-sortable_city-7&amp;offset=0" title="Sort table by 'header_city_column'" class="plain">Ciudad/Pueblo</a></th>
+      <th><a href="https://mls.re.cr/search/rs?table-sortOrder=descending&amp;form.widgets.object_type%3Alist=house&amp;batch-limit=25&amp;table-sortOn=table-location_state-8&amp;offset=0" title="Sort table by 'header_state_column'" class="plain">Provincia</a></th>
+      <th><a href="https://mls.re.cr/search/rs?table-sortOrder=descending&amp;form.widgets.object_type%3Alist=house&amp;batch-limit=25&amp;table-sortOn=table-location_country-9&amp;offset=0" title="Sort table by 'header_country_column'" class="plain">País</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="even"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2501297"><img src="https://mls.re.cr/api/images/rs2501297/rs2501297_img_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2501297">RS2501297</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2501297">Casa Granada: Se Vende Casa en Zona Rural y Cerca del Mar en Playa Negra</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2501297">270.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2501297">Vendido</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2501297">1</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2501297">1</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2501297">Playa Negra</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2501297">Guanacaste</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2501297">Costa Rica</a></td>
+    </tr>
+    <tr class="odd"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/monzifigueres/listings/rs2300304"><img src="https://mls.re.cr/api/images/rs2300304/rs2300304_img_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/monzifigueres/listings/rs2300304">RS2300304</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/monzifigueres/listings/rs2300304">Private pool, gated community. 450 mts from the beach. 3 hab 3 baños. Playa Bejuco. Puntarenas. Costa Rica</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/monzifigueres/listings/rs2300304">459.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/monzifigueres/listings/rs2300304">Vendido</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/monzifigueres/listings/rs2300304">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/monzifigueres/listings/rs2300304">3</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/monzifigueres/listings/rs2300304">Bejuco</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/monzifigueres/listings/rs2300304">Puntarenas</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/monzifigueres/listings/rs2300304">Costa Rica</a></td>
+    </tr>
+    <tr class="even"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/llcr/listings/rs2000029"><img src="https://mls.re.cr/api/images/rs2000029/rs2000029_img_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/llcr/listings/rs2000029">RS2000029</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/llcr/listings/rs2000029">LAKE 14: Se Vende Hermosa Casa Frente al Lago en Residencial Exclusiva de Playa</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/llcr/listings/rs2000029">482.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/llcr/listings/rs2000029">Vendido</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/llcr/listings/rs2000029">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/llcr/listings/rs2000029">3</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/llcr/listings/rs2000029">Playa Hermosa</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/llcr/listings/rs2000029">Puntarenas</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/llcr/listings/rs2000029">Costa Rica</a></td>
+    </tr>
+    <tr class="odd"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/krain/listings/rs2300050"><img src="https://mls.re.cr/api/images/rs2300050/rs2300050_img-25_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/krain/listings/rs2300050">RS2300050</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/krain/listings/rs2300050">Casa Colores: Se Vende Casa Cerca del Mar en Las Catalinas</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/krain/listings/rs2300050">1.495.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/krain/listings/rs2300050">Vendido</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/krain/listings/rs2300050">4</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/krain/listings/rs2300050">3</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/krain/listings/rs2300050">Las Catalinas</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/krain/listings/rs2300050">Guanacaste</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/krain/listings/rs2300050">Costa Rica</a></td>
+    </tr>
+    <tr class="even"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/immocostarica/listings/rs2600230"><img src="https://mls.re.cr/api/images/rs2600230/rs2600230_img-5_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/immocostarica/listings/rs2600230">RS2600230</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/immocostarica/listings/rs2600230">Hacienda Pinilla RDG#90: Se Vende Casa Cerca del Mar en Villareal</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/immocostarica/listings/rs2600230">1.480.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/immocostarica/listings/rs2600230">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/immocostarica/listings/rs2600230">6</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/immocostarica/listings/rs2600230">5</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/immocostarica/listings/rs2600230">Villareal</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/immocostarica/listings/rs2600230">Guanacaste</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/immocostarica/listings/rs2600230">Costa Rica</a></td>
+    </tr>
+    <tr class="odd"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2400574"><img src="https://mls.re.cr/api/images/rs2400574/rs2400574_img-13_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2400574">RS2400574</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2400574">Se Vende Casa en Grecia</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2400574">230.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2400574">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2400574">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2400574">2</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2400574">Grecia</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2400574">Alajuela</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2400574">Costa Rica</a></td>
+    </tr>
+    <tr class="even"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/krain/listings/rs1500153"><img src="https://mls.re.cr/api/images/rs1500153/rs1500153_img_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/krain/listings/rs1500153">RS1500153</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/krain/listings/rs1500153">Casa Sangre Joven: Se Vende Casa Cerca del Mar en Playa Potrero</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/krain/listings/rs1500153">184.900 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/krain/listings/rs1500153">Vendido</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/krain/listings/rs1500153">2</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/krain/listings/rs1500153">2</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/krain/listings/rs1500153">Playa Potrero</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/krain/listings/rs1500153">Guanacaste</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/krain/listings/rs1500153">Costa Rica</a></td>
+    </tr>
+    <tr class="odd"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501129"><img src="https://mls.re.cr/api/images/rs2501129/rs2501129_img-12_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501129">RS2501129</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501129">Casa La Artista: Se Vende Casa en la Montaña en Ojochal</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501129">1.100.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501129">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501129">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501129">3</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501129">Ojochal</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501129">Puntarenas</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501129">Costa Rica</a></td>
+    </tr>
+    <tr class="even"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2400888"><img src="https://mls.re.cr/api/images/rs2400888/rs2400888_img_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2400888">RS2400888</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2400888">Casa Mango: Se Vende Casa en Zona Rural en Playa Negra</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2400888">215.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2400888">Vendido</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2400888">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2400888">1</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2400888">Playa Negra</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2400888">Guanacaste</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/cbpacificrealty/listings/rs2400888">Costa Rica</a></td>
+    </tr>
+    <tr class="odd"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/or/listings/rs2400911"><img src="https://mls.re.cr/api/images/rs2400911/rs2400911_img-5_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/or/listings/rs2400911">RS2400911</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/or/listings/rs2400911">Casa Bryan: Ocean View Pre-construcción Especial</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/or/listings/rs2400911">1.195.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/or/listings/rs2400911">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/or/listings/rs2400911">4</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/or/listings/rs2400911">4</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/or/listings/rs2400911">Playa Potrero</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/or/listings/rs2400911">Guanacaste</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/or/listings/rs2400911">Costa Rica</a></td>
+    </tr>
+    <tr class="even"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501285"><img src="https://mls.re.cr/api/images/rs2501285/rs2501285_img_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501285">RS2501285</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501285">VILLA KRISTINA MARIA - 3.84 ACRES - PERLA DE BALLENA ESTATES: Se Vende Casa en la Montaña en Bahía Ballena</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501285">849.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501285">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501285">5</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501285">4</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501285">Bahía Ballena</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501285">Puntarenas</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501285">Costa Rica</a></td>
+    </tr>
+    <tr class="odd"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/cbsamara/listings/rs2600229"><img src="https://mls.re.cr/api/images/rs2600229/rs2600229_img_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/cbsamara/listings/rs2600229">RS2600229</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/cbsamara/listings/rs2600229">Casa Ceiba: Se Vende Casa Cerca del Mar en Playa Samara</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/cbsamara/listings/rs2600229">569.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/cbsamara/listings/rs2600229">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/cbsamara/listings/rs2600229">6</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/cbsamara/listings/rs2600229">5</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/cbsamara/listings/rs2600229">Playa Samara</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/cbsamara/listings/rs2600229">Guanacaste</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/cbsamara/listings/rs2600229">Costa Rica</a></td>
+    </tr>
+    <tr class="even"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501139"><img src="https://mls.re.cr/api/images/rs2501139/rs2501139_img-29_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501139">RS2501139</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501139">Casa Köbö: Se Vende Casa en la Montaña en Playa Hermosa</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501139">1.285.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501139">Venta Pendiente</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501139">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501139">3</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501139">Playa Hermosa</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501139">Puntarenas</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2501139">Costa Rica</a></td>
+    </tr>
+    <tr class="odd"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/dominicalreaestate/listings/rs2401139"><img src="https://mls.re.cr/api/images/rs2401139/rs2401139_img-4_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/dominicalreaestate/listings/rs2401139">RS2401139</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/dominicalreaestate/listings/rs2401139">Se Vende Casa Cerca del Mar y en la Montaña en Platanillo de Dominical</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/dominicalreaestate/listings/rs2401139">619.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/dominicalreaestate/listings/rs2401139">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/dominicalreaestate/listings/rs2401139">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/dominicalreaestate/listings/rs2401139">4</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/dominicalreaestate/listings/rs2401139">Platanillo de Dominical</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/dominicalreaestate/listings/rs2401139">San José</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/dominicalreaestate/listings/rs2401139">Costa Rica</a></td>
+    </tr>
+    <tr class="even"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/rmer/listings/rs1700488"><img src="https://mls.re.cr/api/images/rs1700488/rs1700488_img_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/rmer/listings/rs1700488">RS1700488</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/rmer/listings/rs1700488">San Antonio de Coronado House and Apartaments in a very populated Comercial zone.</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/rmer/listings/rs1700488">180.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/rmer/listings/rs1700488">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/rmer/listings/rs1700488">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/rmer/listings/rs1700488">2</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/rmer/listings/rs1700488">Patalillo</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/rmer/listings/rs1700488">San José</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/rmer/listings/rs1700488">Costa Rica</a></td>
+    </tr>
+    <tr class="odd"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/tropicalrealtycostarica/listings/rs2400909"><img src="https://mls.re.cr/api/images/rs2400909/rs2400909_img_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/tropicalrealtycostarica/listings/rs2400909">RS2400909</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/tropicalrealtycostarica/listings/rs2400909">Masterpiece Santa Teresa: Se Vende Casa Cerca del Mar en Santa Teresa</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/tropicalrealtycostarica/listings/rs2400909">4.500.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/tropicalrealtycostarica/listings/rs2400909">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/tropicalrealtycostarica/listings/rs2400909">5</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/tropicalrealtycostarica/listings/rs2400909">5</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/tropicalrealtycostarica/listings/rs2400909">Santa Teresa</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/tropicalrealtycostarica/listings/rs2400909">Puntarenas</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/tropicalrealtycostarica/listings/rs2400909">Costa Rica</a></td>
+    </tr>
+    <tr class="even"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/merealestate/listings/rs2300991"><img src="https://mls.re.cr/api/images/rs2300991/rs2300991_img-36_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/merealestate/listings/rs2300991">RS2300991</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/merealestate/listings/rs2300991">Se vende casa en playa hermosa   </a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/merealestate/listings/rs2300991">1.850.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/merealestate/listings/rs2300991">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/merealestate/listings/rs2300991">2</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/merealestate/listings/rs2300991">1</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/merealestate/listings/rs2300991">Playa Hermosa</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/merealestate/listings/rs2300991">Guanacaste</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/merealestate/listings/rs2300991">Costa Rica</a></td>
+    </tr>
+    <tr class="odd"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/llcr/listings/rs2300989"><img src="https://mls.re.cr/api/images/rs2300989/rs2300989_img-5_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300989">RS2300989</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300989">Model B: Espectacular casa en venta de 3 habitaciones con jardín y terraza en Tambor Alajuela, Costa Rica</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300989">224.860 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300989">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/llcr/listings/rs2300989">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300989">2</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300989">Tambor</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300989">Alajuela</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300989">Costa Rica</a></td>
+    </tr>
+    <tr class="even"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/llcr/listings/rs2300988"><img src="https://mls.re.cr/api/images/rs2300988/rs2300988_img-2_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300988">RS2300988</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300988">Model A: Espectacular casa en venta de 3 habitaciones con jardín y terraza en Tambor Alajuela, Costa Rica</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300988">218.588 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300988">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/llcr/listings/rs2300988">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300988">2</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300988">Tambor</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300988">Alajuela</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300988">Costa Rica</a></td>
+    </tr>
+    <tr class="odd"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/llcr/listings/rs2300987"><img src="https://mls.re.cr/api/images/rs2300987/rs2300987_img-2_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300987">RS2300987</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300987">Model D #92: Espectacular casa en venta de 3 habitaciones con jardín y terraza en Tambor Alajuela, Costa Rica</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300987">282.187 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300987">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/llcr/listings/rs2300987">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300987">2</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300987">Tambor</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300987">Alajuela</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/llcr/listings/rs2300987">Costa Rica</a></td>
+    </tr>
+    <tr class="even"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2500224"><img src="https://mls.re.cr/api/images/rs2500224/rs2500224_img-18_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2500224">RS2500224</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2500224">Se Vende Casa en la Montaña en Rosario</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2500224">195.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2500224">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2500224">1</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2500224">1</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2500224">Rosario</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2500224">Alajuela</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/housesatcostarica/listings/rs2500224">Costa Rica</a></td>
+    </tr>
+    <tr class="odd"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/krain/listings/rs2000429"><img src="https://mls.re.cr/api/images/rs2000429/rs2000429_img_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/krain/listings/rs2000429">RS2000429</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/krain/listings/rs2000429">Las Ventanas Lot 10: Se Vende Casa Cerca del Mar en Playa Grande</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/krain/listings/rs2000429">599.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/krain/listings/rs2000429">Vendido</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/krain/listings/rs2000429">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/krain/listings/rs2000429">2</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/krain/listings/rs2000429">Playa Grande</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/krain/listings/rs2000429">Guanacaste</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/krain/listings/rs2000429">Costa Rica</a></td>
+    </tr>
+    <tr class="even"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/fortressrealty/listings/rs2500814"><img src="https://mls.re.cr/api/images/rs2500814/rs2500814_img-12_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/fortressrealty/listings/rs2500814">RS2500814</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/fortressrealty/listings/rs2500814">Amazing New Villa Cayman: Se Vende Casa en Zona Rural y Cerca del Mar en Uvita</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/fortressrealty/listings/rs2500814">595.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/fortressrealty/listings/rs2500814">Activa</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/fortressrealty/listings/rs2500814">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/fortressrealty/listings/rs2500814">2</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/fortressrealty/listings/rs2500814">Uvita</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/fortressrealty/listings/rs2500814">Puntarenas</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/fortressrealty/listings/rs2500814">Costa Rica</a></td>
+    </tr>
+    <tr class="odd"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/llcr/listings/rs2100023"><img src="https://mls.re.cr/api/images/rs2100023/rs2100023_img_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/llcr/listings/rs2100023">RS2100023</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/llcr/listings/rs2100023">Luna: Casa de Lujo con Vista al Océano en venta en Marbella</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/llcr/listings/rs2100023">710.500 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/llcr/listings/rs2100023">Vendido</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/llcr/listings/rs2100023">4</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/llcr/listings/rs2100023">3</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/llcr/listings/rs2100023">Marbella</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/llcr/listings/rs2100023">Guanacaste</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/llcr/listings/rs2100023">Costa Rica</a></td>
+    </tr>
+    <tr class="even"><td class="image" data-title=""><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2100012"><img src="https://mls.re.cr/api/images/rs2100012/rs2100012_img-45_preview.jpg" style="max-width: 128px;" /></a></td><td class="listing_id sorted-on descending" data-title="ID del MLS"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2100012">RS2100012</a></td><td class="title" data-title="Título"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2100012">Tranquila Sunrise: Se Vende Casa en la Montaña en Puerto Cortés</a></td><td class="price" data-title="Precio"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2100012">399.000 US$</a></td><td class="workflow_state" data-title="Estado"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2100012">Vendido</a></td><td class="bedrooms" data-title="Dorm."><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2100012">3</a></td><td class="bathrooms" data-title="Baños"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2100012">2</a></td><td class="city" data-title="Ciudad/Pueblo"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2100012">Puerto Cortés</a></td><td class="state" data-title="Provincia"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2100012">Puntarenas</a></td><td class="country" data-title="País"><a href="https://mls.re.cr/agencies/bluezonerealty/listings/rs2100012">Costa Rica</a></td>
+    </tr>
+  </tbody>
+</table>
+    </section>
+  </article>
+</div>
+          <!--/span-->
+        </div>
+        
+          <div class="pagination">
+            <ul class="batching">
+              <li class="active first"><a href="https://mls.re.cr/search/rs?form.widgets.object_type%3Alist=house&batch-limit=25&offset=0">1</a></li>
+              <li><a href="https://mls.re.cr/search/rs?form.widgets.object_type%3Alist=house&batch-limit=25&offset=25">2</a></li>
+              <li><a href="https://mls.re.cr/search/rs?form.widgets.object_type%3Alist=house&batch-limit=25&offset=50">3</a></li>
+              <li><a href="https://mls.re.cr/search/rs?form.widgets.object_type%3Alist=house&batch-limit=25&offset=75">4</a></li>
+              <li class="disabled"><span>...</span></li>
+              <li class="last"><a href="https://mls.re.cr/search/rs?form.widgets.object_type%3Alist=house&batch-limit=25&offset=1400">57</a></li>
+              <li><a href="https://mls.re.cr/search/rs?form.widgets.object_type%3Alist=house&batch-limit=25&offset=25">Siguiente</a></li>
+            </ul>
+          </div>
+        
+      </div>
+    </div>
+
+    <footer class="container-fluid">
+      <div class="row-fluid"><div class="span6"><p><a href=" https://mls.re.cr/search/ll">Búsqueda de terrenos</a><br /><a href=" https://mls.re.cr/search/rs">Búsqueda de propiedades residenciales en venta</a><br /><a href=" https://mls.re.cr/search/rl">Búsqueda de propiedades residenciales en alquiler</a><br /><a href=" https://mls.re.cr/search/cs">Búsqueda de locales comerciales en Venta</a></p><h3>Real Estate Costa Rica</h3><p><a href="https://www.re.cr" target="blank_">https://www.re.cr</a></p><h4>Servicio al Cliente</h4><p>
+      Tel: <a href="tel:+50640003210">+506 4000 3210</a> (inglés y español)<br />
+      Contacto de Emergencia: <a href="tel:+19414470604">+1 941 447 0604</a><br />
+      Correo electrónico: <a href="mailto:support@re.cr">support@re.cr</a><br /></p><p>
+      Patrocinadores: Agentes &amp; Afiliados de Real Estate Costa Rica<br />
+      Creado por: <a href="https://propertyshelf.com" target="blank_">Propertyshelf, Inc.</a></p><p>Copyright &copy; 2011-2026 Propertyshelf, Inc All rights reserved | Todos los derechos reservados</p></div><div class="span6"><h3>El único sistema de MLS de Costa Rica</h3><p><a href="https://www.re.cr" target="blank_">RE.cr</a> Real Estate Costa Rica ofrece la mayor base de datos de inmuebles, conformada por profesionales de bienes raíces de Costa Rica, creada y promovida por Propertyshelf Inc.</p><p>Propertyshelf Inc., ha creado y parametrizado estrictos estándares para la verificación de inmuebles en todo el territorio nacional. Cada anuncio incluido en nuestra base de datos ha sido comprobado previamente en el <a href="https://www.rnpdigital.com" target="blank_">National Registry</a>, asegurando que el título (derecho de propiedad) esté disponible, sea transparente y esté en capacidad legal de ser comercializado.</p><p>Todas estas características son de gran beneficio para los compradores, propietarios y profesionales de la industria de bienes raíces del país, permitiendo aumentar la confianza en la inversión inmobiliaria, gracias a las garantías que ofrece un sistema de MLS único en Costa Rica. </p><p>Para obtener más información sobre la plataforma inmobiliaria de MLS de Costa Rica, los servicios disponibles para agentes inmobiliarios y compañías, visite: <a href="https://propertyshelf.com" target="blank_">https://propertyshelf.com</a></p></div></div>
+    </footer>
+
+    <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-12110061-58', 'auto');ga('send', 'pageview');</script></script><!--
+<script>window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(c){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("https://assets.zendesk.com/embeddable_framework/main.js","mlscr.zendesk.com");</script>
+--><!-- 
+<script>
+zE(function(){zE.setLocale('es-419');});
+</script>
+-->
+
+    <!-- Modal -->
+    <div id="modal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal"
+                aria-hidden="true">Cerrar</button>
+      </div>
+    </div>
+
+  
+<!--[if lt IE 9 ]>
+  <script src="https://mls.re.cr/assets/css3mediaqueries/:version:0.9/css3-mediaqueries.js"></script>
+<![endif]--></body>
+</html>
