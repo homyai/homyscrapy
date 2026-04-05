@@ -32,16 +32,6 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
     ],
 }
 
-PLAYWRIGHT_CONTEXTS = {
-    "default": {
-        "viewport": {
-            "width": 1920,
-            "height": 1080,
-        },
-        "java_script_enabled": True,
-        "ignore_https_errors": True,
-    }
-}
 
 CONCURRENT_REQUESTS = 1
 DOWNLOAD_DELAY = 10

@@ -52,14 +52,14 @@ class Encuentra24Spider(scrapy.Spider):
         self.output_date = output_date or datetime.today().strftime("%Y-%m-%d")
         self.logger.info(f"Starting scrape — max_pages: {self.max_pages}, start_page: {self.start_page}, date: {self.output_date}")
 
-    proxy_config = {}
-    proxy_server = os.getenv("PROXY_SERVER")
-    if proxy_server:
-        proxy_config = {
-            "server": proxy_server,
-            "username": os.getenv("PROXY_USER"),
-            "password": os.getenv("PROXY_PASSWORD"),
-        }
+    proxy_config = None
+    _proxy_server = os.getenv("PROXY_SERVER")
+    _proxy_user = os.getenv("PROXY_USER")
+    _proxy_password = os.getenv("PROXY_PASSWORD")
+    if _proxy_server and _proxy_user and _proxy_password:
+        # Embed credentials in the URL — avoids 407 challenge/response cycle
+        _host = _proxy_server.split("://", 1)[-1]
+        proxy_config = {"server": f"http://{_proxy_user}:{_proxy_password}@{_host}"}
 
     custom_settings = {
         'USE_PROXY': True,
@@ -91,7 +91,7 @@ class Encuentra24Spider(scrapy.Spider):
                 'java_script_enabled': True,
                 'ignore_https_errors': True,
                 'bypass_csp': True,
-                'proxy': proxy_config if proxy_server else None,
+                'proxy': proxy_config,
             },
         },
         'HTTPERROR_ALLOWED_CODES': [403, 500],
