@@ -22,6 +22,7 @@ class Century21Spider(scrapy.Spider):
     base_url = 'https://www.century21.com/office/global/en/l/homes-for-sale/costa-rica'
 
     custom_settings = {
+        'USE_PROXY': True,
         'ROBOTSTXT_OBEY': False,
         'DOWNLOAD_DELAY': 3,
         'CONCURRENT_REQUESTS': 1,

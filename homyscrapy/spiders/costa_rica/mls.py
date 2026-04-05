@@ -9,6 +9,7 @@ class MLSSpider(BasePropertySpider):
 
     # Override global conservative defaults — MLS is a low-traffic static site
     custom_settings = {
+        'USE_PROXY': False,
         'DOWNLOAD_DELAY': 3,
         'CONCURRENT_REQUESTS': 2,
     }

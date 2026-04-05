@@ -12,6 +12,7 @@ class InHausSpider(BasePropertySpider, SitemapSpider):
 
     # Override global conservative defaults — InHaus is a low-traffic static site
     custom_settings = {
+        'USE_PROXY': False,
         'DOWNLOAD_DELAY': 2,
         'CONCURRENT_REQUESTS': 2,
     }

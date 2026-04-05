@@ -36,6 +36,7 @@ class Encuentra24Spider(scrapy.Spider):
 
 
     custom_settings = {
+        'USE_PROXY': True,
         'ROBOTSTXT_OBEY': False,
         'DOWNLOAD_DELAY': 8,
         'RANDOMIZE_DOWNLOAD_DELAY': True,  # effective range: 4–12s

@@ -27,6 +27,9 @@ class RandomProxyMiddleware:
         if not self.proxies:
             return
 
+        if not spider.settings.getbool('USE_PROXY', True):
+            return
+
         proxy = random.choice(self.proxies)
 
         if request.meta.get('playwright'):

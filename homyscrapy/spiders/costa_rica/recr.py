@@ -17,6 +17,7 @@ class RECRSpider(BasePropertySpider):
 
     # Override global conservative defaults — RE.CR is a low-traffic static site
     custom_settings = {
+        'USE_PROXY': False,
         'DOWNLOAD_DELAY': 3,
         'CONCURRENT_REQUESTS': 2,
     }
