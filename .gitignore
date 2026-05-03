@@ -9,11 +9,7 @@ data/debug_*.html
 data/error_*.png
 data/test_*.json
 data/*.log
-data/C24/
-data/INHAUS/
-data/MLS/
-data/RECR/
-data/INT/
+data/raw/
 
 # Claude Code session files
 .claude/

@@ -144,7 +144,7 @@ class TestPipeline:
         pipeline.close_spider(spider)
 
         today = datetime.today().strftime('%Y-%m-%d')
-        expected = tmp_path / 'data' / 'C24' / 'sales' / 'houses' / 'raw-data' / f'{today}.json'
+        expected = tmp_path / 'data' / 'raw' / 'encuentra24' / f'{today}.json'
         assert expected.exists(), f"Expected output file not found: {expected}"
 
         import json
@@ -152,18 +152,14 @@ class TestPipeline:
         assert len(records) == 1
         assert records[0]['title'] == 'Test Property'
 
-    def test_key_mapping(self):
-        from homyscrapy.pipelines import SPIDER_KEY_MAP
-        assert SPIDER_KEY_MAP['encuentra24'] == 'C24'
-
     def test_gcs_not_called_without_credentials(self, tmp_path, monkeypatch):
         monkeypatch.chdir(tmp_path)
         monkeypatch.delenv('GOOGLE_APPLICATION_CREDENTIALS', raising=False)
 
         upload_called = []
         monkeypatch.setattr(
-            'homyscrapy.pipelines.gcs_upload_file_pd',
-            lambda **kwargs: upload_called.append(True)
+            'homyscrapy.pipelines.storage.Client',
+            lambda: (_ for _ in ()).throw(AssertionError("GCS should not be called"))
         )
 
         from homyscrapy.pipelines import HomyscrapyPipeline

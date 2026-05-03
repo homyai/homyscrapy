@@ -2,17 +2,7 @@ from itemadapter import ItemAdapter
 import pandas as pd
 import os
 from datetime import datetime
-from homyscrapy.common.google_cloud_tools.google_cloud_tools import gcs_upload_file_pd
-
-# Maps spider name → GCS/local path prefix.
-# Spiders not listed here default to spider.name.upper().
-SPIDER_KEY_MAP = {
-    'encuentra24': 'C24',
-    'mls':         'MLS',
-    'recr':        'RECR',
-    'inhaus':      'INHAUS',
-    'century21':   'C21',
-}
+from google.cloud import storage
 
 
 class HomyscrapyPipeline:
@@ -30,12 +20,11 @@ class HomyscrapyPipeline:
 
         df = pd.DataFrame(self.items)
         current_date = datetime.today().strftime("%Y-%m-%d")
-        key = SPIDER_KEY_MAP.get(spider.name, spider.name.upper())
-        path = f"{key}/sales/houses/raw-data/"
+        gcs_path = f"raw/{spider.name}/{current_date}.json"
         file_name = f"{current_date}.json"
 
-        # Always save locally
-        local_dir = os.path.join("data", path)
+        # Always save locally under data/raw/<spider>/
+        local_dir = os.path.join("data", "raw", spider.name)
         os.makedirs(local_dir, exist_ok=True)
         local_path = os.path.join(local_dir, file_name)
         df.to_json(local_path, orient="records", force_ascii=False, indent=2)
@@ -43,14 +32,14 @@ class HomyscrapyPipeline:
 
         # Upload to GCS if credentials are configured
         if os.getenv("GOOGLE_APPLICATION_CREDENTIALS"):
-            spider.logger.info(f"Uploading {len(df)} items to GCS bucket 'web-scraper-data' at path '{path}'...")
+            spider.logger.info(f"Uploading {len(df)} items to gs://web-scraper-data/{gcs_path}")
             try:
-                gcs_upload_file_pd(
-                    df=df,
-                    bucket_name='web-scraper-data',
-                    file_name=file_name,
-                    extension=".json",
-                    path=path
+                client = storage.Client()
+                bucket = client.bucket("web-scraper-data")
+                blob = bucket.blob(gcs_path)
+                blob.upload_from_string(
+                    df.to_json(orient="records", force_ascii=False, indent=2),
+                    content_type="application/json",
                 )
                 spider.logger.info("GCS upload successful.")
             except Exception as e:
