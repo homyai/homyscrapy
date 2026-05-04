@@ -30,6 +30,6 @@ crawl: ## Run a spider. Opts: SPIDER=mls LIMIT=50 STORAGE=local|gcs NO_PROXY=1
 	  -v $(PWD):/app \
 	  -v $(PWD)/.devcontainer:/credentials:ro \
 	  $(if $(filter-out 1,$(NO_PROXY)),-e PROXY_SERVER=$(PROXY_SERVER) -e PROXY_USER=$(PROXY_USER) -e PROXY_PASSWORD=$(PROXY_PASSWORD)) \
-	  $(if $(filter gcs,$(STORAGE)),-e GOOGLE_APPLICATION_CREDENTIALS=/credentials/datalake-homyai-990ddbaa84ae.json) \
+	  $(if $(filter gcs,$(STORAGE)),-e GOOGLE_APPLICATION_CREDENTIALS=/credentials/datalake-homyai-new.json) \
 	  $(IMAGE) scrapy crawl $(SPIDER) \
 	  $(if $(filter-out 0,$(LIMIT)),-s CLOSESPIDER_ITEMCOUNT=$(LIMIT))
