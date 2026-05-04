@@ -1,4 +1,7 @@
-IMAGE    := homyscrapy-test
+IMAGE       := homyscrapy-test
+REMOTE_IMAGE := us-central1-docker.pkg.dev/datalake-homyai/homyscrapy/homyscrapy:latest
+GCP_PROJECT := datalake-homyai
+GCP_REGION  := us-central1
 SPIDER   ?= encuentra24
 LIMIT    ?= 0
 STORAGE  ?= local
@@ -7,7 +10,7 @@ NO_PROXY ?= 0
 -include .devcontainer/.env
 export
 
-.PHONY: help build test shell crawl list
+.PHONY: help build test shell crawl list deploy run-job
 .DEFAULT_GOAL := help
 
 help:
@@ -25,7 +28,15 @@ shell: ## Open a bash shell inside the Docker container
 list: ## List all available spiders
 	docker run --rm -v $(PWD):/app $(IMAGE) scrapy list
 
-crawl: ## Run a spider. Opts: SPIDER=mls LIMIT=50 STORAGE=local|gcs NO_PROXY=1
+deploy: ## Build, push image and update Cloud Run Job
+	docker build -t $(REMOTE_IMAGE) .
+	docker push $(REMOTE_IMAGE)
+	gcloud run jobs update homyscrapy --image=$(REMOTE_IMAGE) --project=$(GCP_PROJECT) --region=$(GCP_REGION)
+
+run-job: ## Trigger the Cloud Run Job immediately (full extraction, all spiders)
+	gcloud run jobs execute homyscrapy --project=$(GCP_PROJECT) --region=$(GCP_REGION)
+
+crawl: ## Run a spider locally. Opts: SPIDER=mls LIMIT=50 STORAGE=local|gcs NO_PROXY=1
 	docker run --rm \
 	  -v $(PWD):/app \
 	  -v $(PWD)/.devcontainer:/credentials:ro \
