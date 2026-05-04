@@ -19,9 +19,11 @@ class HomyscrapyPipeline:
             return
 
         df = pd.DataFrame(self.items)
-        current_date = datetime.today().strftime("%Y-%m-%d")
-        gcs_path = f"raw/{spider.name}/{current_date}.json"
-        file_name = f"{current_date}.json"
+        # Use the spider's start date (set at init) so runs crossing midnight
+        # don't produce a file dated the following day.
+        run_date = getattr(spider, 'output_date', datetime.today().strftime("%Y-%m-%d"))
+        gcs_path = f"raw/{spider.name}/{run_date}.json"
+        file_name = f"{run_date}.json"
 
         # Always save locally under data/raw/<spider>/
         local_dir = os.path.join("data", "raw", spider.name)
