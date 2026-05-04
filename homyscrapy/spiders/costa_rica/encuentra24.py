@@ -2,7 +2,9 @@ import scrapy
 from homyscrapy.items import PropertyItem
 from scrapy_playwright.page import PageMethod
 from playwright_stealth import Stealth
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
+_CR_TZ = timezone(timedelta(hours=-6))
 from parsel import Selector
 import random
 import os
@@ -57,7 +59,7 @@ class Encuentra24Spider(scrapy.Spider):
         self.max_pages = int(max_pages)  # 0 = unlimited
         self.start_page = int(start_page)
         self.current_page = 0
-        self.output_date = output_date or datetime.today().strftime("%Y-%m-%d")
+        self.output_date = output_date or datetime.now(_CR_TZ).strftime("%Y-%m-%d")
         self.logger.info(f"Starting scrape — max_pages: {self.max_pages}, start_page: {self.start_page}, date: {self.output_date}")
 
     proxy_config = None
@@ -142,7 +144,7 @@ class Encuentra24Spider(scrapy.Spider):
         item = PropertyItem()
         item['source'] = 'Encuentra24'
         item['country'] = 'Costa Rica'
-        item['extraction_date'] = datetime.today().strftime('%Y-%m-%d')
+        item['extraction_date'] = datetime.now(_CR_TZ).strftime('%Y-%m-%d')
 
         relative_url = ad.attrib.get('href', '')
         item['url'] = response.urljoin(relative_url) if relative_url else ''
