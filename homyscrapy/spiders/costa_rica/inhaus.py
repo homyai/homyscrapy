@@ -8,7 +8,7 @@ class InHausSpider(BasePropertySpider, SitemapSpider):
     source = 'InHaus'
     allowed_domains = ['inhauscr.com']
     sitemap_urls = ['https://www.inhauscr.com/sitemap.xml']
-    sitemap_rules = [('/propiedades/', 'parse_property')]
+    sitemap_rules = [(r'/propiedades/\d+$', 'parse_property')]
 
     # Override global conservative defaults — InHaus is a low-traffic static site
     custom_settings = {
