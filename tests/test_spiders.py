@@ -149,7 +149,8 @@ class TestPipeline:
         assert expected.exists(), f"Expected output file not found: {expected}"
 
         import json
-        records = json.loads(expected.read_text())
+        lines = [l for l in expected.read_text().strip().split('\n') if l]
+        records = [json.loads(l) for l in lines]
         assert len(records) == 1
         assert records[0]['title'] == 'Test Property'
 
