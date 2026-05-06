@@ -127,6 +127,8 @@ class TestPipeline:
 
         pipeline = HomyscrapyPipeline()
         spider = self._make_spider('encuentra24')
+        # Pin the date so the test is timezone-independent
+        spider.output_date = '2026-01-01'
         pipeline.open_spider(spider)
 
         from homyscrapy.items import PropertyItem
@@ -143,8 +145,7 @@ class TestPipeline:
 
         pipeline.close_spider(spider)
 
-        today = datetime.today().strftime('%Y-%m-%d')
-        expected = tmp_path / 'data' / 'raw' / 'encuentra24' / f'{today}.json'
+        expected = tmp_path / 'data' / 'raw' / 'encuentra24' / '2026-01-01.json'
         assert expected.exists(), f"Expected output file not found: {expected}"
 
         import json
