@@ -31,7 +31,7 @@ class HomyscrapyPipeline:
         local_dir = os.path.join("data", "raw", spider.name)
         os.makedirs(local_dir, exist_ok=True)
         local_path = os.path.join(local_dir, file_name)
-        df.to_json(local_path, orient="records", force_ascii=False, indent=2)
+        df.to_json(local_path, orient="records", lines=True, force_ascii=False)
         spider.logger.info(f"Saved {len(df)} items locally to {local_path}")
 
         # Upload to GCS if credentials are configured
@@ -42,7 +42,7 @@ class HomyscrapyPipeline:
                 bucket = client.bucket("web-scraper-data")
                 blob = bucket.blob(gcs_path)
                 blob.upload_from_string(
-                    df.to_json(orient="records", force_ascii=False, indent=2),
+                    df.to_json(orient="records", lines=True, force_ascii=False),
                     content_type="application/json",
                 )
                 spider.logger.info("GCS upload successful.")
