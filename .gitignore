@@ -11,8 +11,9 @@ data/test_*.json
 data/*.log
 data/raw/
 
-# Claude Code session files
-.claude/
+# Claude Code session files — track agents, ignore everything else
+.claude/*
+!.claude/agents/
 
 # macOS system files
 .DS_Store
