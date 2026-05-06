@@ -5,7 +5,7 @@
 
 set -euo pipefail
 
-SPIDERS=(encuentra24 mls recr inhaus cccbr)
+SPIDERS=(encuentra24 mls recr inhaus cccbr fazwaz)
 INDEX=${CLOUD_RUN_TASK_INDEX:-0}
 SPIDER=${SPIDERS[$INDEX]}
 
