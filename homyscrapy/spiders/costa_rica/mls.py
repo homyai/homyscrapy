@@ -1,16 +1,16 @@
 import scrapy
 from homyscrapy.spiders.base_spider import BasePropertySpider
 
-# MLS is a Multiple Listing Service focused on sales. Each entry carries
-# a (url, property_category, status) tuple. Rental URL pattern (/search/ra)
-# is included but may return no results if MLS CR doesn't carry rental listings.
+# MLS is a Multiple Listing Service. Sale listings live under /search/rs,
+# rental listings under /search/rl. Each entry carries a
+# (url, property_category, status) tuple.
 _LISTING_URLS = [
     ('https://mls.re.cr/search/rs?form.widgets.object_type%3Alist=house&batch-limit=25&offset=0',       'house',      'sale'),
     ('https://mls.re.cr/search/rs?form.widgets.object_type%3Alist=apartment&batch-limit=25&offset=0',   'apartment',  'sale'),
     ('https://mls.re.cr/search/rs?form.widgets.object_type%3Alist=land&batch-limit=25&offset=0',        'land',       'sale'),
     ('https://mls.re.cr/search/rs?form.widgets.object_type%3Alist=commercial&batch-limit=25&offset=0',  'commercial', 'sale'),
-    ('https://mls.re.cr/search/ra?form.widgets.object_type%3Alist=house&batch-limit=25&offset=0',       'house',      'rent'),
-    ('https://mls.re.cr/search/ra?form.widgets.object_type%3Alist=apartment&batch-limit=25&offset=0',   'apartment',  'rent'),
+    ('https://mls.re.cr/search/rl?form.widgets.object_type%3Alist=house&batch-limit=25&offset=0',       'house',      'rent'),
+    ('https://mls.re.cr/search/rl?form.widgets.object_type%3Alist=apartment&batch-limit=25&offset=0',   'apartment',  'rent'),
 ]
 
 
