@@ -1,4 +1,3 @@
-import os
 import json
 import logging
 import re
@@ -9,6 +8,7 @@ import pandas as pd
 import pytz
 from google.cloud import bigquery, storage
 
+
 def get_list_files_from_bucket(project_id: str, bucket_name: str, bucket_path: str) -> list:
     """
     Returns a list of files in a bucket.
@@ -18,6 +18,7 @@ def get_list_files_from_bucket(project_id: str, bucket_name: str, bucket_path: s
     blobs = bucket.list_blobs(prefix=bucket_path)
     files_list = [blob.name for blob in blobs]
     return files_list
+
 
 def get_last_file_name_from_list(files_list: list, extension: str) -> str:
     """
@@ -30,6 +31,7 @@ def get_last_file_name_from_list(files_list: list, extension: str) -> str:
     last_date = max(dates_list)
     last_file_name = str(last_date) + extension
     return last_file_name
+
 
 def get_df_from_bucket(bucket_name: str, file_name: str, bucket_path: str) -> pd.DataFrame:
     """
@@ -46,6 +48,7 @@ def get_df_from_bucket(bucket_name: str, file_name: str, bucket_path: str) -> pd
         df = pd.read_json(complete_bucket_path, orient="records", lines=True)
     return df
 
+
 def get_last_file_from_bucket(project_id: str, bucket_name: str, extension: str, bucket_path: str) -> pd.DataFrame:
     """
     Returns the last file from a bucket as a pandas DataFrame.
@@ -55,6 +58,7 @@ def get_last_file_from_bucket(project_id: str, bucket_name: str, extension: str,
     last_file_name = get_last_file_name_from_list(files_list, extension)
     df = get_df_from_bucket(bucket_name, last_file_name, bucket_path)
     return df
+
 
 def date_manager():
     date_time_now = datetime.now(pytz.timezone("America/Costa_Rica"))
@@ -68,14 +72,13 @@ def date_manager():
     date_str = str(year) + str(month) + str(day)
     return date_str
 
+
 def gcs_upload_file_pd(df, bucket_name, file_name, extension, path=""):
     """
     Upload plain file to a determine bucket
     """
     real_path = "gs://" + bucket_name + "/" + path + file_name
-    real_path_log = (
-        "gs://" + bucket_name + "/" + path + "new-cols-log/" + file_name
-    )
+    real_path_log = "gs://" + bucket_name + "/" + path + "new-cols-log/" + file_name
     # added nico's code
     df.columns = df.columns.str.replace(" ", "_")
     df.columns = df.columns.str.replace("/", "_")
@@ -110,6 +113,7 @@ def gcs_upload_file_pd(df, bucket_name, file_name, extension, path=""):
             if len(df_news.columns.tolist()) > 1:
                 df_news.to_json(real_path_log, orient="records", lines=True)
 
+
 def strip_accents(text):
     """
     Strip accents from input String.
@@ -128,6 +132,7 @@ def strip_accents(text):
     text = text.encode("ascii", "ignore")
     text = text.decode("utf-8")
     return str(text)
+
 
 def text_to_id(text):
     """
@@ -149,6 +154,7 @@ def text_to_id(text):
         text = "_" + text
     return text
 
+
 def only_listed_cols(df):
     """
     Includes only validated columns to bigquery data base
@@ -162,7 +168,7 @@ def only_listed_cols(df):
     :rtype: dataframe
     """
     file_name = "data/columns.json"
-    with open(file_name, encoding='utf-8') as json_file:
+    with open(file_name, encoding="utf-8") as json_file:
         json_data = json.load(json_file)
     cols = json_data["columnas"]
     non_existing_cols = ["url"]
@@ -175,6 +181,7 @@ def only_listed_cols(df):
     # df oficial columns
     df_oficial = df.reindex(columns=cols)
     return df_oficial, df_new_cols
+
 
 def get_dataframe_bq(query: str):
     """
