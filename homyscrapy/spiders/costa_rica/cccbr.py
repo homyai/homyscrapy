@@ -88,8 +88,12 @@ class CamaraSpider(BasePropertySpider):
         currency = meta.get('moneda') or 'USD'
         if price_sale:
             item['price'] = f'{currency} {price_sale}'.strip()
+            item['status'] = 'sale'
         elif price_rent:
             item['price'] = f'{currency} {price_rent} (alquiler)'.strip()
+            item['status'] = 'rent'
+        else:
+            item['status'] = 'sale'  # default for listings without price info
 
         # Property details
         item['bedrooms'] = str(meta.get('habitaciones') or '')

@@ -1,13 +1,21 @@
 import scrapy
-from homyscrapy.items import PropertyItem
 from homyscrapy.spiders.base_spider import BasePropertySpider
 from datetime import datetime, timezone, timedelta
 import os
-import random
 
 _CR_TZ = timezone(timedelta(hours=-6))
 
-BASE_URL = 'https://www.encuentra24.com/costa-rica-es/bienes-raices-venta-de-propiedades-casas'
+# All active listing segments: (base_url, property_category, status)
+# Sale URLs use the per-type pattern: bienes-raices-venta-de-propiedades-{type}
+# Rental URL is a single catch-all: bienes-raices-alquiler (no per-type sub-paths confirmed)
+# property_category for rentals is left to dbt title-based normalization.
+_LISTING_URLS = [
+    ('https://www.encuentra24.com/costa-rica-es/bienes-raices-venta-de-propiedades-casas',              'house',      'sale'),
+    ('https://www.encuentra24.com/costa-rica-es/bienes-raices-venta-de-propiedades-apartamentos',       'apartment',  'sale'),
+    ('https://www.encuentra24.com/costa-rica-es/bienes-raices-venta-de-propiedades-terrenos',           'land',       'sale'),
+    ('https://www.encuentra24.com/costa-rica-es/bienes-raices-venta-de-propiedades-locales-comerciales','commercial', 'sale'),
+    ('https://www.encuentra24.com/costa-rica-es/bienes-raices-alquiler',                                None,         'rent'),
+]
 
 # Standard browser headers — enough to pass Cloudflare without a real browser
 _HEADERS = {
@@ -32,7 +40,7 @@ class Encuentra24Spider(BasePropertySpider):
     Cloudflare browser-fingerprint detection entirely.
 
     Each page has a direct URL: <base>.N (e.g. .../casas.2 for page 2).
-    Scrapy handles pagination by yielding one request per page.
+    All property types and both transaction types (sale and rent) are crawled.
     """
 
     name = 'encuentra24'
@@ -67,9 +75,9 @@ class Encuentra24Spider(BasePropertySpider):
             self.output_date = output_date
         self.logger.info(f"Starting scrape — max_pages: {self.max_pages}, proxy: {'yes' if self._proxy_url else 'no'}, date: {self.output_date}")
 
-    @classmethod
-    def _page_url(cls, page_num):
-        return BASE_URL if page_num == 1 else f'{BASE_URL}.{page_num}'
+    @staticmethod
+    def _page_url(base_url, page_num):
+        return base_url if page_num == 1 else f'{base_url}.{page_num}'
 
     def _meta(self):
         m = {}
@@ -78,49 +86,51 @@ class Encuentra24Spider(BasePropertySpider):
         return m
 
     async def start(self):
-        yield scrapy.Request(
-            self._page_url(1),
-            headers=_HEADERS,
-            meta=self._meta(),
-            callback=self.parse,
-            cb_kwargs={'page_num': 1},
-            errback=self.errback,
-        )
+        for base_url, property_category, status in _LISTING_URLS:
+            self.logger.info(f"Queuing segment: {property_category}/{status}")
+            yield scrapy.Request(
+                self._page_url(base_url, 1),
+                headers=_HEADERS,
+                meta=self._meta(),
+                callback=self.parse,
+                cb_kwargs={'base_url': base_url, 'property_category': property_category, 'status': status, 'page_num': 1},
+                errback=self.errback,
+            )
 
-    def parse(self, response, page_num=1):
+    def parse(self, response, base_url, property_category, status, page_num=1):
         ads = response.css('a.item-card-link')
-        self.logger.info(f"Page {page_num}: {len(ads)} ads found")
+        self.logger.info(f"[{property_category}/{status}] Page {page_num}: {len(ads)} ads found")
 
         if not ads:
-            self.logger.warning(f"Page {page_num}: no ads — stopping.")
+            self.logger.warning(f"[{property_category}/{status}] Page {page_num}: no ads — stopping.")
             return
 
         for ad in ads:
-            item = self._extract_item(ad, response)
+            item = self._extract_item(ad, response, property_category=property_category, status=status)
             if item['url']:
                 yield item
 
         if self.max_pages != 0 and page_num >= self.max_pages:
-            self.logger.info(f"Reached max_pages limit ({self.max_pages})")
+            self.logger.info(f"[{property_category}/{status}] Reached max_pages limit ({self.max_pages})")
             return
 
         next_btn = response.css('button[aria-label="Página siguiente"]')
         if not next_btn or next_btn.attrib.get('aria-disabled') == 'true':
-            self.logger.info("No more pages — finished.")
+            self.logger.info(f"[{property_category}/{status}] No more pages — finished.")
             return
 
         next_num = page_num + 1
-        self.logger.info(f"Queuing page {next_num}")
+        self.logger.info(f"[{property_category}/{status}] Queuing page {next_num}")
         yield scrapy.Request(
-            self._page_url(next_num),
+            self._page_url(base_url, next_num),
             headers=_HEADERS,
             meta=self._meta(),
             callback=self.parse,
-            cb_kwargs={'page_num': next_num},
+            cb_kwargs={'base_url': base_url, 'property_category': property_category, 'status': status, 'page_num': next_num},
             errback=self.errback,
         )
 
-    def _extract_item(self, ad, response):
+    def _extract_item(self, ad, response, property_category='house', status='sale'):
         item = self.make_item()
 
         relative_url = ad.attrib.get('href', '')
@@ -156,6 +166,13 @@ class Encuentra24Spider(BasePropertySpider):
 
         item['features'] = []
         item['metadata'] = {}
+
+        # status is always known from the crawl segment
+        item['status'] = status
+        # property_category is known for sale segments (typed URLs); for the catch-all
+        # rental URL it is None — dbt will infer from title
+        if property_category is not None:
+            item['property_category'] = property_category
 
         return item
 
