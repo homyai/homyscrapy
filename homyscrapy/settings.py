@@ -1,9 +1,7 @@
-import os
+BOT_NAME = "homyscrapy"
 
-BOT_NAME = 'homyscrapy'
-
-SPIDER_MODULES = ['homyscrapy.spiders']
-NEWSPIDER_MODULE = 'homyscrapy.spiders'
+SPIDER_MODULES = ["homyscrapy.spiders"]
+NEWSPIDER_MODULE = "homyscrapy.spiders"
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -42,18 +40,18 @@ RETRY_TIMES = 3
 
 # Anti-Blocking Settings
 DOWNLOADER_MIDDLEWARES = {
-    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-    'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 400,
+    "scrapy.downloadermiddlewares.useragent.UserAgentMiddleware": None,
+    "scrapy_fake_useragent.middleware.RandomUserAgentMiddleware": 400,
     # 'scrapy_fake_useragent.middleware.RetryUserAgentMiddleware': 401, # CAUSES CRASH
-    'homyscrapy.middlewares.RandomProxyMiddleware': 410,
+    "homyscrapy.middlewares.RandomProxyMiddleware": 410,
 }
 
 FAKEUSERAGENT_PROVIDERS = [
-    'scrapy_fake_useragent.providers.FakerProvider',
-    'scrapy_fake_useragent.providers.FixedUserAgentProvider',
+    "scrapy_fake_useragent.providers.FakerProvider",
+    "scrapy_fake_useragent.providers.FixedUserAgentProvider",
 ]
 
 
 ITEM_PIPELINES = {
-    'homyscrapy.pipelines.HomyscrapyPipeline': 300,
+    "homyscrapy.pipelines.HomyscrapyPipeline": 300,
 }

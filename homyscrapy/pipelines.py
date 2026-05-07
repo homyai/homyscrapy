@@ -1,8 +1,9 @@
-from itemadapter import ItemAdapter
-import pandas as pd
 import os
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
+
+import pandas as pd
 from google.cloud import storage
+from itemadapter import ItemAdapter
 
 _CR_TZ = timezone(timedelta(hours=-6))
 
@@ -23,7 +24,7 @@ class HomyscrapyPipeline:
         df = pd.DataFrame(self.items)
         # Use the spider's start date (set at init) so runs crossing midnight
         # don't produce a file dated the following day.
-        run_date = getattr(spider, 'output_date', datetime.now(_CR_TZ).strftime("%Y-%m-%d"))
+        run_date = getattr(spider, "output_date", datetime.now(_CR_TZ).strftime("%Y-%m-%d"))
         gcs_path = f"raw/{spider.name}/{run_date}.json"
         file_name = f"{run_date}.json"
 

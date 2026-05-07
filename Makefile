@@ -10,11 +10,14 @@ NO_PROXY ?= 0
 -include .devcontainer/.env
 export
 
-.PHONY: help build test shell crawl list deploy run-job
+.PHONY: help build test lint shell crawl list deploy run-job
 .DEFAULT_GOAL := help
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
+
+lint: ## Run ruff linter and format check
+	ruff check . && ruff format --check .
 
 build: ## Build the Docker image
 	docker build -t $(IMAGE) .

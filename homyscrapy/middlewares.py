@@ -9,9 +9,9 @@ class RandomProxyMiddleware:
 
     def __init__(self, settings):
         self.proxies = []
-        proxy_file = settings.get('PROXY_LIST_FILE', 'proxies.txt')
+        proxy_file = settings.get("PROXY_LIST_FILE", "proxies.txt")
         try:
-            with open(proxy_file, 'r') as f:
+            with open(proxy_file, "r") as f:
                 self.proxies = [line.strip() for line in f if line.strip()]
         except FileNotFoundError:
             pass
@@ -27,16 +27,16 @@ class RandomProxyMiddleware:
         if not self.proxies:
             return
 
-        if not spider.settings.getbool('USE_PROXY', True):
+        if not spider.settings.getbool("USE_PROXY", True):
             return
 
         proxy = random.choice(self.proxies)
 
-        if request.meta.get('playwright'):
-            context_kwargs = request.meta.setdefault('playwright_context_kwargs', {})
-            context_kwargs['proxy'] = {'server': proxy}
+        if request.meta.get("playwright"):
+            context_kwargs = request.meta.setdefault("playwright_context_kwargs", {})
+            context_kwargs["proxy"] = {"server": proxy}
         else:
-            request.meta['proxy'] = proxy
+            request.meta["proxy"] = proxy
 
         if self.stats:
-            self.stats.inc_value('proxies/request_count')
+            self.stats.inc_value("proxies/request_count")
