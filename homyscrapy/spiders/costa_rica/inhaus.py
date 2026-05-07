@@ -2,6 +2,37 @@ import re
 from scrapy.spiders import SitemapSpider
 from homyscrapy.spiders.base_spider import BasePropertySpider
 
+# Keywords used to classify operation type from title text (Spanish)
+_RENT_KEYWORDS = ('alquiler', 'alquila', 'arriendo', 'renta', 'rent')
+_SALE_KEYWORDS = ('venta', 'vende', 'sale', 'compra')
+
+# Keywords for property category from title text
+_CATEGORY_KEYWORDS = {
+    'house':      ('casa', 'house', 'home', 'residencia', 'villa', 'chalet'),
+    'apartment':  ('apartamento', 'apto', 'apartment', 'piso', 'condominio', 'condo', 'penthouse'),
+    'land':       ('lote', 'terreno', 'finca', 'parcela', 'land', 'lot'),
+    'commercial': ('local', 'comercial', 'oficina', 'bodega', 'commercial', 'office', 'retail'),
+}
+
+
+def _classify_from_title(title: str) -> tuple[str, str]:
+    """Return (property_category, status) inferred from the listing title."""
+    t = title.lower()
+
+    status = 'sale'  # default: InHaus is primarily a sale platform
+    for kw in _RENT_KEYWORDS:
+        if kw in t:
+            status = 'rent'
+            break
+
+    category = 'house'  # default
+    for cat, keywords in _CATEGORY_KEYWORDS.items():
+        if any(kw in t for kw in keywords):
+            category = cat
+            break
+
+    return category, status
+
 
 class InHausSpider(BasePropertySpider, SitemapSpider):
     name = 'inhaus'
@@ -38,6 +69,11 @@ class InHausSpider(BasePropertySpider, SitemapSpider):
         if id_match:
             item['external_id'] = id_match.group(1)
 
+        # Operation type from labeled attribute grid (e.g. "Tipo de operación: Alquiler")
+        # Falls back to title-based classification if not found in grid
+        status_from_grid = None
+        category_from_grid = None
+
         for grid_item in response.css('.grid.grid-cols-2.md\\:grid-cols-3 .bg-muted\\/50'):
             val = grid_item.css('.text-xl.font-bold ::text').get()
             lbl = grid_item.css('.text-sm.text-muted-foreground ::text').get()
@@ -52,6 +88,19 @@ class InHausSpider(BasePropertySpider, SitemapSpider):
                 item['area'] = val
             elif 'terreno' in lbl:
                 item['lot_area'] = val
+            elif 'operación' in lbl or 'operacion' in lbl:
+                status_from_grid = 'rent' if any(kw in val.lower() for kw in _RENT_KEYWORDS) else 'sale'
+            elif 'tipo' in lbl and 'propiedad' in lbl:
+                val_lower = val.lower()
+                for cat, keywords in _CATEGORY_KEYWORDS.items():
+                    if any(kw in val_lower for kw in keywords):
+                        category_from_grid = cat
+                        break
+
+        # Fall back to title parsing when grid doesn't expose these fields
+        category_from_title, status_from_title = _classify_from_title(item['title'])
+        item['property_category'] = category_from_grid or category_from_title
+        item['status'] = status_from_grid or status_from_title
 
         # Images — og:image + gallery; dict.fromkeys preserves order while deduplicating
         images = response.css('meta[property="og:image"]::attr(content)').getall()

@@ -1,19 +1,59 @@
+import scrapy
 from homyscrapy.spiders.base_spider import BasePropertySpider
+
+_SALE_BASE = 'https://www.re.cr/en/costa-rica-real-estate-for-sale/search-properties'
+_RENT_BASE = 'https://www.re.cr/en/costa-rica-rental-properties'
+_SALE_PREFIX = '?form.search-properties.buttons.search='
+_RENT_PREFIX = '?form.search-properties.buttons.search='
+
+# Each entry: (url, property_category, status)
+# Rental URL uses the confirmed base: /en/costa-rica-rental-properties
+# The search param structure for rentals mirrors sales (listing_type=ra vs rs).
+_LISTING_URLS = [
+    # Sale: residential types
+    (
+        f'{_SALE_BASE}{_SALE_PREFIX}'
+        '&form.search-properties.widgets.object_type%3Alist=house'
+        '&form.search-properties.widgets.object_type%3Alist=mobile'
+        '&form.search-properties.widgets.object_type%3Alist=multiplex'
+        '&form.search-properties.widgets.object_type%3Alist=townhouse'
+        '&form.search-properties.widgets.listing_type=rs',
+        'house', 'sale',
+    ),
+    # Sale: apartments/condos
+    (
+        f'{_SALE_BASE}{_SALE_PREFIX}'
+        '&form.search-properties.widgets.object_type%3Alist=apartment'
+        '&form.search-properties.widgets.listing_type=rs',
+        'apartment', 'sale',
+    ),
+    # Sale: land/lots
+    (
+        f'{_SALE_BASE}{_SALE_PREFIX}'
+        '&form.search-properties.widgets.object_type%3Alist=land'
+        '&form.search-properties.widgets.listing_type=rs',
+        'land', 'sale',
+    ),
+    # Sale: commercial
+    (
+        f'{_SALE_BASE}{_SALE_PREFIX}'
+        '&form.search-properties.widgets.object_type%3Alist=commercial'
+        '&form.search-properties.widgets.listing_type=rs',
+        'commercial', 'sale',
+    ),
+    # Rent: catch-all (confirmed base URL; property_category inferred from listing)
+    (
+        f'{_RENT_BASE}{_RENT_PREFIX}'
+        '&form.search-properties.widgets.listing_type=ra',
+        None, 'rent',
+    ),
+]
 
 
 class RECRSpider(BasePropertySpider):
     name = 'recr'
     source = 'RE.CR'
     allowed_domains = ['re.cr', 'www.re.cr']
-    start_urls = [
-        'https://www.re.cr/en/costa-rica-real-estate-for-sale/search-properties'
-        '?form.search-properties.buttons.search='
-        '&form.search-properties.widgets.object_type%3Alist=house'
-        '&form.search-properties.widgets.object_type%3Alist=mobile'
-        '&form.search-properties.widgets.object_type%3Alist=multiplex'
-        '&form.search-properties.widgets.object_type%3Alist=townhouse'
-        '&form.search-properties.widgets.listing_type=rs'
-    ]
 
     # Override global conservative defaults — RE.CR is a low-traffic static site
     custom_settings = {
@@ -22,9 +62,17 @@ class RECRSpider(BasePropertySpider):
         'CONCURRENT_REQUESTS': 2,
     }
 
-    def parse(self, response):
+    async def start(self):
+        for url, property_category, status in _LISTING_URLS:
+            yield scrapy.Request(
+                url,
+                callback=self.parse,
+                cb_kwargs={'property_category': property_category, 'status': status},
+            )
+
+    def parse(self, response, property_category=None, status='sale'):
         tiles = response.css('div.tileItem')
-        self.logger.info(f"Found {len(tiles)} tiles")
+        self.logger.info(f"[{property_category}/{status}] Found {len(tiles)} tiles")
 
         for tile in tiles:
             title_link = tile.css('h2.tileHeadline a')
@@ -36,11 +84,19 @@ class RECRSpider(BasePropertySpider):
             item['title'] = title_link.css('::text').get('').strip()
             item['price'] = tile.css('.listing__price dd::text').get('').strip()
             item['url'] = detail_url
+            item['status'] = status
+            # Only set if known; catch-all rental segment leaves it to dbt title parsing
+            if property_category is not None:
+                item['property_category'] = property_category
             yield response.follow(detail_url, callback=self.parse_property, meta={'item': item})
 
         next_page = response.css('.next a::attr(href)').get()
         if next_page:
-            yield response.follow(next_page, callback=self.parse)
+            yield response.follow(
+                next_page,
+                callback=self.parse,
+                cb_kwargs={'property_category': property_category, 'status': status},
+            )
 
     def parse_property(self, response):
         item = response.meta['item']
